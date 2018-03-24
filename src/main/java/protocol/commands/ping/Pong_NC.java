@@ -1,6 +1,6 @@
-package protocol.ping;
+package protocol.commands.ping;
 
-import protocol.NetworkCommand;
+import protocol.commands.NetworkCommand;
 
 public class Pong_NC extends NetworkCommand {
 

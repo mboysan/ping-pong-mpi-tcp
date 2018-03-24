@@ -7,4 +7,4 @@ fi
 
 # go to target and run mpi.MPIMain class
 cd ./target
-mpirun --oversubscribe -np 3 java -cp *jar-with-dependencies.jar mpi/MPIMain $@
+mpirun --oversubscribe -np 3 java -cp *jar-with-dependencies.jar MPIMain $@

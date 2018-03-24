@@ -5,8 +5,8 @@ import java.net.UnknownHostException;
 
 public class TCPAddress extends Address {
 
-    private final InetAddress ip;
-    private final int portNumber;
+    private InetAddress ip;
+    private int portNumber;
 
     public TCPAddress(String ipStr, int portNumber) throws UnknownHostException {
         this(InetAddress.getByName(ipStr), portNumber);
@@ -15,6 +15,19 @@ public class TCPAddress extends Address {
     public TCPAddress(InetAddress ip, int portNumber) {
         this.ip = ip;
         this.portNumber = portNumber;
+    }
+
+    public TCPAddress() {
+    }
+
+    public TCPAddress setIp(InetAddress ip) {
+        this.ip = ip;
+        return this;
+    }
+
+    public TCPAddress setPortNumber(int portNumber) {
+        this.portNumber = portNumber;
+        return this;
     }
 
     public InetAddress getIp() {

@@ -4,7 +4,10 @@ import config.Config;
 import network.ConnectionProtocol;
 import network.address.Address;
 import network.address.TCPAddress;
-import protocol.NetworkCommand;
+import network.messenger.mpi.MPIRecvHandler;
+import protocol.CommandMarshaller;
+import protocol.commands.NetworkCommand;
+import protocol.commands.ping.EndAll_NC;
 import role.Role;
 
 import java.io.BufferedInputStream;
@@ -15,31 +18,32 @@ import java.net.Socket;
 
 public class MessageReceiverThread extends Thread {
 
-    private ConnectionProtocol runOnTCPOrMPI = ConnectionProtocol.TCP_CONNECTION;
-
+    private final ConnectionProtocol runOnTCPOrMPI;
     private final Address address;
-    private Role roleInstance;
+    private final Role roleInstance;
+    private final CommandMarshaller commandMarshaller;
 
     public MessageReceiverThread(Address address, Role roleInstance) {
         this.address = address;
         this.runOnTCPOrMPI = Config.getInstance().getConnectionProtocol();
         this.roleInstance = roleInstance;
+        this.commandMarshaller = new CommandMarshaller();
 
-        this.start();
+        start();
     }
 
     public synchronized void run() {
         switch (this.runOnTCPOrMPI) {
             case TCP_CONNECTION:
-                this.runOnTCP();
+                runOnTCP();
                 break;
             case MPI_CONNECTION:
-                this.runOnUDP();
+                runOnMPI();
                 break;
         }
     }
 
-    public void runOnTCP() {
+    private void runOnTCP() {
 
         ServerSocket serverSocket;
         Socket socket = null;
@@ -58,11 +62,9 @@ public class MessageReceiverThread extends Thread {
                 Object acceptedObject = objectInputStream.readObject();
                 if (acceptedObject != null) {
                     message = (NetworkCommand) acceptedObject;
-                }
-                synchronized (System.out) {
-                    if (message != null) {
-//                        System.out.println(message.toString());
-//                        System.out.flush();
+                    if(message instanceof EndAll_NC){
+                        System.out.println("End signal recv: " + message);
+                        break;
                     }
                 }
                 this.roleInstance.handleMessage(message);
@@ -80,7 +82,7 @@ public class MessageReceiverThread extends Thread {
         }
     }
 
-    public void runOnUDP() {
-
+    private void runOnMPI(){
+        MPIRecvHandler.getInstance().registerNode(roleInstance);
     }
 }

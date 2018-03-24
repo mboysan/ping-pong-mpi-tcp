@@ -1,9 +1,9 @@
 package role;
 
 import network.address.Address;
-import protocol.NetworkCommand;
+import protocol.commands.NetworkCommand;
 import network.messenger.MessageReceiverThread;
-import network.messenger.SendMessageThread;
+import network.messenger.MessageSenderThread;
 
 public abstract class Role {
 
@@ -14,7 +14,6 @@ public abstract class Role {
     }
 
     protected Role(Address myAddress) {
-
         this.myAddress = myAddress;
     }
 
@@ -25,7 +24,7 @@ public abstract class Role {
     abstract public void handleMessage(NetworkCommand message);
 
     public void sendMessage(NetworkCommand message) {
-        (new SendMessageThread(message)).start();
+        new MessageSenderThread(message);
     }
 
 }

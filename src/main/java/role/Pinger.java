@@ -1,9 +1,10 @@
 package role;
 
 import network.address.Address;
-import protocol.NetworkCommand;
-import protocol.ping.Ping_NC;
+import protocol.commands.NetworkCommand;
+import protocol.commands.ping.Ping_NC;
 import config.Config;
+import protocol.commands.ping.Pong_NC;
 
 public class Pinger extends Role {
 
@@ -17,13 +18,14 @@ public class Pinger extends Role {
                     .setReceiverAddress(receiverAddress)
                     .setSenderAddress(getMyAddress());
             sendMessage(ping);
-            System.out.println("ping sent: " + ping);
         }
     }
 
     @Override
     public void handleMessage(NetworkCommand message) {
         //record times etc.
-        System.out.println("pong received: " + message);
+        if(message instanceof Pong_NC){
+            System.out.println("Pinger.handleMessage(): " + message);
+        }
     }
 }
