@@ -1,16 +1,19 @@
 package network.messenger;
 
 import config.Config;
+import mpi.MPI;
+import mpi.MPIException;
 import network.ConnectionProtocol;
 import network.address.Address;
 import network.address.TCPAddress;
-import network.messenger.mpi.MPIRecvHandler;
+import org.pmw.tinylog.Logger;
 import protocol.CommandMarshaller;
 import protocol.commands.NetworkCommand;
 import protocol.commands.ping.EndAll_NC;
 import role.Role;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -70,19 +73,33 @@ public class MessageReceiverThread extends Thread {
                 this.roleInstance.handleMessage(message);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error("Recv err: " + e, e);
         } finally {
             try {
                 if (socket != null) {
                     socket.close();
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Logger.error("Socket close err: " + ex, ex);
             }
         }
     }
 
     private void runOnMPI(){
-        MPIRecvHandler.getInstance().registerNode(roleInstance);
+        try {
+            while (true){
+                char[] msg= new char[1024];
+                MPI.COMM_WORLD.recv(msg, 1024, MPI.BYTE, MPI.ANY_SOURCE, MPI.ANY_TAG);
+                NetworkCommand message = commandMarshaller.unmarshall(new String(msg));
+                if(message instanceof EndAll_NC){
+                    Logger.info("End signal recv: " + message);
+                    Config.getInstance().readyEnd();
+                    break;
+                }
+                roleInstance.handleMessage(message);
+            }
+        } catch (IOException | MPIException e) {
+            Logger.error("Recv err: " + e, e);
+        }
     }
 }

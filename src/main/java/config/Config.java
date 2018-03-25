@@ -6,6 +6,10 @@ import network.ConnectionProtocol;
 import network.address.Address;
 import network.address.MPIAddress;
 import network.address.TCPAddress;
+import org.pmw.tinylog.Logger;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static network.ConnectionProtocol.MPI_CONNECTION;
 import static network.ConnectionProtocol.TCP_CONNECTION;
@@ -15,6 +19,7 @@ public class Config {
 
     private Address[] addresses;
     private ConnectionProtocol connectionProtocol;
+    private CountDownLatch endLatch = new CountDownLatch(1);
 
     public static Config getInstance() {
         return ourInstance;
@@ -23,12 +28,12 @@ public class Config {
     private Config() {
     }
 
-    public void initTCP(Address[] addresses){
-        if(addresses == null){
+    public void initTCP(Address[] addresses) {
+        if (addresses == null) {
             throw new IllegalArgumentException("Addresses must not be null");
         }
         for (Address address : addresses) {
-            if(!(address instanceof TCPAddress)){
+            if (!(address instanceof TCPAddress)) {
                 throw new IllegalArgumentException("Address must be of type " + TCPAddress.class.toString());
             }
         }
@@ -48,14 +53,21 @@ public class Config {
         init(MPI_CONNECTION, addresses);
     }
 
-    private void init(ConnectionProtocol connectionProtocol, Address[] addresses){
+    private void init(ConnectionProtocol connectionProtocol, Address[] addresses) {
         this.connectionProtocol = connectionProtocol;
         this.addresses = addresses;
     }
 
-    public void end() throws MPIException {
-        if(connectionProtocol == MPI_CONNECTION){
+    public void readyEnd() {
+        endLatch.countDown();
+    }
+
+    public void end() throws MPIException, InterruptedException {
+        endLatch.await(10, TimeUnit.SECONDS);
+        Logger.info("latch awaited!");
+        if (connectionProtocol == MPI_CONNECTION) {
             MPI.Finalize();
+            Logger.info("MPI finalized!");
         }
     }
 

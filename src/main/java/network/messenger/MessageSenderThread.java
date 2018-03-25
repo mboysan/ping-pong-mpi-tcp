@@ -6,6 +6,7 @@ import mpi.MPIException;
 import network.ConnectionProtocol;
 import network.address.MPIAddress;
 import network.address.TCPAddress;
+import org.pmw.tinylog.Logger;
 import protocol.CommandMarshaller;
 import protocol.commands.NetworkCommand;
 
@@ -51,10 +52,7 @@ public class MessageSenderThread extends Thread {
             objectOutputStream.close();
             socket.close();
         } catch (IOException e) {
-            synchronized (System.out) {
-                e.printStackTrace();
-                System.out.println("Message send fail! --- from " + this.messageToSend.resolveSenderAddress() + " to " + this.messageToSend.resolveReceiverAddress() + " ---");
-            }
+            Logger.error("Send err msg: " + messageToSend + ", " + e, e);
         }
     }
 
@@ -65,7 +63,7 @@ public class MessageSenderThread extends Thread {
             char[] msg = commandMarshaller.marshall(messageToSend, char[].class);
             MPI.COMM_WORLD.send(msg, msg.length, MPI.CHAR, receiverAddress.getRank(), tag);
         } catch (MPIException | IOException e) {
-            e.printStackTrace();
+            Logger.error("Send err msg: " + messageToSend + ", " + e, e);
         }
     }
 }

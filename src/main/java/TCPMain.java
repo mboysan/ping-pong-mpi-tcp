@@ -2,10 +2,7 @@ import config.Config;
 import network.ConnectionProtocol;
 import network.address.Address;
 import network.address.TCPAddress;
-import role.Ender;
-import role.Pinger;
-import role.Ponger;
-import role.Role;
+import role.*;
 
 import java.io.IOException;
 
@@ -13,10 +10,10 @@ public class TCPMain {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         int port = 8080;
-        Pinger pinger = new Pinger(new TCPAddress("127.0.0.1", port++));
-        Ponger ponger1 = new Ponger(new TCPAddress("127.0.0.1", port++));
-        Ponger ponger2 = new Ponger(new TCPAddress("127.0.0.1", port++));
-        Ender ender = new Ender(new TCPAddress("127.0.0.1", port));
+        Node pinger = new Node(new TCPAddress("127.0.0.1", port++));
+        Node ponger1 = new Node(new TCPAddress("127.0.0.1", port++));
+        Node ponger2 = new Node(new TCPAddress("127.0.0.1", port++));
+        Node ender = new Node(new TCPAddress("127.0.0.1", port));
 
         Role[] roles = new Role[]{pinger, ponger1, ponger2, ender};
 
