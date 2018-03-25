@@ -58,33 +58,27 @@ public class MessageReceiverThread extends Thread {
             while (true) {
                 socket = serverSocket.accept();
                 DataInputStream dIn = new DataInputStream(socket.getInputStream());
-                int length = dIn.readInt(); // read length of incoming message
-                byte[] msg = null;
-                if(length>0) {
-                    msg = new byte[length];
-                    dIn.readFully(msg, 0, msg.length); // read the message
-                }
-                if(msg != null){
-                    NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
-                    if(message != null){
-                        if(message instanceof EndAll_NC){
-                            Logger.info("End signal recv: " + message);
-                            Config.getInstance().readyEnd();
-                            break;
-                        }
-                        this.roleInstance.handleMessage(message);
+                String msg = dIn.readUTF();
+
+                NetworkCommand message = commandMarshaller.unmarshall(msg);
+                if(message != null){
+                    if(message instanceof EndAll_NC){
+                        Logger.info("End signal recv: " + message);
+                        Config.getInstance().readyEnd();
+                        break;
                     }
+                    this.roleInstance.handleMessage(message);
                 }
             }
         } catch (Exception e) {
-            Logger.error("Recv err: " + e, e);
+            Logger.error(e, "Recv err");
         } finally {
             try {
                 if (socket != null) {
                     socket.close();
                 }
             } catch (Exception ex) {
-                Logger.error("Socket close err: " + ex, ex);
+                Logger.error(ex, "Socket close err");
             }
         }
     }
@@ -103,7 +97,7 @@ public class MessageReceiverThread extends Thread {
                 roleInstance.handleMessage(message);
             }
         } catch (IOException | MPIException e) {
-            Logger.error("Recv err: " + e, e);
+            Logger.error(e, "Recv err");
         }
     }
 }

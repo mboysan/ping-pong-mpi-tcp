@@ -45,12 +45,11 @@ public class MessageSenderThread extends Thread {
         DataOutputStream dOut = null;
         try {
             TCPAddress receiverAddress = (TCPAddress) messageToSend.resolveReceiverAddress();
-            byte[] msg = commandMarshaller.marshall(messageToSend, byte[].class);
+            String msg = commandMarshaller.marshall(messageToSend, String.class);
+
             socket = new Socket(receiverAddress.getIp(), receiverAddress.getPortNumber());
             dOut = new DataOutputStream(socket.getOutputStream());
-
-            dOut.writeInt(msg.length); // write length of the message
-            dOut.write(msg);           // write the message
+            dOut.writeUTF(msg); // write the message
             dOut.flush();
         } catch (IOException e) {
             Logger.error("Send err, msg: " + messageToSend + ", " + e, e);
