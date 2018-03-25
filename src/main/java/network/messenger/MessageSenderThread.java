@@ -78,6 +78,11 @@ public class MessageSenderThread extends Thread {
             MPIAddress receiverAddress = (MPIAddress) messageToSend.resolveReceiverAddress();
             int tag = messageToSend.getTag();
             byte[] msg = commandMarshaller.marshall(messageToSend, byte[].class);
+
+            int[] msgLen = new int[1];
+            msgLen[0] = msg.length;
+
+            MPI.COMM_WORLD.send(msgLen, 1, MPI.INT, receiverAddress.getRank(), tag);  //send msg length first
             MPI.COMM_WORLD.send(msg, msg.length, MPI.BYTE, receiverAddress.getRank(), tag);
         } catch (MPIException | IOException e) {
             Logger.error(e, "Send err, msg: " + messageToSend);

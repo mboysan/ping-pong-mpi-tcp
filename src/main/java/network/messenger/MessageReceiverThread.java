@@ -86,8 +86,12 @@ public class MessageReceiverThread extends Thread {
     private void runOnMPI(){
         try {
             while (true){
-                byte[] msg= new byte[1024];
-                MPI.COMM_WORLD.recv(msg, 1024, MPI.BYTE, MPI.ANY_SOURCE, MPI.ANY_TAG);
+                int[] msgLen = new int[1];
+                MPI.COMM_WORLD.recv(msgLen, 1, MPI.INT, MPI.ANY_SOURCE, MPI.ANY_TAG);   // receive msg length first.
+
+                byte[] msg= new byte[msgLen[0]];
+                MPI.COMM_WORLD.recv(msg, msg.length, MPI.BYTE, MPI.ANY_SOURCE, MPI.ANY_TAG);
+
                 NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
                 if(message instanceof EndAll_NC){
                     Logger.info("End signal recv: " + message);
