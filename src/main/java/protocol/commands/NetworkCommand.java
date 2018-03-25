@@ -13,6 +13,7 @@ public class NetworkCommand implements Serializable {
     private MPIAddress receiverAddrMPI;
     private MPIAddress senderAddrMPI;
     private int tag = MessageTag.ANY_TAG.getTagValue();  //set default tag
+    private long timeStamp = System.currentTimeMillis();
 
     public NetworkCommand() {
 
@@ -99,6 +100,10 @@ public class NetworkCommand implements Serializable {
         return this;
     }
 
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
     @Override
     public String toString() {
         return "NetworkCommand{" +
@@ -107,6 +112,7 @@ public class NetworkCommand implements Serializable {
                 ", receiverAddrMPI=" + receiverAddrMPI +
                 ", senderAddrMPI=" + senderAddrMPI +
                 ", tag=" + tag +
+                ", timeStamp=" + timeStamp +
                 '}';
     }
 }

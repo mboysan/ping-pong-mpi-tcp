@@ -6,6 +6,7 @@ import mpi.MPIException;
 import network.ConnectionProtocol;
 import network.address.Address;
 import network.address.TCPAddress;
+import org.json.JSONException;
 import org.pmw.tinylog.Logger;
 import protocol.CommandMarshaller;
 import protocol.commands.NetworkCommand;
@@ -68,7 +69,7 @@ public class MessageReceiverThread extends Thread {
                     NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
                     if(message != null){
                         if(message instanceof EndAll_NC){
-                            Logger.info("End signal recv: " + message);
+                            Logger.debug("End signal recv: " + message);
                             Config.getInstance().readyEnd();
                             break;
                         }
@@ -100,13 +101,13 @@ public class MessageReceiverThread extends Thread {
 
                 NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
                 if(message instanceof EndAll_NC){
-                    Logger.info("End signal recv: " + message);
+                    Logger.debug("End signal recv: " + message);
                     Config.getInstance().readyEnd();
                     break;
                 }
                 roleInstance.handleMessage(message);
             }
-        } catch (IOException | MPIException e) {
+        } catch (Exception e) {
             Logger.error(e, "Recv err");
         }
     }

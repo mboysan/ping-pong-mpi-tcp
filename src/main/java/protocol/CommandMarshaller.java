@@ -2,6 +2,7 @@ package protocol;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONException;
 import org.json.JSONObject;
 import protocol.commands.NetworkCommand;
 
@@ -52,7 +53,7 @@ public class CommandMarshaller {
      * @return command unmarshalled into its associated {@link NetworkCommand}.
      * @throws IOException in case of json related operations.
      */
-    public NetworkCommand unmarshall(String commandAsJson) throws IOException {
+    public NetworkCommand unmarshall(String commandAsJson) throws IOException, JSONException {
         JSONObject jsonObject = new JSONObject(commandAsJson);
         try{
             Class clazz = Class.forName(jsonObject.getString("_type"));

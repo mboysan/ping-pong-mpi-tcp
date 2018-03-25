@@ -72,7 +72,7 @@ public class Config {
     }
 
     public void end() throws MPIException, InterruptedException {
-        endLatch.await(10, TimeUnit.SECONDS);
+        endLatch.await(1, TimeUnit.MINUTES);
         if (connectionProtocol == MPI_CONNECTION) {
             MPI.Finalize();
             Logger.info("MPI finalized!");

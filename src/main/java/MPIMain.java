@@ -24,12 +24,9 @@ public class MPIMain {
 
             Thread.sleep(1000); // let all nodes start
 
-            /* Start ping-pong */
-            long start = System.currentTimeMillis();
-            pinger.pingAll();
-            pinger.waitPongs();
-            long total = System.currentTimeMillis() - start;
-            Logger.info("Ping-pong done, total time taken (ms): " + total);
+            Logger.info("Starting ping-pong tests...");
+
+            TestFramework.loopPing(pinger, 5);
 
             Logger.info("Entering end cycle...");
 

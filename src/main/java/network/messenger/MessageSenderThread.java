@@ -14,6 +14,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class MessageSenderThread extends Thread {
 
@@ -26,7 +27,11 @@ public class MessageSenderThread extends Thread {
         this.messageToSend = message;
         this.commandMarshaller = new CommandMarshaller();
 
-        start();
+        if(runOnTCPOrMPI == ConnectionProtocol.MPI_CONNECTION){
+            runOnMPI();
+        } else {
+            start();
+        }
     }
 
     public synchronized void run() {
@@ -78,8 +83,7 @@ public class MessageSenderThread extends Thread {
             int tag = messageToSend.getTag();
             byte[] msg = commandMarshaller.marshall(messageToSend, byte[].class);
 
-            int[] msgLen = new int[1];
-            msgLen[0] = msg.length;
+            int[] msgLen = new int[]{msg.length};
 
             MPI.COMM_WORLD.send(msgLen, 1, MPI.INT, receiverAddress.getRank(), tag);  //send msg length first
             MPI.COMM_WORLD.send(msg, msg.length, MPI.BYTE, receiverAddress.getRank(), tag);

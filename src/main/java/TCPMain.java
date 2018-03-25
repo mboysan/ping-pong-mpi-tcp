@@ -40,12 +40,9 @@ public class TCPMain {
             role.start();
         }
 
-        /* Start ping-pong */
-        long start = System.currentTimeMillis();
-        pinger.pingAll();
-        pinger.waitPongs();
-        long total = System.currentTimeMillis() - start;
-        Logger.info("Ping-pong done, total time taken (ms): " + total);
+        Logger.info("Starting ping-pong tests...");
+        
+        TestFramework.loopPing(pinger, 1000);
 
         Logger.info("Entering end cycle...");
 

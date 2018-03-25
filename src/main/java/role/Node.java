@@ -54,6 +54,7 @@ public class Node extends Role {
         if(pongLatch != null){
             try {
                 pongLatch.await();
+                pongLatch = new CountDownLatch(Config.getInstance().getAddresses().length);
             } catch (InterruptedException e) {
                 Logger.error(e);
             }
@@ -62,7 +63,7 @@ public class Node extends Role {
 
     @Override
     public void handleMessage(NetworkCommand message) {
-        Logger.info("[" + getMyAddress() +"] - " + message);
+        Logger.debug("[" + getMyAddress() +"] - " + message);
         if (message instanceof Ping_NC) {
             pong(message);
         }
