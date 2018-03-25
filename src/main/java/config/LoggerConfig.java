@@ -1,4 +1,4 @@
-package util.logging;
+package config;
 
 import org.pmw.tinylog.Configurator;
 

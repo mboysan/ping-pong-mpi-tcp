@@ -8,9 +8,21 @@ import protocol.commands.ping.EndAll_NC;
 import protocol.commands.ping.Ping_NC;
 import protocol.commands.ping.Pong_NC;
 
+import java.util.concurrent.CountDownLatch;
+
 public class Node extends Role {
+    private CountDownLatch pongLatch;
+
     public Node(Address myAddress) {
+        this(myAddress, -1);
+    }
+
+    public Node(Address myAddress, int totalNodes){
         super(myAddress);
+        pongLatch = null;
+        if(totalNodes > 0){
+            pongLatch = new CountDownLatch(totalNodes);
+        }
     }
 
     public void pingAll() {
@@ -38,6 +50,16 @@ public class Node extends Role {
         }
     }
 
+    public void waitPongs(){
+        if(pongLatch != null){
+            try {
+                pongLatch.await();
+            } catch (InterruptedException e) {
+                Logger.error(e);
+            }
+        }
+    }
+
     @Override
     public void handleMessage(NetworkCommand message) {
         Logger.info("[" + getMyAddress() +"] - " + message);
@@ -45,7 +67,9 @@ public class Node extends Role {
             pong(message);
         }
         if (message instanceof Pong_NC) {
-            //recordings...
+            if(pongLatch != null){
+                pongLatch.countDown();
+            }
         }
     }
 }

@@ -1,11 +1,10 @@
 import config.Config;
 import mpi.MPIException;
-import network.ConnectionProtocol;
 import network.address.Address;
 import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 import role.*;
-import util.logging.LoggerConfig;
+import config.LoggerConfig;
 
 import java.io.IOException;
 
@@ -15,27 +14,41 @@ public class TCPMain {
         new LoggerConfig();
         Logger.info("INIT (TCP).");
 
-        int port = 8080;
-        Node pinger = new Node(new TCPAddress("127.0.0.1", port++));
-        Node ponger1 = new Node(new TCPAddress("127.0.0.1", port++));
-        Node ponger2 = new Node(new TCPAddress("127.0.0.1", port++));
-
-        Role[] roles = new Role[]{pinger, ponger1, ponger2};
-
-        Address[] addresses = new Address[roles.length];
-        for (int i = 0; i < roles.length; i++) {
-            addresses[i] = roles[i].getMyAddress();
+        int totalNodes = 5;
+        if(args != null && args.length > 0){
+            totalNodes = Integer.parseInt(args[0]);
         }
+
+        Role[] roles = new Role[totalNodes];
+        Address[] addresses = new Address[roles.length];
+        int port = 8080;
+        for (int i = 1; i < totalNodes; i++) {  // first index will be reserved to pinger
+            Node ponger = new Node(new TCPAddress("127.0.0.1", port++));
+
+            roles[i] = ponger;
+            addresses[i] = ponger.getMyAddress();
+        }
+        Node pinger = new Node(new TCPAddress("127.0.0.1", port++), totalNodes);
+
+        roles[0] = pinger;
+        addresses[0] = pinger.getMyAddress();
 
         Config.getInstance().initTCP(addresses);
 
+        /* start nodes */
         for (Role role : roles) {
             role.start();
         }
-        pinger.pingAll();
 
-        Thread.sleep(2000);
+        /* Start ping-pong */
+        long start = System.currentTimeMillis();
+        pinger.pingAll();
+        pinger.waitPongs();
+        long total = System.currentTimeMillis() - start;
+        Logger.info("Ping-pong done, total time taken (ms): " + total);
+
         Logger.info("Entering end cycle...");
+
         pinger.endAll();
 
         Config.getInstance().end();

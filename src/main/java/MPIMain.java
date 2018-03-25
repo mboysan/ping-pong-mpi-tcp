@@ -4,7 +4,7 @@ import mpi.MPIException;
 import network.address.MPIAddress;
 import org.pmw.tinylog.Logger;
 import role.Node;
-import util.logging.LoggerConfig;
+import config.LoggerConfig;
 
 public class MPIMain {
     public static void main(String[] args) throws MPIException, InterruptedException {
@@ -19,14 +19,20 @@ public class MPIMain {
             Node ponger = new Node(new MPIAddress(rank));
             ponger.start();
         } else {
-            Node pinger = new Node(new MPIAddress(rank));
+            Node pinger = new Node(new MPIAddress(rank), Config.getInstance().getAddressCount());
             pinger.start();
 
             Thread.sleep(1000); // let all nodes start
-            pinger.pingAll();
 
-            Thread.sleep(1000); // wait pongs
+            /* Start ping-pong */
+            long start = System.currentTimeMillis();
+            pinger.pingAll();
+            pinger.waitPongs();
+            long total = System.currentTimeMillis() - start;
+            Logger.info("Ping-pong done, total time taken (ms): " + total);
+
             Logger.info("Entering end cycle...");
+
             pinger.endAll();
         }
 

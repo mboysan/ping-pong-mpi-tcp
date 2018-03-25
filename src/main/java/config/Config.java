@@ -60,6 +60,13 @@ public class Config {
         this.addresses = addresses;
     }
 
+    public int getAddressCount(){
+        if(addresses != null){
+            return addresses.length;
+        }
+        return -1;
+    }
+
     public void readyEnd() {
         endLatch.countDown();
     }
