@@ -3,7 +3,7 @@ import role.Node;
 
 public class TestFramework {
 
-    public static void loopPing(Node pinger, int loopCount){
+    public static void loopPing(Node pinger, int loopCount) throws InterruptedException {
         long[] results = new long[loopCount];
         for (int i = 0; i < loopCount; i++) {
             long start = System.currentTimeMillis();

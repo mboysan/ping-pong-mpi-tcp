@@ -26,7 +26,7 @@ public class MPIMain {
 
             Logger.info("Starting ping-pong tests...");
 
-            TestFramework.loopPing(pinger, 5);
+            TestFramework.loopPing(pinger, 1000);
 
             Logger.info("Entering end cycle...");
 
