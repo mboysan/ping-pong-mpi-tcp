@@ -13,6 +13,7 @@ import protocol.commands.ping.EndAll_NC;
 import role.Role;
 
 import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
@@ -51,28 +52,29 @@ public class MessageReceiverThread extends Thread {
 
         ServerSocket serverSocket;
         Socket socket = null;
-        ObjectInputStream objectInputStream;
-
-        NetworkCommand message = null;
-
-        TCPAddress addr = (TCPAddress) address;
-
         try {
+            TCPAddress addr = (TCPAddress) address;
             serverSocket = new ServerSocket(addr.getPortNumber());
-
             while (true) {
                 socket = serverSocket.accept();
-                objectInputStream = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-                Object acceptedObject = objectInputStream.readObject();
-                if (acceptedObject != null) {
-                    message = (NetworkCommand) acceptedObject;
-                    if(message instanceof EndAll_NC){
-                        System.out.println("End signal recv: " + message);
-                        Config.getInstance().readyEnd();
-                        break;
+                DataInputStream dIn = new DataInputStream(socket.getInputStream());
+                int length = dIn.readInt(); // read length of incoming message
+                byte[] msg = null;
+                if(length>0) {
+                    msg = new byte[length];
+                    dIn.readFully(msg, 0, msg.length); // read the message
+                }
+                if(msg != null){
+                    NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
+                    if(message != null){
+                        if(message instanceof EndAll_NC){
+                            Logger.info("End signal recv: " + message);
+                            Config.getInstance().readyEnd();
+                            break;
+                        }
+                        this.roleInstance.handleMessage(message);
                     }
                 }
-                this.roleInstance.handleMessage(message);
             }
         } catch (Exception e) {
             Logger.error("Recv err: " + e, e);

@@ -10,6 +10,7 @@ import org.pmw.tinylog.Logger;
 import protocol.CommandMarshaller;
 import protocol.commands.NetworkCommand;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -40,20 +41,37 @@ public class MessageSenderThread extends Thread {
     }
 
     private void runOnTCP() {
-        Socket socket;
-        ObjectOutputStream objectOutputStream = null;
-        NetworkCommand message = this.messageToSend;
-        TCPAddress receiverAddress = (TCPAddress) message.resolveReceiverAddress();
+        Socket socket = null;
+        DataOutputStream dOut = null;
         try {
+            TCPAddress receiverAddress = (TCPAddress) messageToSend.resolveReceiverAddress();
+            byte[] msg = commandMarshaller.marshall(messageToSend, byte[].class);
             socket = new Socket(receiverAddress.getIp(), receiverAddress.getPortNumber());
-            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            objectOutputStream.writeObject(this.messageToSend);
-            objectOutputStream.flush();
-            objectOutputStream.close();
-            socket.close();
+            dOut = new DataOutputStream(socket.getOutputStream());
+
+            dOut.writeInt(msg.length); // write length of the message
+            dOut.write(msg);           // write the message
+            dOut.flush();
         } catch (IOException e) {
-            Logger.error("Send err msg: " + messageToSend + ", " + e, e);
+            Logger.error("Send err, msg: " + messageToSend + ", " + e, e);
+        } finally {
+            if(dOut != null){
+                try {
+                    dOut.close();
+                } catch (IOException e) {
+                    Logger.error("dOut close err, msg: " + messageToSend + ", " + e, e);
+                }
+            }
+            if(socket != null){
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    Logger.error("Socket close err, msg: " + messageToSend + ", " + e, e);
+                }
+            }
         }
+
+
     }
 
     private void runOnMPI() {
@@ -63,7 +81,7 @@ public class MessageSenderThread extends Thread {
             byte[] msg = commandMarshaller.marshall(messageToSend, byte[].class);
             MPI.COMM_WORLD.send(msg, msg.length, MPI.BYTE, receiverAddress.getRank(), tag);
         } catch (MPIException | IOException e) {
-            Logger.error("Send err msg: " + messageToSend + ", " + e, e);
+            Logger.error("Send err, msg: " + messageToSend + ", " + e, e);
         }
     }
 }
