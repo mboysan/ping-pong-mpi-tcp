@@ -58,16 +58,22 @@ public class MessageReceiverThread extends Thread {
             while (true) {
                 socket = serverSocket.accept();
                 DataInputStream dIn = new DataInputStream(socket.getInputStream());
-                String msg = dIn.readUTF();
-
-                NetworkCommand message = commandMarshaller.unmarshall(msg);
-                if(message != null){
-                    if(message instanceof EndAll_NC){
-                        Logger.info("End signal recv: " + message);
-                        Config.getInstance().readyEnd();
-                        break;
+                int length = dIn.readInt(); // read length of incoming message
+                byte[] msg = null;
+                if(length>0) {
+                    msg = new byte[length];
+                    dIn.readFully(msg, 0, msg.length); // read the message
+                }
+                if(msg != null){
+                    NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
+                    if(message != null){
+                        if(message instanceof EndAll_NC){
+                            Logger.info("End signal recv: " + message);
+                            Config.getInstance().readyEnd();
+                            break;
+                        }
+                        this.roleInstance.handleMessage(message);
                     }
-                    this.roleInstance.handleMessage(message);
                 }
             }
         } catch (Exception e) {

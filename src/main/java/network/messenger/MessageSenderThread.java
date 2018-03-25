@@ -45,32 +45,31 @@ public class MessageSenderThread extends Thread {
         DataOutputStream dOut = null;
         try {
             TCPAddress receiverAddress = (TCPAddress) messageToSend.resolveReceiverAddress();
-            String msg = commandMarshaller.marshall(messageToSend, String.class);
-
+            byte[] msg = commandMarshaller.marshall(messageToSend, byte[].class);
             socket = new Socket(receiverAddress.getIp(), receiverAddress.getPortNumber());
             dOut = new DataOutputStream(socket.getOutputStream());
-            dOut.writeUTF(msg); // write the message
+
+            dOut.writeInt(msg.length); // write length of the message
+            dOut.write(msg);           // write the message
             dOut.flush();
         } catch (IOException e) {
-            Logger.error(e, "Send err, msg: " + messageToSend);
+            Logger.error("Send err, msg: " + messageToSend + ", " + e, e);
         } finally {
             if(dOut != null){
                 try {
                     dOut.close();
                 } catch (IOException e) {
-                    Logger.error(e, "dOut close err, msg: " + messageToSend);
+                    Logger.error("dOut close err, msg: " + messageToSend + ", " + e, e);
                 }
             }
             if(socket != null){
                 try {
                     socket.close();
                 } catch (IOException e) {
-                    Logger.error(e, "Socket close err, msg: " + messageToSend);
+                    Logger.error("Socket close err, msg: " + messageToSend + ", " + e, e);
                 }
             }
         }
-
-
     }
 
     private void runOnMPI() {
