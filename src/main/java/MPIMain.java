@@ -13,8 +13,6 @@ public class MPIMain {
         int rank = MPI.COMM_WORLD.getRank();
         int pingerRank = 0;
 
-        System.out.println("MPI init done, rank = " + rank);
-
         Ponger ponger = new Ponger(new MPIAddress(rank));
         ponger.start();
         if(rank == pingerRank){

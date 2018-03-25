@@ -16,7 +16,7 @@ public class TCPMain {
         Pinger pinger = new Pinger(new TCPAddress("127.0.0.1", port++));
         Ponger ponger1 = new Ponger(new TCPAddress("127.0.0.1", port++));
         Ponger ponger2 = new Ponger(new TCPAddress("127.0.0.1", port++));
-        Ender ender = new Ender(new TCPAddress("127.0.0.1", port++));
+        Ender ender = new Ender(new TCPAddress("127.0.0.1", port));
 
         Role[] roles = new Role[]{pinger, ponger1, ponger2, ender};
 
@@ -32,9 +32,10 @@ public class TCPMain {
         }
         pinger.pingAll();
 
-        Thread.sleep(5000);
+        Thread.sleep(2000);
         System.out.println("Entering end cycle...");
         ender.endAll();
+        Thread.sleep(2000);
 
         System.out.println("TCP DONE!");
     }
