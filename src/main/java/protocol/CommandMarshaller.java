@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import protocol.commands.NetworkCommand;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * A simple marshaller used to marshall/unmarshall commands.
@@ -39,7 +40,7 @@ public class CommandMarshaller {
         if(type.isAssignableFrom(String.class)){
             return (T) jsonStr;
         } else if(type.isAssignableFrom(byte[].class)){
-            return (T) jsonStr.getBytes();
+            return (T) jsonStr.getBytes(StandardCharsets.UTF_8);
         } else if(type.isAssignableFrom(char[].class)){
             return (T) jsonStr.toCharArray();
         }

@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 
 public class MessageReceiverThread extends Thread {
@@ -89,9 +90,9 @@ public class MessageReceiverThread extends Thread {
     private void runOnMPI(){
         try {
             while (true){
-                char[] msg= new char[1024];
+                byte[] msg= new byte[1024];
                 MPI.COMM_WORLD.recv(msg, 1024, MPI.BYTE, MPI.ANY_SOURCE, MPI.ANY_TAG);
-                NetworkCommand message = commandMarshaller.unmarshall(new String(msg));
+                NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
                 if(message instanceof EndAll_NC){
                     Logger.info("End signal recv: " + message);
                     Config.getInstance().readyEnd();
