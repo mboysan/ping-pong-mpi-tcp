@@ -67,6 +67,7 @@ public class MessageReceiverThread extends Thread {
                     message = (NetworkCommand) acceptedObject;
                     if(message instanceof EndAll_NC){
                         System.out.println("End signal recv: " + message);
+                        Config.getInstance().readyEnd();
                         break;
                     }
                 }

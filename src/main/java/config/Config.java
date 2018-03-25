@@ -19,7 +19,7 @@ public class Config {
 
     private Address[] addresses;
     private ConnectionProtocol connectionProtocol;
-    private CountDownLatch endLatch = new CountDownLatch(1);
+    private CountDownLatch endLatch;
 
     public static Config getInstance() {
         return ourInstance;
@@ -37,6 +37,7 @@ public class Config {
                 throw new IllegalArgumentException("Address must be of type " + TCPAddress.class.toString());
             }
         }
+        endLatch = new CountDownLatch(addresses.length);
         init(TCP_CONNECTION, addresses);
     }
 
@@ -50,6 +51,7 @@ public class Config {
             addresses[i] = addr;
         }
 
+        endLatch = new CountDownLatch(1);   // only 1 receiver per jvm
         init(MPI_CONNECTION, addresses);
     }
 
@@ -64,10 +66,11 @@ public class Config {
 
     public void end() throws MPIException, InterruptedException {
         endLatch.await(10, TimeUnit.SECONDS);
-        Logger.info("latch awaited!");
         if (connectionProtocol == MPI_CONNECTION) {
             MPI.Finalize();
             Logger.info("MPI finalized!");
+        } else {
+            Logger.info("TCP finalized!");
         }
     }
 

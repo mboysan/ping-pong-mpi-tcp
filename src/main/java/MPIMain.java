@@ -30,11 +30,7 @@ public class MPIMain {
             pinger.endAll();
         }
 
-        try{
-            Config.getInstance().end();
-        }catch (MPIException e){
-            Logger.error("MPI finalizing issue..." + e, e);
-        }
+        Config.getInstance().end();
 
         Logger.info("DONE (MPI).");
     }

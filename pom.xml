@@ -42,7 +42,7 @@
         <repository>
             <id>project-common</id>
             <name>Project Common</name>
-            <url>https://github.com/mboysan/jbizur/raw/repository/</url>
+            <url>https://github.com/mboysan/ping-pong-mpi-tcp/raw/repository/</url>
         </repository>
     </repositories>
 
