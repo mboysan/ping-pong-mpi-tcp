@@ -52,20 +52,20 @@ public class MessageSenderThread extends Thread {
             dOut.writeUTF(msg); // write the message
             dOut.flush();
         } catch (IOException e) {
-            Logger.error("Send err, msg: " + messageToSend + ", " + e, e);
+            Logger.error(e, "Send err, msg: " + messageToSend);
         } finally {
             if(dOut != null){
                 try {
                     dOut.close();
                 } catch (IOException e) {
-                    Logger.error("dOut close err, msg: " + messageToSend + ", " + e, e);
+                    Logger.error(e, "dOut close err, msg: " + messageToSend);
                 }
             }
             if(socket != null){
                 try {
                     socket.close();
                 } catch (IOException e) {
-                    Logger.error("Socket close err, msg: " + messageToSend + ", " + e, e);
+                    Logger.error(e, "Socket close err, msg: " + messageToSend);
                 }
             }
         }
@@ -80,7 +80,7 @@ public class MessageSenderThread extends Thread {
             byte[] msg = commandMarshaller.marshall(messageToSend, byte[].class);
             MPI.COMM_WORLD.send(msg, msg.length, MPI.BYTE, receiverAddress.getRank(), tag);
         } catch (MPIException | IOException e) {
-            Logger.error("Send err, msg: " + messageToSend + ", " + e, e);
+            Logger.error(e, "Send err, msg: " + messageToSend);
         }
     }
 }
