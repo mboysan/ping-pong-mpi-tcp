@@ -14,13 +14,31 @@ import java.util.concurrent.TimeUnit;
 import static network.ConnectionProtocol.MPI_CONNECTION;
 import static network.ConnectionProtocol.TCP_CONNECTION;
 
+/**
+ * Global configuration class.
+ */
 public class Config {
+    /**
+     * Singleton instance
+     */
     private static Config ourInstance = new Config();
 
+    /**
+     * List of addresses of the host processes
+     */
     private Address[] addresses;
+    /**
+     * Connection protocol to use
+     */
     private ConnectionProtocol connectionProtocol;
+    /**
+     * Latch for keeping track of the end cycle.
+     */
     private CountDownLatch endLatch;
 
+    /**
+     * @return singleton instance, i.e. {@link #ourInstance}
+     */
     public static Config getInstance() {
         return ourInstance;
     }
@@ -28,6 +46,10 @@ public class Config {
     private Config() {
     }
 
+    /**
+     * Initializes the system for TCP communication.
+     * @param addresses list of TCP addresses
+     */
     public void initTCP(Address[] addresses) {
         if (addresses == null) {
             throw new IllegalArgumentException("Addresses must not be null");
@@ -41,6 +63,11 @@ public class Config {
         init(TCP_CONNECTION, addresses);
     }
 
+    /**
+     * Initializes the system for MPI communication.
+     * @param args additional arguments for MPI
+     * @throws MPIException if MPI could not be initiated
+     */
     public void initMPI(String[] args) throws MPIException {
         MPI.Init(args);
 
@@ -55,11 +82,18 @@ public class Config {
         init(MPI_CONNECTION, addresses);
     }
 
+    /**
+     * @param connectionProtocol sets {@link #connectionProtocol}
+     * @param addresses          sets {@link #addresses}
+     */
     private void init(ConnectionProtocol connectionProtocol, Address[] addresses) {
         this.connectionProtocol = connectionProtocol;
         this.addresses = addresses;
     }
 
+    /**
+     * @return the length of the {@link #addresses} array.
+     */
     public int getAddressCount(){
         if(addresses != null){
             return addresses.length;
@@ -67,10 +101,18 @@ public class Config {
         return -1;
     }
 
+    /**
+     * Signal the end cycle.
+     */
     public void readyEnd() {
         endLatch.countDown();
     }
 
+    /**
+     * Ends everything.
+     * @throws MPIException if MPI could not be finalized
+     * @throws InterruptedException in case operations on {@link #endLatch} fails.
+     */
     public void end() throws MPIException, InterruptedException {
         endLatch.await(1, TimeUnit.MINUTES);
         if (connectionProtocol == MPI_CONNECTION) {
@@ -81,10 +123,16 @@ public class Config {
         }
     }
 
+    /**
+     * @return gets {@link #addresses}
+     */
     public Address[] getAddresses() {
         return addresses;
     }
 
+    /**
+     * @return gets {@link #connectionProtocol}
+     */
     public ConnectionProtocol getConnectionProtocol() {
         return connectionProtocol;
     }

@@ -2,6 +2,9 @@ package protocol.commands.ping;
 
 import protocol.commands.NetworkCommand;
 
+/**
+ * Ping message.
+ */
 public class Ping_NC extends NetworkCommand {
 
     @Override

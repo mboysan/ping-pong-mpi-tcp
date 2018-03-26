@@ -4,7 +4,7 @@ import config.Config;
 import network.address.Address;
 import org.pmw.tinylog.Logger;
 import protocol.commands.NetworkCommand;
-import protocol.commands.ping.EndAll_NC;
+import protocol.commands.ping.SignalEnd_NC;
 import protocol.commands.ping.Ping_NC;
 import protocol.commands.ping.Pong_NC;
 
@@ -43,10 +43,10 @@ public class Node extends Role {
 
     public void endAll() {
         for (Address receiverAddress : Config.getInstance().getAddresses()) {
-            NetworkCommand ping = new EndAll_NC()
+            NetworkCommand signalEnd = new SignalEnd_NC()
                     .setReceiverAddress(receiverAddress)
                     .setSenderAddress(getMyAddress());
-            sendMessage(ping);
+            sendMessage(signalEnd);
         }
     }
 

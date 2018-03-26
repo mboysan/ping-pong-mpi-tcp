@@ -8,6 +8,9 @@ import config.LoggerConfig;
 
 import java.io.IOException;
 
+/**
+ * Ping-Pong test for TCP
+ */
 public class TCPMain {
 
     public static void main(String[] args) throws IOException, InterruptedException, MPIException {
@@ -19,6 +22,7 @@ public class TCPMain {
             totalNodes = Integer.parseInt(args[0]);
         }
 
+        /* Start pongers and pinger, assign addresses */
         Role[] roles = new Role[totalNodes];
         Address[] addresses = new Address[roles.length];
         int port = 8080;
@@ -42,7 +46,7 @@ public class TCPMain {
 
         Logger.info("Starting ping-pong tests...");
         
-        TestFramework.loopPing(pinger, 1000);
+        TestFramework.loopPing(pinger, 100);
 
         Logger.info("Entering end cycle...");
 

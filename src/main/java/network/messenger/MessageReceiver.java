@@ -7,7 +7,7 @@ import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 import protocol.CommandMarshaller;
 import protocol.commands.NetworkCommand;
-import protocol.commands.ping.EndAll_NC;
+import protocol.commands.ping.SignalEnd_NC;
 import role.Role;
 
 import java.io.DataInputStream;
@@ -15,13 +15,29 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-
+/**
+ * The message receiver wrapper for the communication protocols defined in {@link network.ConnectionProtocol}.
+ */
 public class MessageReceiver {
 
+    /**
+     * The address to receive message from.
+     */
     private final Address address;
+    /**
+     * The {@link Role} to send the received message for processing.
+     */
     private final Role roleInstance;
+    /**
+     * Command marshaller to unmarshall the received message.
+     */
     private final CommandMarshaller commandMarshaller;
 
+    /**
+     * Initializes the message receiver. It then creates the appropriate handler to handle the received message.
+     * @param address      sets {@link #address}
+     * @param roleInstance sets {@link #roleInstance}
+     */
     public MessageReceiver(Address address, Role roleInstance) {
         this.address = address;
         this.roleInstance = roleInstance;
@@ -37,12 +53,18 @@ public class MessageReceiver {
         }
     }
 
+    /**
+     * TCP recv handler
+     */
     private class TCPReceiver extends Thread {
         @Override
         public void run() {
             runOnTCP();
         }
 
+        /**
+         * Recv message with TCP
+         */
         private void runOnTCP() {
             ServerSocket serverSocket;
             Socket socket = null;
@@ -61,7 +83,7 @@ public class MessageReceiver {
                     if(msg != null){
                         NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
                         if(message != null){
-                            if(message instanceof EndAll_NC){
+                            if(message instanceof SignalEnd_NC){
                                 Logger.debug("End signal recv: " + message);
                                 Config.getInstance().readyEnd();
                                 break;
@@ -84,12 +106,18 @@ public class MessageReceiver {
         }
     }
 
+    /**
+     * MPI recv handler
+     */
     private class MPIReceiver extends Thread {
         @Override
         public void run() {
             runOnMPI();
         }
 
+        /**
+         * Recv message with MPI
+         */
         private void runOnMPI(){
             try {
                 while (true){
@@ -100,7 +128,7 @@ public class MessageReceiver {
                     MPI.COMM_WORLD.recv(msg, msg.length, MPI.BYTE, MPI.ANY_SOURCE, MPI.ANY_TAG);
 
                     NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
-                    if(message instanceof EndAll_NC){
+                    if(message instanceof SignalEnd_NC){
                         Logger.debug("End signal recv: " + message);
                         Config.getInstance().readyEnd();
                         break;

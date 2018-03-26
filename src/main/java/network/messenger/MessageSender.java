@@ -15,11 +15,24 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
+/**
+ * The message sender wrapper for the communication protocols defined in {@link network.ConnectionProtocol}.
+ */
 public class MessageSender {
 
+    /**
+     * Message to send
+     */
     private final NetworkCommand messageToSend;
+    /**
+     * The marshaller to marshall the command to send.
+     */
     private final CommandMarshaller commandMarshaller;
 
+    /**
+     * Initializes the message sender. It then creates the appropriate handler to send the message.
+     * @param message the command to send
+     */
     public MessageSender(NetworkCommand message) {
         this.messageToSend = message;
         this.commandMarshaller = new CommandMarshaller();
@@ -34,12 +47,18 @@ public class MessageSender {
         }
     }
 
+    /**
+     * TCP send handler
+     */
     private class TCPSender extends Thread {
         @Override
         public void run() {
             runOnTCP();
         }
 
+        /**
+         * Send message with TCP
+         */
         private void runOnTCP() {
             Socket socket = null;
             DataOutputStream dOut = null;
@@ -73,6 +92,9 @@ public class MessageSender {
         }
     }
 
+    /**
+     * MPI send handler
+     */
     private class MPISender {
 
         private void start(){
@@ -85,6 +107,10 @@ public class MessageSender {
 //            runOnMPISync();
         }
 
+        /**
+         * Send message with MPI. Uses <tt>MPI.COMM_WORLD.iSend()</tt> to send the message in an async manner.
+         * Basically, sends the message and forgets.
+         */
         private void runOnMPIAsync() {
             try {
                 MPIAddress receiverAddress = (MPIAddress) messageToSend.resolveReceiverAddress();
@@ -102,6 +128,9 @@ public class MessageSender {
             }
         }
 
+        /**
+         * Send message with MPI. Uses <tt>MPI.COMM_WORLD.send()</tt> to send the message in a synced manner.
+         */
         private void runOnMPISync(){
             try {
                 MPIAddress receiverAddress = (MPIAddress) messageToSend.resolveReceiverAddress();

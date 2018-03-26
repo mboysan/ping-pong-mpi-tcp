@@ -3,11 +3,18 @@ package config;
 import org.pmw.tinylog.Configurator;
 import org.pmw.tinylog.Level;
 
+/**
+ * Configures the logging interface
+ */
 public class LoggerConfig {
     static {
         configRefined(Level.DEBUG);
     }
 
+    /**
+     * For a more refined output.
+     * @param level log level
+     */
     private static void configRefined(Level level){
         Configurator.currentConfig()
                 .formatPattern("{date:HH:mm:ss:SSS} {class}.{method}(): {message}")
@@ -15,6 +22,10 @@ public class LoggerConfig {
                 .activate();
     }
 
+    /**
+     * For a more detailed output.
+     * @param level log level
+     */
     private static void configDetailed(Level level){
         Configurator.currentConfig()
                 .formatPattern("{date:HH:mm:ss:SSS} [{level}] {thread}-{class}.{method}(): {message}")
