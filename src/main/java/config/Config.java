@@ -8,6 +8,10 @@ import network.address.MPIAddress;
 import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -26,7 +30,7 @@ public class Config {
     /**
      * List of addresses of the host processes
      */
-    private Address[] addresses;
+    private Set<Address> addresses = Collections.newSetFromMap(new ConcurrentHashMap<>());
     /**
      * Connection protocol to use
      */
@@ -88,7 +92,9 @@ public class Config {
      */
     private void init(ConnectionProtocol connectionProtocol, Address[] addresses) {
         this.connectionProtocol = connectionProtocol;
-        this.addresses = addresses;
+        for (Address address : addresses) {
+            registerAddress(address);
+        }
     }
 
     /**
@@ -96,7 +102,7 @@ public class Config {
      */
     public int getAddressCount(){
         if(addresses != null){
-            return addresses.length;
+            return addresses.size();
         }
         return -1;
     }
@@ -126,8 +132,24 @@ public class Config {
     /**
      * @return gets {@link #addresses}
      */
-    public Address[] getAddresses() {
+    public Set<Address> getAddresses() {
         return addresses;
+    }
+
+    /**
+     * Registers a given address to the {@link #addresses} collection. Used when a new node is joined.
+     * @param address the address to add to {@link #addresses}.
+     */
+    public void registerAddress(Address address){
+        addresses.add(address);
+    }
+
+    /**
+     * Unregisters a given address from the {@link #addresses} collection. Used when an existing node is removed.
+     * @param address the address to remove.
+     */
+    public void unregisterAddress(Address address){
+        addresses.remove(address);
     }
 
     /**
