@@ -68,8 +68,8 @@ public class MessageSender {
                 socket = new Socket(receiverAddress.getIp(), receiverAddress.getPortNumber());
                 dOut = new DataOutputStream(socket.getOutputStream());
 
-                dOut.writeInt(msg.length); // write length of the message
-                dOut.write(msg);           // write the message
+//                dOut.writeInt(msg.length); // write length of the message
+                dOut.write(msg);    // write the message
                 dOut.flush();
             } catch (IOException e) {
                 Logger.error("Send err, msg: " + messageToSend + ", " + e, e);

@@ -74,12 +74,16 @@ public class MessageReceiver {
                 while (true) {
                     socket = serverSocket.accept();
                     DataInputStream dIn = new DataInputStream(socket.getInputStream());
+                    /* following commented code reads length first
                     int length = dIn.readInt(); // read length of incoming message
                     byte[] msg = null;
                     if(length>0) {
                         msg = new byte[length];
                         dIn.readFully(msg, 0, msg.length); // read the message
                     }
+                    */
+                    byte[] msg = new byte[1024];    //fixed size byte[]
+                    dIn.read(msg);
                     if(msg != null){
                         NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
                         if(message != null){
