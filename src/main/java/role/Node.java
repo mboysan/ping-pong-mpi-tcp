@@ -1,6 +1,6 @@
 package role;
 
-import config.Config;
+import config.GlobalConfig;
 import network.address.Address;
 import org.pmw.tinylog.Logger;
 import protocol.commands.NetworkCommand;
@@ -45,7 +45,7 @@ public class Node extends Role {
      */
     public void pingAll() {
         //TODO: synchronize addresses? But it will be too slow. Some other method of address looping might be needed.
-        for (Address receiverAddress : Config.getInstance().getAddresses()) {
+        for (Address receiverAddress : GlobalConfig.getInstance().getAddresses()) {
             NetworkCommand ping = new Ping_NC()
                     .setReceiverAddress(receiverAddress)
                     .setSenderAddress(getMyAddress());
@@ -68,7 +68,7 @@ public class Node extends Role {
      * Sends {@link SignalEnd_NC} command to all the processes.
      */
     public void endAll() {
-        for (Address receiverAddress : Config.getInstance().getAddresses()) {
+        for (Address receiverAddress : GlobalConfig.getInstance().getAddresses()) {
             NetworkCommand signalEnd = new SignalEnd_NC()
                     .setReceiverAddress(receiverAddress)
                     .setSenderAddress(getMyAddress());
@@ -83,7 +83,7 @@ public class Node extends Role {
         if(pongLatch != null){
             try {
                 pongLatch.await();
-                pongLatch = new CountDownLatch(Config.getInstance().getAddressCount());
+                pongLatch = new CountDownLatch(GlobalConfig.getInstance().getAddressCount());
             } catch (InterruptedException e) {
                 Logger.error(e);
             }

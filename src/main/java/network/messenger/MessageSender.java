@@ -1,6 +1,6 @@
 package network.messenger;
 
-import config.Config;
+import config.GlobalConfig;
 import mpi.MPI;
 import mpi.MPIException;
 import network.address.MPIAddress;
@@ -37,7 +37,7 @@ public class MessageSender {
         this.messageToSend = message;
         this.commandMarshaller = new CommandMarshaller();
 
-        switch (Config.getInstance().getConnectionProtocol()) {
+        switch (GlobalConfig.getInstance().getConnectionProtocol()) {
             case TCP_CONNECTION:
                 new TCPSender().start();    // starts thread and calls run() method
                 break;
@@ -103,8 +103,8 @@ public class MessageSender {
 //
 //        @Override
         public void run(){
-            runOnMPIAsync();
-//            runOnMPISync();
+//            runOnMPIAsync();
+            runOnMPISync();
         }
 
         /**

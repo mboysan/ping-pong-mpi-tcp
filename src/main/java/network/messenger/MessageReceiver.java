@@ -1,6 +1,6 @@
 package network.messenger;
 
-import config.Config;
+import config.GlobalConfig;
 import mpi.MPI;
 import network.address.Address;
 import network.address.TCPAddress;
@@ -43,7 +43,7 @@ public class MessageReceiver {
         this.roleInstance = roleInstance;
         this.commandMarshaller = new CommandMarshaller();
 
-        switch (Config.getInstance().getConnectionProtocol()) {
+        switch (GlobalConfig.getInstance().getConnectionProtocol()) {
             case TCP_CONNECTION:
                 new TCPReceiver().start();
                 break;
@@ -85,7 +85,7 @@ public class MessageReceiver {
                         if(message != null){
                             if(message instanceof SignalEnd_NC){
                                 Logger.debug("End signal recv: " + message);
-                                Config.getInstance().readyEnd();
+                                GlobalConfig.getInstance().readyEnd();
                                 break;
                             }
                             roleInstance.handleMessage(message);
@@ -130,7 +130,7 @@ public class MessageReceiver {
                     NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
                     if(message instanceof SignalEnd_NC){
                         Logger.debug("End signal recv: " + message);
-                        Config.getInstance().readyEnd();
+                        GlobalConfig.getInstance().readyEnd();
                         break;
                     }
                     roleInstance.handleMessage(message);

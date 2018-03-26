@@ -1,4 +1,4 @@
-import config.Config;
+import config.GlobalConfig;
 import mpi.MPI;
 import mpi.MPIException;
 import network.address.MPIAddress;
@@ -10,34 +10,28 @@ import config.LoggerConfig;
  * Ping-Pong test for MPI
  */
 public class MPIMain {
+
     public static void main(String[] args) throws MPIException, InterruptedException {
-        new LoggerConfig();
-        Logger.info("INIT (MPI).");
-        Config.getInstance().initMPI(args);
+        GlobalConfig.getInstance().initMPI(args);
 
         int rank = MPI.COMM_WORLD.getRank();
-        int pingerRank = 0; // pinger process will be the one with rank = 0
 
-        if(rank != pingerRank){
+        Logger.info("MPI INIT - rank:" + rank);
+
+        if(rank != 0){ // pinger process will be the one with rank = 0, others will be pongers
             Node ponger = new Node(new MPIAddress(rank));
-            ponger.start();
         } else {
-            Node pinger = new Node(new MPIAddress(rank), Config.getInstance().getAddressCount());
-            pinger.start();
+            Node pinger = new Node(new MPIAddress(rank), GlobalConfig.getInstance().getAddressCount());
 
-            Thread.sleep(1000); // let all nodes start
+            /* start tests */
+            TestFramework.initTests(pinger);
 
-            Logger.info("Starting ping-pong tests...");
-
-            TestFramework.loopPing(pinger, 100);
-
-            Logger.info("Entering end cycle...");
-
+            /* send end signal to all nodes */
             pinger.endAll();
         }
 
-        Config.getInstance().end();
+        GlobalConfig.getInstance().end();
 
-        Logger.info("DONE (MPI).");
+        Logger.info("MPI END - rank:" + rank);
     }
 }

@@ -6,6 +6,14 @@ import role.Node;
  */
 public class TestFramework {
 
+    public static void initTests(Node pinger){
+        Logger.info("Starting ping-pong tests...");
+
+        loopPing(pinger, 100);
+
+        Logger.info("Tests are done!");
+    }
+
     /**
      * Starts sending ping requests, and when all the pongs are received the results are recorded.
      * This is repeated <tt>loopCount</tt> times and the average latency is recorded.

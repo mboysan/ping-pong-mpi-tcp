@@ -7,8 +7,8 @@ import network.address.Address;
 import network.address.MPIAddress;
 import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
+import role.Role;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,16 +21,20 @@ import static network.ConnectionProtocol.TCP_CONNECTION;
 /**
  * Global configuration class.
  */
-public class Config {
+public class GlobalConfig {
+    static {
+        LoggerConfig.configureLogger();
+    }
+
     /**
      * Singleton instance
      */
-    private static Config ourInstance = new Config();
+    private static GlobalConfig ourInstance = new GlobalConfig();
 
     /**
      * List of addresses of the host processes
      */
-    private Set<Address> addresses = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private Set<Address> addresses;
     /**
      * Connection protocol to use
      */
@@ -43,32 +47,24 @@ public class Config {
     /**
      * @return singleton instance, i.e. {@link #ourInstance}
      */
-    public static Config getInstance() {
+    public static GlobalConfig getInstance() {
         return ourInstance;
     }
 
-    private Config() {
+    private GlobalConfig() {
+        addresses = Collections.newSetFromMap(new ConcurrentHashMap<>());
     }
 
     /**
      * Initializes the system for TCP communication.
-     * @param addresses list of TCP addresses
      */
-    public void initTCP(Address[] addresses) {
-        if (addresses == null) {
-            throw new IllegalArgumentException("Addresses must not be null");
-        }
-        for (Address address : addresses) {
-            if (!(address instanceof TCPAddress)) {
-                throw new IllegalArgumentException("Address must be of type " + TCPAddress.class.toString());
-            }
-        }
-        endLatch = new CountDownLatch(addresses.length);
-        init(TCP_CONNECTION, addresses);
+    public void initTCP() {
+        init(TCP_CONNECTION);
     }
 
     /**
-     * Initializes the system for MPI communication.
+     * Initializes the system for MPI communication. The MPI addresses of the processes are registered
+     * as a side effect.
      * @param args additional arguments for MPI
      * @throws MPIException if MPI could not be initiated
      */
@@ -76,35 +72,55 @@ public class Config {
         MPI.Init(args);
 
         int size = MPI.COMM_WORLD.getSize();
-        Address[] addresses = new Address[size];
         for (int i = 0; i < size; i++) {
-            Address addr = new MPIAddress(i);
-            addresses[i] = addr;
+            addresses.add(new MPIAddress(i));
         }
 
-        endLatch = new CountDownLatch(1);   // only 1 receiver per jvm
-        init(MPI_CONNECTION, addresses);
+        resetEndLatch(1);   // only 1 receiver per jvm
+        init(MPI_CONNECTION);
     }
 
     /**
      * @param connectionProtocol sets {@link #connectionProtocol}
-     * @param addresses          sets {@link #addresses}
      */
-    private void init(ConnectionProtocol connectionProtocol, Address[] addresses) {
+    private void init(ConnectionProtocol connectionProtocol) {
         this.connectionProtocol = connectionProtocol;
-        for (Address address : addresses) {
-            registerAddress(address);
+    }
+
+    /**
+     * Registers a {@link Role} by taking it's address and adding it to the {@link #addresses} collection.
+     * Used when a new node is joined.
+     * If the {@link #connectionProtocol} &eq; {@link ConnectionProtocol#TCP_CONNECTION} resets the {@link #endLatch}.
+     * @param role the role to register.
+     */
+    public void registerRole(Role role){
+        //TODO: a more affective way of handling MPI node registering.
+        if(connectionProtocol == TCP_CONNECTION){
+            addresses.add(role.getMyAddress());
+            resetEndLatch(getAddressCount());
         }
     }
 
     /**
-     * @return the length of the {@link #addresses} array.
+     * Unregisters a {@link Role} by taking it's address and removing it from the {@link #addresses} collection.
+     * Used when an existing node leaves.
+     * If the {@link #connectionProtocol} &eq; {@link ConnectionProtocol#TCP_CONNECTION} resets the {@link #endLatch}.
+     * @param role the role to register.
      */
-    public int getAddressCount(){
-        if(addresses != null){
-            return addresses.size();
+    public void unregisterRole(Role role){
+        //TODO: a more affective way of handling MPI node unregistering.
+        if(connectionProtocol == TCP_CONNECTION){
+            addresses.remove(role.getMyAddress());
+            resetEndLatch(getAddressCount());
         }
-        return -1;
+    }
+
+    /**
+     * Resets the {@link #endLatch} with the given <tt>count</tt>.
+     * @param count the count of the existing processes to wait for,
+     */
+    private synchronized void resetEndLatch(int count){
+        endLatch = new CountDownLatch(count);
     }
 
     /**
@@ -137,19 +153,10 @@ public class Config {
     }
 
     /**
-     * Registers a given address to the {@link #addresses} collection. Used when a new node is joined.
-     * @param address the address to add to {@link #addresses}.
+     * @return the length of the {@link #addresses} array.
      */
-    public void registerAddress(Address address){
-        addresses.add(address);
-    }
-
-    /**
-     * Unregisters a given address from the {@link #addresses} collection. Used when an existing node is removed.
-     * @param address the address to remove.
-     */
-    public void unregisterAddress(Address address){
-        addresses.remove(address);
+    public int getAddressCount(){
+        return addresses.size();
     }
 
     /**

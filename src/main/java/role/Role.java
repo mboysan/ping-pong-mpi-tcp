@@ -1,5 +1,6 @@
 package role;
 
+import config.GlobalConfig;
 import network.address.Address;
 import protocol.commands.NetworkCommand;
 import network.messenger.MessageReceiver;
@@ -16,17 +17,19 @@ public abstract class Role {
     private final Address myAddress;
 
     /**
-     * Starts the role. Basically starts the message receiver service.
-     */
-    public void start() {
-        new MessageReceiver(myAddress, this);
-    }
-
-    /**
      * @param myAddress see {@link #myAddress}
      */
     Role(Address myAddress) {
         this.myAddress = myAddress;
+        GlobalConfig.getInstance().registerRole(this);
+        start();
+    }
+
+    /**
+     * Starts the role. Basically starts the message receiver service.
+     */
+    private void start() {
+        new MessageReceiver(myAddress, this);
     }
 
     /**
@@ -46,7 +49,7 @@ public abstract class Role {
      * Sends the network message to another process. Basically passes the message to the message sender service.
      * @param message the network message to send.
      */
-    public void sendMessage(NetworkCommand message) {
+    protected void sendMessage(NetworkCommand message) {
         new MessageSender(message);
     }
 

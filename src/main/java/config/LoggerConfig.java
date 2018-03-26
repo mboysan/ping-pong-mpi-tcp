@@ -7,8 +7,8 @@ import org.pmw.tinylog.Level;
  * Configures the logging interface
  */
 public class LoggerConfig {
-    static {
-        configRefined(Level.DEBUG);
+    public static void configureLogger(){
+        configRefined(Level.INFO);
     }
 
     /**
