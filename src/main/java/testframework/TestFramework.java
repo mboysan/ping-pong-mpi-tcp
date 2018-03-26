@@ -21,8 +21,8 @@ public class TestFramework {
     public void initTests(){
         Logger.info("Starting ping-pong tests...");
 
-        resultCollector.addResult(ResultCollector.PHASE_WARMUP, loopPing(pinger, 100));
-        resultCollector.addResult(ResultCollector.PHASE_FULL_LOAD, loopPing(pinger, 1000));
+        resultCollector.addResult(ResultCollector.PHASE_WARMUP, loopPing(pinger, 10));
+        resultCollector.addResult(ResultCollector.PHASE_FULL_LOAD, loopPing(pinger, 100));
 
         Logger.info("Tests are done!");
     }

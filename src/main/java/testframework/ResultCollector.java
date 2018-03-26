@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ResultCollector {
-    static final String PHASE_WARMUP = "Warmup";
-    static final String PHASE_FULL_LOAD = "Full Load";
+    static final String PHASE_WARMUP = "warmup";
+    static final String PHASE_FULL_LOAD = "full-load";
 
     private final Map<String, List<IResult>> resultsMap;
 
@@ -33,7 +33,7 @@ public class ResultCollector {
         } else {
             List<IResult> results = resultsMap.get(phase);
             for (IResult result : results) {
-                System.out.print(result.printlnCSV());
+                System.out.print(result.printlnCSV(phase));
             }
         }
     }

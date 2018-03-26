@@ -45,7 +45,7 @@ public class LatencyResult implements IResult {
     }
 
     @Override
-    public String printlnCSV() {
-        return String.format("%d,%d,%d\r\n", numberOfProcesses, averageLatency, resultsTotal);
+    public String printlnCSV(String phase) {
+        return String.format("%d,%d,%d,%s\r\n", numberOfProcesses, averageLatency, resultsTotal, phase);
     }
 }
