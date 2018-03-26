@@ -1,10 +1,9 @@
 import config.GlobalConfig;
 import mpi.MPIException;
-import network.address.Address;
 import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 import role.*;
-import config.LoggerConfig;
+import testframework.TestFramework;
 
 import java.io.IOException;
 
@@ -31,7 +30,8 @@ public class TCPMain {
         Node pinger = new Node(new TCPAddress("127.0.0.1", port++), totalNodes);
 
         /* start tests */
-        TestFramework.initTests(pinger);
+        TestFramework testFramework = new TestFramework(pinger, totalNodes);
+        testFramework.initTests();
 
         /* send end signal to all nodes */
         pinger.endAll();
@@ -39,5 +39,7 @@ public class TCPMain {
         GlobalConfig.getInstance().end();
 
         Logger.info("TCP END");
+
+        testFramework.printOnConsole(null);
     }
 }

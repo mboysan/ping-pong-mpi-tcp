@@ -1,3 +1,5 @@
+package testframework;
+
 import org.pmw.tinylog.Logger;
 import role.Node;
 
@@ -6,12 +8,27 @@ import role.Node;
  */
 public class TestFramework {
 
-    public static void initTests(Node pinger){
+    private final Node pinger;
+    private final int totalProcesses;
+    private final ResultCollector resultCollector;
+
+    public TestFramework(Node pinger, int totalProcesses) {
+        this.pinger = pinger;
+        this.totalProcesses = totalProcesses;
+        this.resultCollector = new ResultCollector();
+    }
+
+    public void initTests(){
         Logger.info("Starting ping-pong tests...");
 
-        loopPing(pinger, 100);
+        resultCollector.addResult(ResultCollector.PHASE_WARMUP, loopPing(pinger, 100));
+        resultCollector.addResult(ResultCollector.PHASE_FULL_LOAD, loopPing(pinger, 1000));
 
         Logger.info("Tests are done!");
+    }
+
+    public void printOnConsole(String phase){
+        resultCollector.printOnConsole(phase);
     }
 
     /**
@@ -21,7 +38,7 @@ public class TestFramework {
      * @param pinger    pinger instance
      * @param loopCount number of times to send ping-pong requests
      */
-    public static void loopPing(Node pinger, int loopCount) {
+    public LatencyResult loopPing(Node pinger, int loopCount) {
         long[] results = new long[loopCount];
         for (int i = 0; i < loopCount; i++) {
             long start = System.currentTimeMillis();
@@ -30,21 +47,6 @@ public class TestFramework {
             long end = System.currentTimeMillis() - start;
             results[i] = end;
         }
-        long avgLatency = calcAverage(results);
-        Logger.info("loopCount= " + loopCount + ", avg latency (ms): " + avgLatency);
+        return new LatencyResult(totalProcesses, results);
     }
-
-    /**
-     * Calculates average latency with the given results.
-     * @param results collection of latency results.
-     * @return average latency from the collected results.
-     */
-    public static long calcAverage(long[] results){
-        long avg = 0;
-        for (long result : results) {
-            avg += result;
-        }
-        return avg / results.length;
-    }
-
 }
