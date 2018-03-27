@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ResultCollector {
-    static final String PHASE_WARMUP = "warmup";
-    static final String PHASE_FULL_LOAD = "full-load";
+    public static final String PHASE_WARMUP = "warmup";
+    public static final String PHASE_FULL_LOAD = "full-load";
 
     private final Map<String, List<IResult>> resultsMap;
 

@@ -6,6 +6,8 @@ import org.pmw.tinylog.Logger;
 import role.Node;
 import testframework.TestFramework;
 
+import static testframework.ResultCollector.PHASE_FULL_LOAD;
+
 /**
  * Ping-Pong test for MPI
  */
@@ -22,12 +24,11 @@ public class MPIMain {
         if(rank != 0){ // pinger process will be the one with rank = 0, others will be pongers
             Node ponger = new Node(new MPIAddress(rank));
         } else {
-            int totalProcesses = GlobalConfig.getInstance().getAddressCount();
+            int totalProcesses = GlobalConfig.getInstance().getProcessCount();
             Node pinger = new Node(new MPIAddress(rank), totalProcesses);
 
             /* start tests */
-            testFramework = new TestFramework(pinger, totalProcesses);
-            testFramework.initTests();
+            testFramework = new TestFramework(pinger, totalProcesses).initTests();
 
             /* send end signal to all nodes */
             pinger.endAll();
@@ -37,7 +38,7 @@ public class MPIMain {
 
         Logger.info("MPI END - rank:" + rank);
         if(testFramework != null){
-            testFramework.printOnConsole(null);
+            testFramework.printOnConsole(PHASE_FULL_LOAD);
         }
     }
 }

@@ -3,11 +3,11 @@
 # build java application
 mvn clean install
 
-# go to target and run TCPMain class
+# copy tcp multi jvm script, TCPProcess will run this script to run each process in a separate JVM.
+cp -avr ./tcp_multi_jvm.sh ./target/tcp_multi_jvm.sh
+
+# go to target
 cd ./target
-loopCount=10
-for i in {1..$loopCount}
-do
-    count=$((i * 10))
-    java -cp *jar-with-dependencies.jar TCPMain $count
-done
+
+processCount=3
+java -cp *jar-with-dependencies.jar TCPProcess $processCount

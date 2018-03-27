@@ -9,11 +9,15 @@ import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 import role.Role;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static network.ConnectionProtocol.MPI_CONNECTION;
 import static network.ConnectionProtocol.TCP_CONNECTION;
@@ -30,6 +34,10 @@ public class GlobalConfig {
      * Singleton instance
      */
     private static GlobalConfig ourInstance = new GlobalConfig();
+
+    private boolean isSingleJVM;
+
+    private int processCount;
 
     /**
      * List of addresses of the host processes
@@ -52,14 +60,14 @@ public class GlobalConfig {
     }
 
     private GlobalConfig() {
-        addresses = Collections.newSetFromMap(new ConcurrentHashMap<>());
+        this.addresses = Collections.newSetFromMap(new ConcurrentHashMap<>());
     }
 
     /**
      * Initializes the system for TCP communication.
      */
-    public void initTCP() {
-        init(TCP_CONNECTION);
+    public void initTCP(boolean isSingleJVM, int processCount) {
+        init(TCP_CONNECTION, isSingleJVM, processCount);
     }
 
     /**
@@ -71,20 +79,17 @@ public class GlobalConfig {
     public void initMPI(String[] args) throws MPIException {
         MPI.Init(args);
 
-        int size = MPI.COMM_WORLD.getSize();
-        for (int i = 0; i < size; i++) {
-            addresses.add(new MPIAddress(i));
-        }
-
         resetEndLatch(1);   // only 1 receiver per jvm
-        init(MPI_CONNECTION);
+        init(MPI_CONNECTION, true, MPI.COMM_WORLD.getSize());
     }
 
     /**
      * @param connectionProtocol sets {@link #connectionProtocol}
      */
-    private void init(ConnectionProtocol connectionProtocol) {
+    private void init(ConnectionProtocol connectionProtocol, boolean isSingleJVM, int processCount) {
         this.connectionProtocol = connectionProtocol;
+        this.isSingleJVM = isSingleJVM;
+        this.processCount = processCount;
     }
 
     /**
@@ -94,25 +99,35 @@ public class GlobalConfig {
      * @param role the role to register.
      */
     public void registerRole(Role role){
-        //TODO: a more affective way of handling MPI node registering.
-        if(connectionProtocol == TCP_CONNECTION){
-            addresses.add(role.getMyAddress());
-            resetEndLatch(getAddressCount());
+        //TODO: a more affective way of handling node registering.
+        Address roleAddress = role.getMyAddress();
+        if (connectionProtocol == TCP_CONNECTION){
+            if(isSingleJVM) {
+                addresses.add(roleAddress);
+                resetEndLatch(getProcessCount());
+            } else {
+                /* if not running on the same JVM, then this method is called once, and all the other address
+                   need to be added. */
+                String ip = "127.0.0.1";
+                int port = 8080;
+                for (int i = 0; i < processCount; i++) {
+                    try {
+                        TCPAddress address = new TCPAddress(ip, port + i);
+                        addresses.add(address);
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    }
+                }
+                resetEndLatch(1);
+            }
+        } else if(connectionProtocol == MPI_CONNECTION){
+            for (int i = 0; i < processCount; i++) {
+                addresses.add(new MPIAddress(i));
+            }
+            resetEndLatch(1);
         }
-    }
 
-    /**
-     * Unregisters a {@link Role} by taking it's address and removing it from the {@link #addresses} collection.
-     * Used when an existing node leaves.
-     * If the {@link #connectionProtocol} &eq; {@link ConnectionProtocol#TCP_CONNECTION} resets the {@link #endLatch}.
-     * @param role the role to register.
-     */
-    public void unregisterRole(Role role){
-        //TODO: a more affective way of handling MPI node unregistering.
-        if(connectionProtocol == TCP_CONNECTION){
-            addresses.remove(role.getMyAddress());
-            resetEndLatch(getAddressCount());
-        }
+        Logger.debug("Role registered, addresses: " + addressesToString());
     }
 
     /**
@@ -155,8 +170,8 @@ public class GlobalConfig {
     /**
      * @return the length of the {@link #addresses} array.
      */
-    public int getAddressCount(){
-        return addresses.size();
+    public int getProcessCount(){
+        return processCount;
     }
 
     /**
@@ -164,5 +179,15 @@ public class GlobalConfig {
      */
     public ConnectionProtocol getConnectionProtocol() {
         return connectionProtocol;
+    }
+
+    private String addressesToString(){
+        String[] arr = new String[getAddresses().size()];
+        int idx = 0;
+        for (Address address : getAddresses()) {
+            arr[idx] = address.toString();
+            idx++;
+        }
+        return Arrays.toString(arr);
     }
 }

@@ -83,7 +83,7 @@ public class Node extends Role {
         if(pongLatch != null){
             try {
                 pongLatch.await();
-                pongLatch = new CountDownLatch(GlobalConfig.getInstance().getAddressCount());
+                pongLatch = new CountDownLatch(GlobalConfig.getInstance().getProcessCount());
             } catch (InterruptedException e) {
                 Logger.error(e);
             }
