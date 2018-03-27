@@ -15,7 +15,7 @@ public class TestFramework {
     public TestFramework(Node pinger, int totalProcesses) {
         this.pinger = pinger;
         this.totalProcesses = totalProcesses;
-        this.resultCollector = new ResultCollector();
+        this.resultCollector = ResultCollector.getInstance();
     }
 
     public TestFramework initTests(){
@@ -39,7 +39,7 @@ public class TestFramework {
      * @param pinger    pinger instance
      * @param loopCount number of times to send ping-pong requests
      */
-    public LatencyResult loopPing(Node pinger, int loopCount) {
+    public OverallLatencyResult loopPing(Node pinger, int loopCount) {
         long[] results = new long[loopCount];
         for (int i = 0; i < loopCount; i++) {
             long start = System.currentTimeMillis();
@@ -48,6 +48,6 @@ public class TestFramework {
             long end = System.currentTimeMillis() - start;
             results[i] = end;
         }
-        return new LatencyResult(totalProcesses, results);
+        return new OverallLatencyResult(totalProcesses, results);
     }
 }

@@ -7,6 +7,7 @@ import testframework.TestFramework;
 
 import java.io.IOException;
 
+import static testframework.ResultCollector.PHASE_ALL;
 import static testframework.ResultCollector.PHASE_FULL_LOAD;
 
 /**
@@ -41,6 +42,7 @@ public class TCPMainSingleJVM {
 
         Logger.info("TCP END (Single JVM)");
 
-        testFramework.printOnConsole(PHASE_FULL_LOAD);
+//        testFramework.printOnConsole(PHASE_FULL_LOAD);
+        testFramework.printOnConsole(PHASE_ALL);
     }
 }

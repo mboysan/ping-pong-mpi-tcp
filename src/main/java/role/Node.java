@@ -7,6 +7,8 @@ import protocol.commands.NetworkCommand;
 import protocol.commands.ping.SignalEnd_NC;
 import protocol.commands.ping.Ping_NC;
 import protocol.commands.ping.Pong_NC;
+import testframework.LatencyResult;
+import testframework.ResultCollector;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -100,6 +102,13 @@ public class Node extends Role {
             pong((Ping_NC) message);
         }
         if (message instanceof Pong_NC) {
+            ResultCollector.getInstance()
+                    .addResultAsync(
+                            ResultCollector.PHASE_ALL,
+                            new LatencyResult(
+                                    "pinger",
+                                    message.getTimeStamp(),
+                                    System.currentTimeMillis()));
             if(pongLatch != null){
                 pongLatch.countDown();
             }

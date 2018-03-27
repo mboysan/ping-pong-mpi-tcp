@@ -1,51 +1,25 @@
 package testframework;
 
 public class LatencyResult implements IResult {
-    private final int numberOfProcesses;
-    private final long[] latencies;
 
-    private final long averageLatency;
-    private final int resultsTotal;
+    private final long startTime;
+    private final long endTime;
 
-    public LatencyResult(int numberOfProcesses, long[] latencies) {
-        this.numberOfProcesses = numberOfProcesses;
-        this.latencies = latencies;
+    private final String name;
+    private final long latency;
 
-        this.averageLatency = calcAverage(latencies);
-        this.resultsTotal = latencies.length;
+    public LatencyResult(String name, long startTime, long endTime) {
+        this.name = name;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.latency = calcLatency(startTime, endTime);
     }
 
-    public int getNumberOfProcesses() {
-        return numberOfProcesses;
+    private long calcLatency(long startTime, long endTime){
+        return endTime - startTime;
     }
 
-    public long[] getLatencies() {
-        return latencies;
-    }
-
-    public long getAverageLatency() {
-        return averageLatency;
-    }
-
-    public int getResultsTotal() {
-        return resultsTotal;
-    }
-
-    /**
-     * Calculates average latency with the given results.
-     * @param results collection of latency results.
-     * @return average latency from the collected results.
-     */
-    public static long calcAverage(long[] results){
-        long avg = 0;
-        for (long result : results) {
-            avg += result;
-        }
-        return avg / results.length;
-    }
-
-    @Override
-    public String printlnCSV(String phase) {
-        return String.format("%d,%d,%d,%s\r\n", numberOfProcesses, averageLatency, resultsTotal, phase);
+    public String printlnCSV(String phase){
+        return name + "," + latency + "," + phase + "\r\n";
     }
 }

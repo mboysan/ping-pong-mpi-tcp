@@ -6,6 +6,7 @@ import org.pmw.tinylog.Logger;
 import role.Node;
 import testframework.TestFramework;
 
+import static testframework.ResultCollector.PHASE_ALL;
 import static testframework.ResultCollector.PHASE_FULL_LOAD;
 
 /**
@@ -38,7 +39,8 @@ public class MPIMain {
 
         Logger.info("MPI END - rank:" + rank);
         if(testFramework != null){
-            testFramework.printOnConsole(PHASE_FULL_LOAD);
+//            testFramework.printOnConsole(PHASE_FULL_LOAD);
+            testFramework.printOnConsole(PHASE_ALL);
         }
     }
 }
