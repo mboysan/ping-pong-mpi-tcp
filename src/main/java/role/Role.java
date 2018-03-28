@@ -12,6 +12,10 @@ import network.messenger.MessageSender;
 public abstract class Role {
 
     /**
+     * Id of the role
+     */
+    private final String roleId;
+    /**
      * The address of the role.
      */
     private final Address myAddress;
@@ -21,6 +25,7 @@ public abstract class Role {
      */
     Role(Address myAddress) {
         this.myAddress = myAddress;
+        roleId = myAddress.resolveAddressId();
         GlobalConfig.getInstance().registerRole(this);
         start();
     }
@@ -37,6 +42,13 @@ public abstract class Role {
      */
     public Address getMyAddress() {
         return myAddress;
+    }
+
+    /**
+     * @return see {@link #roleId}
+     */
+    public String getRoleId() {
+        return roleId;
     }
 
     /**

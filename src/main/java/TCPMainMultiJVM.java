@@ -4,11 +4,10 @@ import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 import role.Node;
 import testframework.TestFramework;
+import testframework.TestPhase;
 
 import java.net.UnknownHostException;
 import java.util.Arrays;
-
-import static testframework.ResultCollector.PHASE_FULL_LOAD;
 
 /**
  * Assumes a single JVM is running per Node.
@@ -36,17 +35,17 @@ public class TCPMainMultiJVM {
             Node pinger = new Node(new TCPAddress("127.0.0.1", port), totalProcesses);
 
             /* start tests */
-            testFramework = new TestFramework(pinger, totalProcesses).initTests();
+            testFramework = new TestFramework().initPingTests(pinger, totalProcesses);
 
             /* send end signal to all nodes */
-            pinger.endAll();
+            pinger.signalEndToAll();
         }
 
         GlobalConfig.getInstance().end();
 
         Logger.info("MPI END - rank:" + rank);
         if(testFramework != null){
-            testFramework.printOnConsole(PHASE_FULL_LOAD);
+            testFramework.printOnConsole("pingAll", TestPhase.PHASE_FULL_LOAD);
         }
 
     }

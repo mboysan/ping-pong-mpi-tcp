@@ -4,11 +4,9 @@ import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 import role.Node;
 import testframework.TestFramework;
+import testframework.TestPhase;
 
 import java.io.IOException;
-
-import static testframework.ResultCollector.PHASE_ALL;
-import static testframework.ResultCollector.PHASE_FULL_LOAD;
 
 /**
  * Ping-Pong test for TCP
@@ -32,17 +30,15 @@ public class TCPMainSingleJVM {
         Node pinger = new Node(new TCPAddress("127.0.0.1", port++), totalNodes);
 
         /* start tests */
-        TestFramework testFramework = new TestFramework(pinger, totalNodes);
-        testFramework.initTests();
+        TestFramework testFramework = new TestFramework().initPingTests(pinger, totalNodes);
 
         /* send end signal to all nodes */
-        pinger.endAll();
+        pinger.signalEndToAll();
 
         GlobalConfig.getInstance().end();
 
         Logger.info("TCP END (Single JVM)");
 
-//        testFramework.printOnConsole(PHASE_FULL_LOAD);
-        testFramework.printOnConsole(PHASE_ALL);
+        testFramework.printAllOnConsole();
     }
 }

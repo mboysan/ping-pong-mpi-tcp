@@ -71,6 +71,11 @@ public class TCPAddress extends Address {
     }
 
     @Override
+    public String resolveAddressId() {
+        return getIp() + "_" + getPortNumber();
+    }
+
+    @Override
     public boolean isSame(Address other) {
         TCPAddress address = (TCPAddress) other;
         return address.getIp().toString().equals(this.getIp().toString())

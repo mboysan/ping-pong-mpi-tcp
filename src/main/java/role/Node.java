@@ -4,13 +4,15 @@ import config.GlobalConfig;
 import network.address.Address;
 import org.pmw.tinylog.Logger;
 import protocol.commands.NetworkCommand;
-import protocol.commands.ping.SignalEnd_NC;
 import protocol.commands.ping.Ping_NC;
 import protocol.commands.ping.Pong_NC;
+import protocol.commands.ping.SignalEnd_NC;
 import testframework.LatencyResult;
-import testframework.ResultCollector;
+import testframework.TestResultCollector;
 
 import java.util.concurrent.CountDownLatch;
+
+import static testframework.TestPhase.PHASE_CUSTOM;
 
 /**
  * The main processor (a.k.a process) that sends specified messages and handles the received ones.
@@ -49,6 +51,7 @@ public class Node extends Role {
         //TODO: synchronize addresses? But it will be too slow. Some other method of address looping might be needed.
         for (Address receiverAddress : GlobalConfig.getInstance().getAddresses()) {
             NetworkCommand ping = new Ping_NC()
+                    .setSenderId(getRoleId())
                     .setReceiverAddress(receiverAddress)
                     .setSenderAddress(getMyAddress());
             sendMessage(ping);
@@ -61,6 +64,7 @@ public class Node extends Role {
      */
     private void pong(Ping_NC message) {
         NetworkCommand pong = new Pong_NC()
+                .setSenderId(getRoleId())
                 .setReceiverAddress(message.resolveSenderAddress())
                 .setSenderAddress(getMyAddress());
         sendMessage(pong);
@@ -69,9 +73,10 @@ public class Node extends Role {
     /**
      * Sends {@link SignalEnd_NC} command to all the processes.
      */
-    public void endAll() {
+    public void signalEndToAll() {
         for (Address receiverAddress : GlobalConfig.getInstance().getAddresses()) {
             NetworkCommand signalEnd = new SignalEnd_NC()
+                    .setSenderId(getRoleId())
                     .setReceiverAddress(receiverAddress)
                     .setSenderAddress(getMyAddress());
             sendMessage(signalEnd);
@@ -102,14 +107,16 @@ public class Node extends Role {
             pong((Ping_NC) message);
         }
         if (message instanceof Pong_NC) {
-            ResultCollector.getInstance()
-                    .addResultAsync(
-                            ResultCollector.PHASE_ALL,
-                            new LatencyResult(
-                                    "pinger",
-                                    message.getTimeStamp(),
-                                    System.currentTimeMillis()));
-            if(pongLatch != null){
+            /* collect latency result and add it to test result collector */
+            long currTime = System.currentTimeMillis();
+            TestResultCollector.getInstance().addResultAsync(new LatencyResult(
+                    "pingSingle",
+                    PHASE_CUSTOM,
+                    message.getSenderId(),
+                    currTime,
+                    message.getTimeStamp(),
+                    currTime));
+            if (pongLatch != null) {
                 pongLatch.countDown();
             }
         }

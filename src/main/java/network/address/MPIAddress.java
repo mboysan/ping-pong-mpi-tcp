@@ -38,6 +38,11 @@ public class MPIAddress extends Address {
     }
 
     @Override
+    public String resolveAddressId() {
+        return "p" + rank;
+    }
+
+    @Override
     public boolean isSame(Address other) {
         return ((MPIAddress) other).getRank() == this.getRank();
     }

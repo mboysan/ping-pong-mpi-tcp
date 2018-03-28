@@ -35,8 +35,14 @@ public class GlobalConfig {
      */
     private static GlobalConfig ourInstance = new GlobalConfig();
 
+    /**
+     * indicates if the java process runs on a single JVM or not.
+     */
     private boolean isSingleJVM;
 
+    /**
+     * Count of the total processes in the system.
+     */
     private int processCount;
 
     /**

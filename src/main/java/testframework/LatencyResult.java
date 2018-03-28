@@ -1,25 +1,76 @@
 package testframework;
 
 public class LatencyResult implements IResult {
+    /**
+     * test group's name
+     */
+    private final String testGroupName;
+    /**
+     * test phase to record the result for
+     */
+    private final TestPhase testPhase;
 
-    private final long startTime;
-    private final long endTime;
+    /**
+     * Time stamp that the result is collected at.
+     */
+    private final long currentTimestamp;
 
+    /**
+     * Name of the result (may take the process id)
+     */
     private final String name;
+    /**
+     * calculated latency
+     */
     private final long latency;
 
-    public LatencyResult(String name, long startTime, long endTime) {
+    /**
+     * @param testGroupName    test group's name
+     * @param testPhase        test phase to record the result for
+     * @param name             Name of the result (may take the process id)
+     * @param currentTimestamp Time stamp that the result is collected at.
+     * @param startTime        beginning time of the request
+     * @param endTime          end time of the request
+     */
+    public LatencyResult(
+            String testGroupName,
+            TestPhase testPhase,
+            String name,
+            long currentTimestamp,
+            long startTime,
+            long endTime) {
+
+        this.testGroupName = testGroupName;
+        this.testPhase = testPhase;
         this.name = name;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.currentTimestamp = currentTimestamp;
         this.latency = calcLatency(startTime, endTime);
     }
 
+    /**
+     * Calculates the latency.
+     * @param startTime beginning time of the request
+     * @param endTime   end time of the request
+     * @return
+     */
     private long calcLatency(long startTime, long endTime){
         return endTime - startTime;
     }
 
-    public String printlnCSV(String phase){
-        return name + "," + latency + "," + phase + "\r\n";
+    @Override
+    public String getTestGroupName() {
+        return testGroupName;
+    }
+
+    @Override
+    public TestPhase getTestPhase() {
+        return testPhase;
+    }
+
+    @Override
+    public String CSVLine(){
+        String lineSep = System.getProperty("line.separator");
+        return String.format("%s,%s,%d,%d,%s,%d%n",
+                testGroupName, testPhase.getName(), testPhase.getIterations(), currentTimestamp, name, latency);
     }
 }

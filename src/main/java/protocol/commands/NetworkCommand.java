@@ -12,6 +12,10 @@ import java.io.Serializable;
 public class NetworkCommand implements Serializable {
 
     /**
+     * Id of the sender process
+     */
+    private String senderId;
+    /**
      * receiver address in TCP address format
      */
     private TCPAddress receiverAddrTCP;
@@ -38,6 +42,22 @@ public class NetworkCommand implements Serializable {
 
     public NetworkCommand() {
 
+    }
+
+    /**
+     * @return gets {@link #senderId}
+     */
+    public String getSenderId() {
+        return senderId;
+    }
+
+    /**
+     * @param senderId sets {@link #senderId}
+     * @return this
+     */
+    public NetworkCommand setSenderId(String senderId) {
+        this.senderId = senderId;
+        return this;
     }
 
     /**

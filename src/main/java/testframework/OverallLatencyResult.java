@@ -1,34 +1,47 @@
 package testframework;
 
 public class OverallLatencyResult implements IResult {
+    /**
+     * test group's name
+     */
+    private final String testGroupName;
+    /**
+     * test phase to record the result for
+     */
+    private final TestPhase testPhase;
+
+    /**
+     * number of processes in the system
+     */
     private final int numberOfProcesses;
+    /**
+     * collected latency results.
+     */
     private final long[] latencies;
 
+    /**
+     * average latency calculated with the {@link #latencies}
+     */
     private final long averageLatency;
+    /**
+     * equals to {@link #latencies}.length
+     */
     private final int resultsTotal;
 
-    public OverallLatencyResult(int numberOfProcesses, long[] latencies) {
+    /**
+     * @param testGroupName     test group's name
+     * @param testPhase         test phase to record the result for
+     * @param numberOfProcesses number of processes in the system
+     * @param latencies         collected latency results.
+     */
+    public OverallLatencyResult(String testGroupName, TestPhase testPhase, int numberOfProcesses, long[] latencies) {
+        this.testGroupName = testGroupName;
+        this.testPhase = testPhase;
         this.numberOfProcesses = numberOfProcesses;
         this.latencies = latencies;
 
         this.averageLatency = calcAverage(latencies);
         this.resultsTotal = latencies.length;
-    }
-
-    public int getNumberOfProcesses() {
-        return numberOfProcesses;
-    }
-
-    public long[] getLatencies() {
-        return latencies;
-    }
-
-    public long getAverageLatency() {
-        return averageLatency;
-    }
-
-    public int getResultsTotal() {
-        return resultsTotal;
     }
 
     /**
@@ -45,7 +58,19 @@ public class OverallLatencyResult implements IResult {
     }
 
     @Override
-    public String printlnCSV(String phase) {
-        return String.format("%d,%d,%d,%s\r\n", numberOfProcesses, averageLatency, resultsTotal, phase);
+    public String getTestGroupName() {
+        return testGroupName;
+    }
+
+    @Override
+    public TestPhase getTestPhase() {
+        return testPhase;
+    }
+
+    @Override
+    public String CSVLine() {
+        String lineSep= System.getProperty("line.separator");
+        return String.format("%s,%s,%d,%d,%s,%d%n",
+                testGroupName, testPhase.getName(), testPhase.getIterations(), resultsTotal, numberOfProcesses, averageLatency);
     }
 }
