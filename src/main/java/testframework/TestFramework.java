@@ -8,10 +8,21 @@ import role.Node;
  */
 public class TestFramework {
 
-    private final TestResultCollector testResultCollector;
+    /**
+     * Test framework singleton instance.
+     */
+    private static TestFramework ourInstance = new TestFramework();
 
-    public TestFramework() {
-        this.testResultCollector = TestResultCollector.getInstance();
+    /**
+     * test result collector
+     */
+    private final TestResultCollector testResultCollector = TestResultCollector.getInstance();
+
+    private TestFramework() {
+    }
+
+    public static TestFramework getInstance(){
+        return ourInstance;
     }
 
     /**
@@ -25,6 +36,8 @@ public class TestFramework {
 
         testResultCollector.addResult(loopPing("pingAll", TestPhase.PHASE_WARMUP, pinger, processCount));
         testResultCollector.addResult(loopPing("pingAll", TestPhase.PHASE_FULL_LOAD, pinger, processCount));
+
+        testResultCollector.finalizeCollection();
 
         Logger.info("Tests are done!");
         return this;
@@ -56,6 +69,10 @@ public class TestFramework {
      */
     public OverallLatencyResult loopPing(String testGroupName, TestPhase testPhase, Node pinger, int totalProcesses) {
         int loopCount = testPhase.getIterations();
+
+        int totalPingCount = totalProcesses * loopCount;
+        testResultCollector.setTaskCountForTest("pingSingle", totalPingCount);
+
         long[] results = new long[loopCount];
         for (int i = 0; i < loopCount; i++) {
             long start = System.currentTimeMillis();
@@ -64,6 +81,16 @@ public class TestFramework {
             long end = System.currentTimeMillis() - start;
             results[i] = end;
         }
+
+        testResultCollector.waitAllTasksFor("pingSingle");
+
         return new OverallLatencyResult(testGroupName, testPhase, totalProcesses, results);
+    }
+
+    /**
+     * @return the result collector service.
+     */
+    public static TestResultCollector getResultCollector(){
+        return TestResultCollector.getInstance();
     }
 }

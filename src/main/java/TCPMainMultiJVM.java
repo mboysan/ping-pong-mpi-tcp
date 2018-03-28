@@ -35,7 +35,7 @@ public class TCPMainMultiJVM {
             Node pinger = new Node(new TCPAddress("127.0.0.1", port), totalProcesses);
 
             /* start tests */
-            testFramework = new TestFramework().initPingTests(pinger, totalProcesses);
+            testFramework = TestFramework.getInstance().initPingTests(pinger, totalProcesses);
 
             /* send end signal to all nodes */
             pinger.signalEndToAll();

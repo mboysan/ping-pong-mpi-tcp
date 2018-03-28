@@ -1,5 +1,8 @@
 package testframework;
 
+/**
+ * Single latency result. Time taken for a ping to receive a pong.
+ */
 public class LatencyResult implements IResult {
     /**
      * test group's name
@@ -51,7 +54,7 @@ public class LatencyResult implements IResult {
      * Calculates the latency.
      * @param startTime beginning time of the request
      * @param endTime   end time of the request
-     * @return
+     * @return the calculated latency.
      */
     private long calcLatency(long startTime, long endTime){
         return endTime - startTime;
@@ -69,7 +72,6 @@ public class LatencyResult implements IResult {
 
     @Override
     public String CSVLine(){
-        String lineSep = System.getProperty("line.separator");
         return String.format("%s,%s,%d,%d,%s,%d%n",
                 testGroupName, testPhase.getName(), testPhase.getIterations(), currentTimestamp, name, latency);
     }

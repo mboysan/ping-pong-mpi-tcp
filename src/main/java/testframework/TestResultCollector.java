@@ -1,9 +1,9 @@
 package testframework;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import org.pmw.tinylog.Logger;
+
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * Used for collecting the test results.
@@ -15,6 +15,15 @@ public class TestResultCollector {
     private static TestResultCollector ourinstance = new TestResultCollector();
 
     /**
+     * Results collector executor service.
+     */
+    private final ExecutorService executor = Executors.newFixedThreadPool(5);
+    /**
+     * Latch map for each test group specified.
+     */
+    private final Map<String, CountDownLatch> testLatches = new ConcurrentHashMap<>();
+
+    /**
      * Map that contains the results collected. Grouped by test group name
      */
     private final Map<String, List<IResult>> resultsMap;
@@ -23,7 +32,10 @@ public class TestResultCollector {
         this.resultsMap = new ConcurrentHashMap<>();
     }
 
-    public static TestResultCollector getInstance() {
+    /**
+     * @return gets {@link #ourinstance}
+     */
+    static TestResultCollector getInstance() {
         return ourinstance;
     }
 
@@ -50,17 +62,24 @@ public class TestResultCollector {
      * @param result result to add
      */
     public void addResultAsync(IResult result){
-        new Thread(() -> addResult(result)).start();
+        executor.execute(() -> {
+            CountDownLatch latch = testLatches.get(result.getTestGroupName());
+            if(latch == null){
+                throw new IllegalArgumentException("Task count not specified!");
+            }
+            addResult(result);
+            latch.countDown();
+        });
     }
 
     /**
      * Prints the results collected to console.
-     * @param testGroupName name of the test group to print. If null, prints all.
+     * @param testGroupName name of the test group to print.
      * @param phase         result phase to print. If null, then prints all the phases.
      */
     void printOnConsole(String testGroupName, TestPhase phase){
         if(phase == null){
-            //print all grouped by phase
+            //print all, grouped by phase
             for (TestPhase testPhase : TestPhase.values()) {
                 if(testGroupName == null){
                     for (String s : resultsMap.keySet()) {
@@ -77,6 +96,53 @@ public class TestResultCollector {
                     System.out.print(result.CSVLine());
                 }
             }
+        }
+    }
+
+    /**
+     * Sets a latch with the specified count for a test group. Used with {@link #addResultAsync(IResult)} method that
+     * will countdown the latch each time a result is added.
+     *
+     * @param testGroupName test group to set task count for
+     * @param taskCount     count of the tasks to collect results for (should be equal to total results to collect
+     *                      in an async manner)
+     */
+    void setTaskCountForTest(String testGroupName, int taskCount){
+        if(testGroupName == null){
+            throw new IllegalArgumentException("test group name should be specified");
+        }
+        if(taskCount < 0){
+            throw new IllegalArgumentException("task count should be a positive integer value.");
+        }
+        testLatches.put(testGroupName, new CountDownLatch(taskCount));
+    }
+
+    /**
+     * @param testGroupName test group to wait result collection for.
+     */
+    void waitAllTasksFor(String testGroupName){
+        if(testGroupName == null){
+            throw new IllegalArgumentException("test group name should be specified");
+        }
+        Logger.debug("Waiting tasks to complete for test [" + testGroupName +"]");
+        CountDownLatch latch = testLatches.get(testGroupName);
+        try {
+            latch.await(1, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            Logger.error(e, "Error while waiting for tasks to complete.");
+        }
+        Logger.debug("Wait done for test [" + testGroupName + "]");
+    }
+
+    /**
+     * Finalizes the result collection by terminating the executor service.
+     */
+    void finalizeCollection(){
+        executor.shutdown();
+        try {
+            executor.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            Logger.error(e, "Could not terminate the executor");
         }
     }
 }

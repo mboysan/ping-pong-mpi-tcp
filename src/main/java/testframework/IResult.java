@@ -1,5 +1,8 @@
 package testframework;
 
+/**
+ * A single result.
+ */
 public interface IResult {
     /**
      * @return The recorded phase of the test result

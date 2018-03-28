@@ -14,7 +14,7 @@ import java.io.IOException;
 public class TCPMainSingleJVM {
 
     public static void main(String[] args) throws IOException, InterruptedException, MPIException {
-        int totalNodes = 5;
+        int totalNodes = 3;
         if(args != null && args.length > 0){
             totalNodes = Integer.parseInt(args[0]);
         }
@@ -30,7 +30,7 @@ public class TCPMainSingleJVM {
         Node pinger = new Node(new TCPAddress("127.0.0.1", port++), totalNodes);
 
         /* start tests */
-        TestFramework testFramework = new TestFramework().initPingTests(pinger, totalNodes);
+        TestFramework testFramework = TestFramework.getInstance().initPingTests(pinger, totalNodes);
 
         /* send end signal to all nodes */
         pinger.signalEndToAll();

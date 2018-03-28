@@ -27,7 +27,7 @@ public class MPIMain {
             Node pinger = new Node(new MPIAddress(rank), totalProcesses);
 
             /* start tests */
-            testFramework = new TestFramework().initPingTests(pinger, totalProcesses);
+            testFramework = TestFramework.getInstance().initPingTests(pinger, totalProcesses);
 
             /* send end signal to all nodes */
             pinger.signalEndToAll();
@@ -37,7 +37,7 @@ public class MPIMain {
 
         Logger.info("MPI END - rank:" + rank);
         if(testFramework != null){
-            testFramework.printOnConsole("pingAll", TestPhase.PHASE_FULL_LOAD);
+            testFramework.printAllOnConsole();
         }
     }
 }

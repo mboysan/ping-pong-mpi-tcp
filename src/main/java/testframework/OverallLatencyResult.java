@@ -1,5 +1,8 @@
 package testframework;
 
+/**
+ * A collection of latencies.
+ */
 public class OverallLatencyResult implements IResult {
     /**
      * test group's name
@@ -49,7 +52,7 @@ public class OverallLatencyResult implements IResult {
      * @param results collection of latency results.
      * @return average latency from the collected results.
      */
-    public static long calcAverage(long[] results){
+    private static long calcAverage(long[] results){
         long avg = 0;
         for (long result : results) {
             avg += result;
@@ -69,7 +72,6 @@ public class OverallLatencyResult implements IResult {
 
     @Override
     public String CSVLine() {
-        String lineSep= System.getProperty("line.separator");
         return String.format("%s,%s,%d,%d,%s,%d%n",
                 testGroupName, testPhase.getName(), testPhase.getIterations(), resultsTotal, numberOfProcesses, averageLatency);
     }

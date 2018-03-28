@@ -8,7 +8,7 @@ import protocol.commands.ping.Ping_NC;
 import protocol.commands.ping.Pong_NC;
 import protocol.commands.ping.SignalEnd_NC;
 import testframework.LatencyResult;
-import testframework.TestResultCollector;
+import testframework.TestFramework;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -109,7 +109,7 @@ public class Node extends Role {
         if (message instanceof Pong_NC) {
             /* collect latency result and add it to test result collector */
             long currTime = System.currentTimeMillis();
-            TestResultCollector.getInstance().addResultAsync(new LatencyResult(
+            TestFramework.getResultCollector().addResultAsync(new LatencyResult(
                     "pingSingle",
                     PHASE_CUSTOM,
                     message.getSenderId(),
