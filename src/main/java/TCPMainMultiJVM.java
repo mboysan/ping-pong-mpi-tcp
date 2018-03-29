@@ -43,7 +43,7 @@ public class TCPMainMultiJVM {
 
         GlobalConfig.getInstance().end();
 
-        Logger.info("MPI END - rank:" + rank);
+        Logger.info("TCP END - rank:" + rank);
         if(testFramework != null){
             testFramework.printOnConsole("pingAll", TestPhase.PHASE_FULL_LOAD);
         }

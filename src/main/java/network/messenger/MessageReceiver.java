@@ -82,7 +82,7 @@ public class MessageReceiver {
                         dIn.readFully(msg, 0, msg.length); // read the message
                     }
                     */
-                    byte[] msg = new byte[1024];    //fixed size byte[]
+                    byte[] msg = new byte[512];    //fixed size byte[]
                     dIn.read(msg);
                     if(msg != null){
                         NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
@@ -127,7 +127,7 @@ public class MessageReceiver {
                 while (true){
                     int[] msgInfo = new int[1];
 //                  MPI.COMM_WORLD.recv(msgInfo, msgInfo.length, MPI.INT, MPI.ANY_SOURCE, MPI.ANY_TAG);   // receive msg length first.
-                    msgInfo[0] = 1024;
+                    msgInfo[0] = 512;
                     byte[] msg = new byte[msgInfo[0]];
                     MPI.COMM_WORLD.recv(msg, msg.length, MPI.BYTE, MPI.ANY_SOURCE, MPI.ANY_TAG);
 
