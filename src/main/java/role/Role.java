@@ -20,6 +20,8 @@ public abstract class Role {
      */
     private final Address myAddress;
 
+    protected final MessageSender messageSender;
+
     /**
      * @param myAddress see {@link #myAddress}
      */
@@ -27,6 +29,8 @@ public abstract class Role {
         this.myAddress = myAddress;
         roleId = myAddress.resolveAddressId();
         GlobalConfig.getInstance().registerRole(this);
+
+        this.messageSender = new MessageSender();
         start();
     }
 
@@ -34,7 +38,7 @@ public abstract class Role {
      * Starts the role. Basically starts the message receiver service.
      */
     private void start() {
-        new MessageReceiver(myAddress, this);
+        new MessageReceiver(this);
     }
 
     /**
@@ -62,7 +66,7 @@ public abstract class Role {
      * @param message the network message to send.
      */
     protected void sendMessage(NetworkCommand message) {
-        new MessageSender(message);
+        messageSender.send(message);
     }
 
 }

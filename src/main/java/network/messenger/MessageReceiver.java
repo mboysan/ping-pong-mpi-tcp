@@ -14,16 +14,16 @@ import java.io.DataInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * The message receiver wrapper for the communication protocols defined in {@link network.ConnectionProtocol}.
  */
 public class MessageReceiver {
 
-    /**
-     * The address to receive message from.
-     */
-    private final Address address;
+    private final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
     /**
      * The {@link Role} to send the received message for processing.
      */
@@ -35,11 +35,10 @@ public class MessageReceiver {
 
     /**
      * Initializes the message receiver. It then creates the appropriate handler to handle the received message.
-     * @param address      sets {@link #address}
+     *
      * @param roleInstance sets {@link #roleInstance}
      */
-    public MessageReceiver(Address address, Role roleInstance) {
-        this.address = address;
+    public MessageReceiver(Role roleInstance) {
         this.roleInstance = roleInstance;
         this.commandMarshaller = new CommandMarshaller();
 
@@ -60,6 +59,7 @@ public class MessageReceiver {
         @Override
         public void run() {
             runOnTCP();
+            Logger.debug("receiver end");
         }
 
         /**
@@ -69,7 +69,7 @@ public class MessageReceiver {
             ServerSocket serverSocket;
             Socket socket = null;
             try {
-                TCPAddress addr = (TCPAddress) address;
+                TCPAddress addr = (TCPAddress) roleInstance.getMyAddress();
                 serverSocket = new ServerSocket(addr.getPortNumber());
                 while (true) {
                     socket = serverSocket.accept();
@@ -89,10 +89,13 @@ public class MessageReceiver {
                         if(message != null){
                             if(message instanceof SignalEnd_NC){
                                 Logger.debug("End signal recv: " + message);
+                                executor.shutdown();
                                 GlobalConfig.getInstance().readyEnd();
                                 break;
                             }
-                            roleInstance.handleMessage(message);
+                            executor.execute(() -> {
+                                roleInstance.handleMessage(message);
+                            });
                         }
                     }
                 }
@@ -134,10 +137,13 @@ public class MessageReceiver {
                     NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
                     if(message instanceof SignalEnd_NC){
                         Logger.debug("End signal recv: " + message);
+                        executor.shutdown();
                         GlobalConfig.getInstance().readyEnd();
                         break;
                     }
-                    roleInstance.handleMessage(message);
+                    executor.execute(() -> {
+                        roleInstance.handleMessage(message);
+                    });
                 }
             } catch (Exception e) {
                 Logger.error(e, "Recv err");

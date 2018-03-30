@@ -8,49 +8,70 @@ import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 import protocol.CommandMarshaller;
 import protocol.commands.NetworkCommand;
+import protocol.commands.ping.SignalEnd_NC;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * The message sender wrapper for the communication protocols defined in {@link network.ConnectionProtocol}.
  */
 public class MessageSender {
 
-    /**
-     * Message to send
-     */
-    private final NetworkCommand messageToSend;
+    private final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
     /**
      * The marshaller to marshall the command to send.
      */
-    private final CommandMarshaller commandMarshaller;
+    private final CommandMarshaller commandMarshaller = new CommandMarshaller();
+
+
+    public MessageSender() {
+    }
 
     /**
      * Initializes the message sender. It then creates the appropriate handler to send the message.
      * @param message the command to send
      */
-    public MessageSender(NetworkCommand message) {
-        this.messageToSend = message;
-        this.commandMarshaller = new CommandMarshaller();
-
+    public void send(NetworkCommand message) {
+        Runnable sender = null;
         switch (GlobalConfig.getInstance().getConnectionProtocol()) {
             case TCP_CONNECTION:
-                new TCPSender().start();    // starts thread and calls run() method
+                sender = new TCPSender(message);
                 break;
             case MPI_CONNECTION:
-                new MPISender().start();    // does not start a thread
+                sender = new MPISender(message);
                 break;
+        }
+        if(message instanceof SignalEnd_NC){
+            sender.run();
+            executor.shutdown();
+            if(executor.isShutdown()){
+                Logger.debug("Executor shutdown: "+ executor);
+            }
+        } else {
+//            executor.execute(sender);
+            new Thread(sender).start();
         }
     }
 
     /**
      * TCP send handler
      */
-    private class TCPSender extends Thread {
+    private class TCPSender implements Runnable {
+
+        private final NetworkCommand messageToSend;
+
+        private TCPSender(NetworkCommand messageToSend){
+            this.messageToSend = messageToSend;
+        }
+
         @Override
         public void run() {
             runOnTCP();
@@ -95,13 +116,15 @@ public class MessageSender {
     /**
      * MPI send handler
      */
-    private class MPISender {
+    private class MPISender implements Runnable {
 
-        private void start(){
-            run();
+        private final NetworkCommand messageToSend;
+
+        private MPISender(NetworkCommand messageToSend){
+            this.messageToSend = messageToSend;
         }
-//
-//        @Override
+
+        @Override
         public void run(){
 //            runOnMPIAsync();
             runOnMPISync();
