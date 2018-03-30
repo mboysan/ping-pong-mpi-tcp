@@ -90,10 +90,12 @@ public class TestResultCollector {
                 }
             }
         } else {
+            boolean printHeader = true;
             List<IResult> results = resultsMap.get(testGroupName);
             for (IResult result : results) {
                 if(result.getTestPhase() == phase){
-                    System.out.print(result.CSVLine());
+                    System.out.print(result.CSVLine(printHeader));
+                    printHeader = false;
                 }
             }
         }

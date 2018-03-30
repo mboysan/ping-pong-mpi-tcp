@@ -71,8 +71,12 @@ public class LatencyResult implements IResult {
     }
 
     @Override
-    public String CSVLine(){
-        return String.format("%s,%s,%d,%d,%s,%d%n",
+    public String CSVLine(boolean writeHeader){
+        String lines = "";
+        if(writeHeader){
+            lines += String.format("testGroup,phase,iterations,timestamp,pid,latency%n");
+        }
+        return lines + String.format("%s,%s,%d,%d,%s,%d%n",
                 testGroupName, testPhase.getName(), testPhase.getIterations(), currentTimestamp, name, latency);
     }
 }

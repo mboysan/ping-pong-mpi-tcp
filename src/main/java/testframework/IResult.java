@@ -16,5 +16,5 @@ public interface IResult {
     /**
      * @return get the result as a CSV result preferably ended with <tt>System.getProperty("line.separator")</tt>
      */
-    String CSVLine();
+    String CSVLine(boolean writeHeader);
 }
