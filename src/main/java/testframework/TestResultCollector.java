@@ -1,6 +1,7 @@
 package testframework;
 
 import org.pmw.tinylog.Logger;
+import testframework.result.IResult;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -69,6 +70,17 @@ public class TestResultCollector {
             }
             addResult(result);
             latch.countDown();
+        });
+    }
+
+    /**
+     * Adds result in an async manner. There is no bound in the collected result, hence it is the responsibility
+     * of the caller to terminate the result collection process accordingly.
+     * @param result result to add
+     */
+    public void addResultAsyncUnbounded(IResult result){
+        executor.execute(() -> {
+            addResult(result);
         });
     }
 

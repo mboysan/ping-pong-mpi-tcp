@@ -7,7 +7,7 @@ import protocol.commands.NetworkCommand;
 import protocol.commands.ping.Ping_NC;
 import protocol.commands.ping.Pong_NC;
 import protocol.commands.ping.SignalEnd_NC;
-import testframework.LatencyResult;
+import testframework.result.LatencyResult;
 import testframework.TestFramework;
 
 import java.util.concurrent.CountDownLatch;

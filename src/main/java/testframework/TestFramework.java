@@ -2,6 +2,7 @@ package testframework;
 
 import org.pmw.tinylog.Logger;
 import role.Node;
+import testframework.result.OverallLatencyResult;
 
 /**
  * A simple class for keeping track of test data.

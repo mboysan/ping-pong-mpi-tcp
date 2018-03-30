@@ -3,10 +3,11 @@ import mpi.MPIException;
 import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 import role.Node;
+import testframework.SystemInfoGenerator;
 import testframework.TestFramework;
-import testframework.TestPhase;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Ping-Pong test for TCP
@@ -14,6 +15,8 @@ import java.io.IOException;
 public class TCPMainSingleJVM {
 
     public static void main(String[] args) throws IOException, InterruptedException, MPIException {
+        SystemInfoGenerator.collectEvery(500, TimeUnit.MILLISECONDS);
+
         int totalNodes = 3;
         if(args != null && args.length > 0){
             totalNodes = Integer.parseInt(args[0]);
@@ -39,6 +42,8 @@ public class TCPMainSingleJVM {
 
         Logger.info("TCP END (Single JVM)");
 
+        SystemInfoGenerator.end();
+        testFramework.printOnConsole("sysResult", null);
         testFramework.printAllOnConsole();
     }
 }
