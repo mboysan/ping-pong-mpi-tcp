@@ -5,6 +5,7 @@ import testframework.result.SystemInfoResult;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Class that generates current system utilization values. Results are collected with {@link TestResultCollector}
@@ -41,28 +42,61 @@ public class SystemInfo {
      * @return the created sys info collector.
      */
     public static SystemInfo collectEvery(long time, TimeUnit timeUnit) {
+        init(time, timeUnit);
+        ourinstance.collectTask();
+        return ourinstance;
+    }
+
+    /**
+     * Starts printing system info results with the period defined.If there are any old generator initialized,
+     * ends it then initializes new generator.
+     *
+     * @param time     sets {@link #time}
+     * @param timeUnit sets {@link #timeUnit}
+     * @return the created sys info collector.
+     */
+    public static SystemInfo printOnConsoleEvery(long time, TimeUnit timeUnit){
+        init(time, timeUnit);
+        ourinstance.printConsoleTask();
+        return ourinstance;
+    }
+
+    private static void init(long time, TimeUnit timeUnit){
         if(ourinstance != null){
             ourinstance.end();
         }
         ourinstance = new SystemInfo(time, timeUnit);
-        return ourinstance;
     }
 
     private SystemInfo(long time, TimeUnit timeUnit){
         this.time = time;
         this.timeUnit = timeUnit;
-        exec();
     }
 
     /**
      * generates a {@link SystemInfoResult} at fixed rate and collects it with {@link TestResultCollector}.
      */
-    private void exec() {
+    private void collectTask() {
         Runnable task = () -> {
             resultCollector
                     .addResultAsyncUnbounded(
                             new SystemInfoResult("sysResult", TestPhase.PHASE_CUSTOM)
                     );
+        };
+        executor.scheduleAtFixedRate(task, 0, time, timeUnit);
+    }
+
+    /**
+     * Used with {@link #printConsoleTask()}
+     */
+    private AtomicBoolean printHeader = new AtomicBoolean(true);
+    /**
+     * generates a {@link SystemInfoResult} and prints on the console with a fixed rate.
+     */
+    private void printConsoleTask() {
+        Runnable task = () -> {
+            SystemInfoResult sysInf = new SystemInfoResult("sysResult", TestPhase.PHASE_CUSTOM);
+            System.out.print(sysInf.CSVLine(printHeader.getAndSet(false)));
         };
         executor.scheduleAtFixedRate(task, 0, time, timeUnit);
     }
