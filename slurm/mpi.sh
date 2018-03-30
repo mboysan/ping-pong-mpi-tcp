@@ -15,7 +15,7 @@ cd ./target
 # The maximum walltime of the job
 #SBATCH -t 00:00:10
 
-module load openmpi-3.0.0
+module load openmpi-2.1.0
 
 echo "slurm/mpi init"
 mpirun -np 1 java -cp *jar-with-dependencies.jar MPIMain $@
