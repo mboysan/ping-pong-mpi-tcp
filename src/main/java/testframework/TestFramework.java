@@ -2,6 +2,7 @@ package testframework;
 
 import org.pmw.tinylog.Logger;
 import role.Node;
+import testframework.result.LatencyResult;
 import testframework.result.OverallLatencyResult;
 
 /**
@@ -12,52 +13,43 @@ public class TestFramework {
     /**
      * Test framework singleton instance.
      */
-    private static TestFramework ourInstance = new TestFramework();
+    private static TestFramework pingTester = new TestFramework();
 
     /**
      * test result collector
      */
-    private final TestResultCollector testResultCollector = TestResultCollector.getInstance();
+    private final TestResultCollector resultCollector = new TestResultCollector();
 
     private TestFramework() {
     }
 
-    public static TestFramework getInstance(){
-        return ourInstance;
-    }
-
     /**
-     * Initializes the ping tests
+     * Initializes the ping tests. If old tests exist, creates new ones and does not do anything with the old ones.
+     * They continue until they finish.
      * @param pinger         Node that will do all the ping tests
      * @param processCount   total number of processes in system
      * @return this
      */
-    public TestFramework initPingTests(Node pinger, int processCount){
+    public static TestFramework doPingTests(Node pinger, int processCount){
+        if(pingTester == null){
+            pingTester = new TestFramework();
+        }
+        pingTester._doPingTests(pinger, processCount);
+        return pingTester;
+    }
+
+    /**
+     * Do ping tests.
+     */
+    private void _doPingTests(Node pinger, int processCount){
         Logger.info("Starting ping-pong tests...");
 
-        testResultCollector.addResult(loopPing("pingAll", TestPhase.PHASE_WARMUP, pinger, processCount));
-        testResultCollector.addResult(loopPing("pingAll", TestPhase.PHASE_FULL_LOAD, pinger, processCount));
+        resultCollector.addResult(loopPing("pingAll", TestPhase.PHASE_WARMUP, pinger, processCount));
+        resultCollector.addResult(loopPing("pingAll", TestPhase.PHASE_FULL_LOAD, pinger, processCount));
 
-        testResultCollector.finalizeCollection();
+        resultCollector.finalizeCollection();
 
-        Logger.info("Tests are done!");
-        return this;
-    }
-
-    /**
-     * Prints the results to console.
-     * @param testGroupName test group to print on console
-     * @param phase         phase of the test group to print
-     */
-    public void printOnConsole(String testGroupName, TestPhase phase){
-        testResultCollector.printOnConsole(testGroupName, phase);
-    }
-
-    /**
-     * Prints all the results collected to console.
-     */
-    public void printAllOnConsole(){
-        printOnConsole(null,null);
+        Logger.info("Ping tests are done!");
     }
 
     /**
@@ -68,11 +60,11 @@ public class TestFramework {
      * @param testPhase test phase.
      * @param pinger    pinger instance
      */
-    public OverallLatencyResult loopPing(String testGroupName, TestPhase testPhase, Node pinger, int totalProcesses) {
+    private OverallLatencyResult loopPing(String testGroupName, TestPhase testPhase, Node pinger, int totalProcesses) {
         int loopCount = testPhase.getIterations();
 
         int totalPingCount = totalProcesses * loopCount;
-        testResultCollector.setTaskCountForTest("pingSingle", totalPingCount);
+        resultCollector.setTaskCountForTest("pingSingle", totalPingCount);
 
         long[] results = new long[loopCount];
         for (int i = 0; i < loopCount; i++) {
@@ -83,15 +75,34 @@ public class TestFramework {
             results[i] = end;
         }
 
-        testResultCollector.waitAllTasksFor("pingSingle");
+        resultCollector.waitAllTasksFor("pingSingle");
 
         return new OverallLatencyResult(testGroupName, testPhase, totalProcesses, results);
     }
 
     /**
-     * @return the result collector service.
+     * Prints the results to console.
+     * @param testGroupName test group to print on console
+     * @param phase         phase of the test group to print
      */
-    public static TestResultCollector getResultCollector(){
-        return TestResultCollector.getInstance();
+    public void printOnConsole(String testGroupName, TestPhase phase){
+        resultCollector.printOnConsole(testGroupName, phase);
+    }
+
+    /**
+     * Prints all the results collected to console.
+     */
+    public void printAllOnConsole(){
+        printOnConsole(null,null);
+    }
+
+    /**
+     * Adds latency result in an async manner.
+     * @param latencyResult latency result to add
+     */
+    public static void addLatencyResult(LatencyResult latencyResult){
+        if(pingTester != null){
+            pingTester.resultCollector.addResultAsync(latencyResult);
+        }
     }
 }

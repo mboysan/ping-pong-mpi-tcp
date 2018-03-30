@@ -4,8 +4,10 @@ import mpi.MPIException;
 import network.address.MPIAddress;
 import org.pmw.tinylog.Logger;
 import role.Node;
+import testframework.SystemInfo;
 import testframework.TestFramework;
-import testframework.TestPhase;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Ping-Pong test for MPI
@@ -13,6 +15,8 @@ import testframework.TestPhase;
 public class MPIMain {
 
     public static void main(String[] args) throws MPIException, InterruptedException {
+        SystemInfo sysInfo = SystemInfo.collectEvery(500, TimeUnit.MILLISECONDS);
+
         GlobalConfig.getInstance().initMPI(args);
         TestFramework testFramework = null;
 
@@ -27,7 +31,7 @@ public class MPIMain {
             Node pinger = new Node(new MPIAddress(rank), totalProcesses);
 
             /* start tests */
-            testFramework = TestFramework.getInstance().initPingTests(pinger, totalProcesses);
+            testFramework = TestFramework.doPingTests(pinger, totalProcesses);
 
             /* send end signal to all nodes */
             pinger.signalEndToAll();
@@ -39,5 +43,7 @@ public class MPIMain {
         if(testFramework != null){
             testFramework.printAllOnConsole();
         }
+
+        sysInfo.printOnConsole();
     }
 }

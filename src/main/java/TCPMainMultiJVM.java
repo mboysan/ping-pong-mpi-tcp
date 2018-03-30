@@ -3,11 +3,13 @@ import mpi.MPIException;
 import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 import role.Node;
+import testframework.SystemInfo;
 import testframework.TestFramework;
 import testframework.TestPhase;
 
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Assumes a single JVM is running per Node.
@@ -15,6 +17,8 @@ import java.util.Arrays;
 public class TCPMainMultiJVM {
 
     public static void main(String[] args) throws UnknownHostException, InterruptedException, MPIException {
+        SystemInfo sysInfo = SystemInfo.collectEvery(500, TimeUnit.MILLISECONDS);
+
         TestFramework testFramework = null;
 
         Logger.info("Args received: " + Arrays.toString(args));
@@ -35,7 +39,7 @@ public class TCPMainMultiJVM {
             Node pinger = new Node(new TCPAddress("127.0.0.1", port), totalProcesses);
 
             /* start tests */
-            testFramework = TestFramework.getInstance().initPingTests(pinger, totalProcesses);
+            testFramework = TestFramework.doPingTests(pinger, totalProcesses);
 
             /* send end signal to all nodes */
             pinger.signalEndToAll();
@@ -48,5 +52,6 @@ public class TCPMainMultiJVM {
             testFramework.printOnConsole("pingAll", TestPhase.PHASE_FULL_LOAD);
         }
 
+        sysInfo.printOnConsole();
     }
 }

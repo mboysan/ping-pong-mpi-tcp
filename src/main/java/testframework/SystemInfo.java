@@ -10,11 +10,18 @@ import java.util.concurrent.TimeUnit;
  * Class that generates current system utilization values. Results are collected with {@link TestResultCollector}
  * under testGroupName "sysResult".
  */
-public class SystemInfoGenerator {
+public class SystemInfo {
 
-    private static SystemInfoGenerator ourinstance;
+    private static SystemInfo ourinstance;
 
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+
+    private final TestResultCollector resultCollector = new TestResultCollector();
+
+    /**
+     * Indicates if the generation ended or not.
+     */
+    private boolean isEnded = false;
 
     /**
      * Period to generate results for.
@@ -26,19 +33,22 @@ public class SystemInfoGenerator {
     private final TimeUnit timeUnit;
 
     /**
+     * Starts collecting system info results with the period defined. If there are any old generator initialized,
+     * ends it then initializes new generator.
+     *
      * @param time     sets {@link #time}
      * @param timeUnit sets {@link #timeUnit}
+     * @return the created sys info collector.
      */
-    public static void collectEvery(long time, TimeUnit timeUnit) {
-        if(ourinstance == null){
-            ourinstance =  new SystemInfoGenerator(time, timeUnit);
-        } else {
-            end();
-            collectEvery(time, timeUnit);
+    public static SystemInfo collectEvery(long time, TimeUnit timeUnit) {
+        if(ourinstance != null){
+            ourinstance.end();
         }
+        ourinstance = new SystemInfo(time, timeUnit);
+        return ourinstance;
     }
 
-    private SystemInfoGenerator(long time, TimeUnit timeUnit){
+    private SystemInfo(long time, TimeUnit timeUnit){
         this.time = time;
         this.timeUnit = timeUnit;
         exec();
@@ -49,7 +59,7 @@ public class SystemInfoGenerator {
      */
     private void exec() {
         Runnable task = () -> {
-            TestResultCollector.getInstance()
+            resultCollector
                     .addResultAsyncUnbounded(
                             new SystemInfoResult("sysResult", TestPhase.PHASE_CUSTOM)
                     );
@@ -57,20 +67,23 @@ public class SystemInfoGenerator {
         executor.scheduleAtFixedRate(task, 0, time, timeUnit);
     }
 
-    public static synchronized void end(){
-        if(ourinstance == null){
-            return;
+    /**
+     * Ends result generation and collection.
+     */
+    public synchronized void end(){
+        if(!isEnded){
+            executor.shutdownNow();
+            resultCollector.finalizeCollection();
+
+            isEnded = true;
         }
-        ourinstance.executor.shutdownNow();
-        ourinstance = null;
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        SystemInfoGenerator.collectEvery(1, TimeUnit.SECONDS);
-        System.out.println("collecting");
-        Thread.sleep(5000);
-        SystemInfoGenerator.end();
-        TestResultCollector.getInstance().printOnConsole("sysResult", null);
-        TestResultCollector.getInstance().finalizeCollection();
+    /**
+     * Ends the result generation, then prints results on console.
+     */
+    public synchronized void printOnConsole(){
+        end();
+        resultCollector.printOnConsole("sysResult", null);
     }
 }

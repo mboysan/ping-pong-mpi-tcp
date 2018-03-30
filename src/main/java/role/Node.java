@@ -109,13 +109,16 @@ public class Node extends Role {
         if (message instanceof Pong_NC) {
             /* collect latency result and add it to test result collector */
             long currTime = System.currentTimeMillis();
-            TestFramework.getResultCollector().addResultAsync(new LatencyResult(
-                    "pingSingle",
-                    PHASE_CUSTOM,
-                    message.getSenderId(),
-                    currTime,
-                    message.getTimeStamp(),
-                    currTime));
+            TestFramework.addLatencyResult(
+                    new LatencyResult(
+                            "pingSingle",
+                            PHASE_CUSTOM,
+                            message.getSenderId(),
+                            currTime,
+                            message.getTimeStamp(),
+                            currTime
+                    )
+            );
             if (pongLatch != null) {
                 pongLatch.countDown();
             }

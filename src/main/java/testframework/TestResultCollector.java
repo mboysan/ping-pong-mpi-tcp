@@ -9,12 +9,7 @@ import java.util.concurrent.*;
 /**
  * Used for collecting the test results.
  */
-public class TestResultCollector {
-    /**
-     * Singleton instance
-     */
-    private static TestResultCollector ourinstance = new TestResultCollector();
-
+class TestResultCollector {
     /**
      * Results collector executor service.
      */
@@ -27,17 +22,9 @@ public class TestResultCollector {
     /**
      * Map that contains the results collected. Grouped by test group name
      */
-    private final Map<String, List<IResult>> resultsMap;
+    private final Map<String, List<IResult>> resultsMap = new ConcurrentHashMap<>();
 
-    private TestResultCollector() {
-        this.resultsMap = new ConcurrentHashMap<>();
-    }
-
-    /**
-     * @return gets {@link #ourinstance}
-     */
-    static TestResultCollector getInstance() {
-        return ourinstance;
+    public TestResultCollector() {
     }
 
     /**
