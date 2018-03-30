@@ -17,7 +17,7 @@ public class TestResultCollector {
     /**
      * Results collector executor service.
      */
-    private final ExecutorService executor = Executors.newFixedThreadPool(5);
+    private final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     /**
      * Latch map for each test group specified.
      */
