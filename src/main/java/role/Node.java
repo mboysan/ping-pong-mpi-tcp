@@ -53,7 +53,7 @@ public class Node extends Role {
             NetworkCommand ping = new Ping_NC()
                     .setSenderId(getRoleId())
                     .setReceiverAddress(receiverAddress)
-                    .setSenderAddress(getMyAddress());
+                    .setSenderAddress(getAddress());
             sendMessage(ping);
         }
     }
@@ -66,7 +66,7 @@ public class Node extends Role {
         NetworkCommand pong = new Pong_NC()
                 .setSenderId(getRoleId())
                 .setReceiverAddress(message.resolveSenderAddress())
-                .setSenderAddress(getMyAddress());
+                .setSenderAddress(getAddress());
         sendMessage(pong);
     }
 
@@ -78,7 +78,7 @@ public class Node extends Role {
             NetworkCommand signalEnd = new SignalEnd_NC()
                     .setSenderId(getRoleId())
                     .setReceiverAddress(receiverAddress)
-                    .setSenderAddress(getMyAddress());
+                    .setSenderAddress(getAddress());
             sendMessage(signalEnd);
         }
     }
@@ -102,7 +102,7 @@ public class Node extends Role {
      */
     @Override
     public void handleMessage(NetworkCommand message) {
-        Logger.debug("[" + getMyAddress() +"] - " + message);
+        Logger.debug("[" + getAddress() +"] - " + message);
         if (message instanceof Ping_NC) {
             pong((Ping_NC) message);
         }

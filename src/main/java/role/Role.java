@@ -20,7 +20,7 @@ public abstract class Role {
      */
     private final Address myAddress;
 
-    protected final MessageSender messageSender;
+    private final MessageSender messageSender;
 
     /**
      * @param myAddress see {@link #myAddress}
@@ -44,7 +44,7 @@ public abstract class Role {
     /**
      * @return see {@link #myAddress}
      */
-    public Address getMyAddress() {
+    public Address getAddress() {
         return myAddress;
     }
 

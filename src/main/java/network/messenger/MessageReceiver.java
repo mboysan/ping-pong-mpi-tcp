@@ -2,7 +2,6 @@ package network.messenger;
 
 import config.GlobalConfig;
 import mpi.MPI;
-import network.address.Address;
 import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 import protocol.CommandMarshaller;
@@ -69,7 +68,7 @@ public class MessageReceiver {
             ServerSocket serverSocket;
             Socket socket = null;
             try {
-                TCPAddress addr = (TCPAddress) roleInstance.getMyAddress();
+                TCPAddress addr = (TCPAddress) roleInstance.getAddress();
                 serverSocket = new ServerSocket(addr.getPortNumber());
                 while (true) {
                     socket = serverSocket.accept();

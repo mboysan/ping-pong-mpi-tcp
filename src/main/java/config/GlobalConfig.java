@@ -9,7 +9,6 @@ import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 import role.Role;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,7 +16,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import static network.ConnectionProtocol.MPI_CONNECTION;
 import static network.ConnectionProtocol.TCP_CONNECTION;
@@ -106,7 +104,7 @@ public class GlobalConfig {
      */
     public void registerRole(Role role){
         //TODO: a more affective way of handling node registering.
-        Address roleAddress = role.getMyAddress();
+        Address roleAddress = role.getAddress();
         if (connectionProtocol == TCP_CONNECTION){
             if(isSingleJVM) {
                 addresses.add(roleAddress);
