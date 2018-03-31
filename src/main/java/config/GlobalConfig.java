@@ -36,7 +36,8 @@ public class GlobalConfig {
     private static GlobalConfig ourInstance = new GlobalConfig();
 
     /**
-     * indicates if the java process runs on a single JVM or not.
+     * indicates if there are more than one node running on a single JVM. Meaning, if true, the nodes are initiated
+     * in a single JVM and tests are done in that JVM. Otherwise, each node is assumed to have its own dedicated JVM.
      */
     private boolean isSingleJVM = false;
     /**
@@ -80,7 +81,7 @@ public class GlobalConfig {
      */
     public void initMPI(String[] args) throws MPIException {
         MPI.Init(args);
-        init(MPI_CONNECTION, true);
+        init(MPI_CONNECTION, false);
     }
 
     /**
@@ -169,6 +170,7 @@ public class GlobalConfig {
      * @param count the count of the existing processes to wait for,
      */
     private synchronized void resetEndLatch(int count){
+        Logger.debug("Resetting endLatch with count: " + count);
         endLatch = new CountDownLatch(count);
     }
 

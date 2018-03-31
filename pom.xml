@@ -51,7 +51,7 @@
         <dependency>
             <groupId>org.open-mpi</groupId>
             <artifactId>open-mpi</artifactId>
-            <version>3.0.0</version>
+            <version>1.8.4</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
