@@ -20,6 +20,8 @@ public class TestFramework {
      */
     private final TestResultCollector resultCollector = new TestResultCollector();
 
+    public static boolean isTesting = false;
+
     private TestFramework() {
     }
 
@@ -31,6 +33,7 @@ public class TestFramework {
      * @return this
      */
     public static TestFramework doPingTests(Node pinger, int processCount){
+        isTesting = true;
         if(pingTester == null){
             pingTester = new TestFramework();
         }

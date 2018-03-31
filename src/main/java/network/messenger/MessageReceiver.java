@@ -30,7 +30,7 @@ public class MessageReceiver {
     /**
      * Command marshaller to unmarshall the received message.
      */
-    private final CommandMarshaller commandMarshaller;
+    private final CommandMarshaller commandMarshaller = new CommandMarshaller();
 
     /**
      * Initializes the message receiver. It then creates the appropriate handler to handle the received message.
@@ -39,7 +39,6 @@ public class MessageReceiver {
      */
     public MessageReceiver(Role roleInstance) {
         this.roleInstance = roleInstance;
-        this.commandMarshaller = new CommandMarshaller();
 
         switch (GlobalConfig.getInstance().getConnectionProtocol()) {
             case TCP_CONNECTION:

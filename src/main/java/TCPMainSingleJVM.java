@@ -22,7 +22,7 @@ public class TCPMainSingleJVM {
             totalNodes = Integer.parseInt(args[0]);
         }
 
-        GlobalConfig.getInstance().initTCP(true, totalNodes);
+        GlobalConfig.getInstance().initTCP(true);
         Logger.info("TCP INIT (Single JVM)");
 
         /* Start pinger and pongers */
@@ -30,7 +30,7 @@ public class TCPMainSingleJVM {
         for (int i = 1; i < totalNodes; i++) {  // first index will be reserved to pinger
             Node ponger = new Node(new TCPAddress("127.0.0.1", port++));
         }
-        Node pinger = new Node(new TCPAddress("127.0.0.1", port++), totalNodes);
+        Node pinger = new Node(new TCPAddress("127.0.0.1", port++));
 
         /* start tests */
         TestFramework testFramework = TestFramework.doPingTests(pinger, totalNodes);

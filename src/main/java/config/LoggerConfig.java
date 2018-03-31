@@ -19,7 +19,7 @@ public class LoggerConfig {
      */
     private static void configRefined(Level level){
         Configurator.currentConfig()
-                .formatPattern("{date:HH:mm:ss:SSS} {class}.{method}(): {message}")
+                .formatPattern("[{level}] {date:HH:mm:ss:SSS} {class}.{method}(): {message}")
                 .level(level)
                 .activate();
     }

@@ -28,7 +28,7 @@ public class MPIMain {
             Node ponger = new Node(new MPIAddress(rank));
         } else {
             int totalProcesses = GlobalConfig.getInstance().getProcessCount();
-            Node pinger = new Node(new MPIAddress(rank), totalProcesses);
+            Node pinger = new Node(new MPIAddress(rank));
 
             /* start tests */
             testFramework = TestFramework.doPingTests(pinger, totalProcesses);
