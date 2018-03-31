@@ -2,9 +2,15 @@ package role;
 
 import config.GlobalConfig;
 import network.address.Address;
+import org.pmw.tinylog.Logger;
 import protocol.commands.NetworkCommand;
 import network.messenger.MessageReceiver;
 import network.messenger.MessageSender;
+import protocol.commands.ping.ConnectOK_NC;
+import protocol.commands.ping.Connect_NC;
+import protocol.commands.ping.Ping_NC;
+
+import java.util.concurrent.TimeoutException;
 
 /**
  * Each node is defined as a role.
@@ -20,6 +26,9 @@ public abstract class Role {
      */
     private final Address myAddress;
 
+    /**
+     * Message sender service.
+     */
     private final MessageSender messageSender;
 
     /**
@@ -28,10 +37,11 @@ public abstract class Role {
     Role(Address myAddress) {
         this.myAddress = myAddress;
         roleId = myAddress.resolveAddressId();
-        GlobalConfig.getInstance().registerRole(this);
 
         this.messageSender = new MessageSender();
         start();
+
+        GlobalConfig.getInstance().registerRole(this);
     }
 
     /**
@@ -59,7 +69,18 @@ public abstract class Role {
      * Handles the provided network message. Each role implements its own message handling mechanism.
      * @param message the network message to handle.
      */
-    abstract public void handleMessage(NetworkCommand message);
+    public void handleMessage(NetworkCommand message){
+        Logger.debug("[" + getAddress() +"] - " + message);
+        if(message instanceof Connect_NC){
+            NetworkCommand connectOK = new ConnectOK_NC()
+                    .setSenderAddress(getAddress())
+                    .setReceiverAddress(message.resolveSenderAddress());
+            sendMessage(connectOK);
+        }
+        if(message instanceof ConnectOK_NC){
+            GlobalConfig.getInstance().registerAddress(message.resolveSenderAddress());
+        }
+    }
 
     /**
      * Sends the network message to another process. Basically passes the message to the message sender service.
@@ -69,4 +90,11 @@ public abstract class Role {
         messageSender.send(message);
     }
 
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleId='" + roleId + '\'' +
+                ", myAddress=" + myAddress +
+                '}';
+    }
 }

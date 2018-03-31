@@ -28,15 +28,15 @@ public class TCPMainMultiJVM {
             totalProcesses = Integer.parseInt(args[0]);
             rank = Integer.parseInt(args[1]);
         }
-        int port = 8080 + rank;
+        int port = 9090 + rank;
 
-        GlobalConfig.getInstance().initTCP(false, totalProcesses);
+        GlobalConfig.getInstance().initTCP(false);
         Logger.info("TCP INIT (Multi JVM)");
 
         if(rank != 0){
             Node ponger = new Node(new TCPAddress("127.0.0.1", port));
         } else {
-            Node pinger = new Node(new TCPAddress("127.0.0.1", port), totalProcesses);
+            Node pinger = new Node(new TCPAddress("127.0.0.1", port));
 
             /* start tests */
             testFramework = TestFramework.doPingTests(pinger, totalProcesses);
@@ -49,7 +49,8 @@ public class TCPMainMultiJVM {
 
         Logger.info("TCP END - rank:" + rank);
         if(testFramework != null){
-            testFramework.printOnConsole("pingAll", TestPhase.PHASE_FULL_LOAD);
+//            testFramework.printOnConsole("pingAll", TestPhase.PHASE_FULL_LOAD);
+            testFramework.printAllOnConsole();
         }
 
         sysInfo.printOnConsole();

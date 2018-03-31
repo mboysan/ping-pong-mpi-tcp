@@ -27,4 +27,6 @@ ifconfig
 echo "-------------- curl ifconfig.co"
 curl ifconfig.co
 echo "-------------- JOB"
-mpirun -np 1 java -cp *jar-with-dependencies.jar MPIMain
+java -cp *-jar-with-dependencies.jar TCPMainSingleJVM
+
+#mpirun -np 1 java -cp *jar-with-dependencies.jar MPIMain $@

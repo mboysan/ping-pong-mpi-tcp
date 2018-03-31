@@ -24,31 +24,18 @@ public class Node extends Role {
     private CountDownLatch pongLatch;
 
     /**
-     * Currently only used to initialize the Ponger node.
-     * @param myAddress address of the node.
-     */
-    public Node(Address myAddress) {
-        this(myAddress, -1);
-    }
-
-    /**
      * Currently only used to initializes the Pinger node.
      * @param myAddress  address of the node.
-     * @param totalNodes number of nodes present in the group.
      */
-    public Node(Address myAddress, int totalNodes){
+    public Node(Address myAddress){
         super(myAddress);
-        pongLatch = null;
-        if(totalNodes > 0){
-            pongLatch = new CountDownLatch(totalNodes);
-        }
+        pongLatch = new CountDownLatch(GlobalConfig.getInstance().getProcessCount());
     }
 
     /**
      * Sends {@link Ping_NC} request to all processes.
      */
     public void pingAll() {
-        //TODO: synchronize addresses? But it will be too slow. Some other method of address looping might be needed.
         for (Address receiverAddress : GlobalConfig.getInstance().getAddresses()) {
             NetworkCommand ping = new Ping_NC()
                     .setSenderId(getRoleId())
@@ -102,23 +89,25 @@ public class Node extends Role {
      */
     @Override
     public void handleMessage(NetworkCommand message) {
-        Logger.debug("[" + getAddress() +"] - " + message);
+        super.handleMessage(message);
         if (message instanceof Ping_NC) {
             pong((Ping_NC) message);
         }
         if (message instanceof Pong_NC) {
-            /* collect latency result and add it to test result collector */
-            long currTime = System.currentTimeMillis();
-            TestFramework.addLatencyResult(
-                    new LatencyResult(
-                            "pingSingle",
-                            PHASE_CUSTOM,
-                            message.getSenderId(),
-                            currTime,
-                            message.getTimeStamp(),
-                            currTime
-                    )
-            );
+            if(TestFramework.isTesting){
+                /* collect latency result and add it to test result collector */
+                long currTime = System.currentTimeMillis();
+                TestFramework.addLatencyResult(
+                        new LatencyResult(
+                                "pingSingle",
+                                PHASE_CUSTOM,
+                                message.getSenderId(),
+                                currTime,
+                                message.getTimeStamp(),
+                                currTime
+                        )
+                );
+            }
             if (pongLatch != null) {
                 pongLatch.countDown();
             }
