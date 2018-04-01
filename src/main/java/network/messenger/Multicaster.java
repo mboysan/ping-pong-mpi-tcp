@@ -36,6 +36,9 @@ public class Multicaster {
     private final MulticastReceiver receiver;
 
     public Multicaster(MulticastAddress multicastAddress, Role roleInstance) {
+        if(multicastAddress == null){
+            throw new IllegalArgumentException("multicast address has to be provided");
+        }
         this.multicastAddress = multicastAddress;
         this.roleInstance = roleInstance;
 

@@ -52,6 +52,7 @@ public class GlobalConfig {
     private CountDownLatch endLatch;
 
     private Multicaster multicaster;
+    private MulticastAddress multicastAddress;
 
     /**
      * @return singleton instance, i.e. {@link #ourInstance}
@@ -64,10 +65,15 @@ public class GlobalConfig {
         this.addresses = Collections.newSetFromMap(new ConcurrentHashMap<>());
     }
 
+    public void initTCP(boolean isSingleJVM){
+        initTCP(isSingleJVM, null);
+    }
+
     /**
      * Initializes the system for TCP communication.
      */
-    public void initTCP(boolean isSingleJVM) {
+    public void initTCP(boolean isSingleJVM, MulticastAddress multicastAddress) {
+        this.multicastAddress = multicastAddress;
         init(TCP_CONNECTION, isSingleJVM);
     }
 
@@ -135,10 +141,9 @@ public class GlobalConfig {
         if(connectionProtocol == TCP_CONNECTION){
             if(multicaster == null){
                 try {
-                    multicaster = new Multicaster(
-                            new MulticastAddress("233.0.0.0", 9999), role);
-                } catch (UnknownHostException e) {
-                    Logger.error(e, "multicaster could not be started.");
+                    multicaster = new Multicaster(multicastAddress, role);
+                } catch (IllegalArgumentException e){
+                    Logger.error(e);
                 }
             }
         }
