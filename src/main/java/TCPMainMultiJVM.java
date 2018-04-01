@@ -21,13 +21,13 @@ public class TCPMainMultiJVM {
         long timeStart = System.currentTimeMillis();
 
         Logger.info("Args received: " + Arrays.toString(args));
-        int totalProcesses = 3;
+        int nTasks = 3;     //Number of tasks to complete. Usually equals to (numNodes * numTasksPerNode)
         int rank = 0;
         String multicastGroup = "all-systems.mcast.net";
         boolean monitorSystem = true;
         if(args != null){
             if(args.length >= 1){
-                totalProcesses = Integer.parseInt(args[0]);
+                nTasks = Integer.parseInt(args[0]);
             }
             if(args.length >= 2){
                 rank = Integer.parseInt(args[1]);
@@ -39,6 +39,7 @@ public class TCPMainMultiJVM {
                 multicastGroup = args[3];
             }
         }
+
         SystemMonitor sysInfo = null;
         TestFramework testFramework = null;
 
@@ -57,7 +58,7 @@ public class TCPMainMultiJVM {
 
         if(node.isLeader()){    // the node is pinger.
             /* start tests */
-            testFramework = TestFramework.doPingTests(node, totalProcesses);
+            testFramework = TestFramework.doPingTests(node, nTasks);
 
             /* send end signal to all nodes */
             node.signalEndToAll();

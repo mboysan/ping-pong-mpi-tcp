@@ -9,5 +9,5 @@ cp -avr ./tcp_multi_jvm.sh ./target/tcp_multi_jvm.sh
 # go to target
 cd ./target
 
-processCount=3
-java -cp *jar-with-dependencies.jar TCPProcess $processCount
+nTasks=3
+java -cp *jar-with-dependencies.jar TCPProcess $nTasks
