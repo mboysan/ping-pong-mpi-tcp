@@ -1,5 +1,6 @@
 import config.GlobalConfig;
 import mpi.MPIException;
+import network.address.MulticastAddress;
 import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 import role.Node;
@@ -27,18 +28,26 @@ public class TCPMainMultiJVM {
         Logger.info("Args received: " + Arrays.toString(args));
         int totalProcesses = 3;
         int rank = 0;
-        if(args != null && args.length > 0){
-            totalProcesses = Integer.parseInt(args[0]);
-            rank = Integer.parseInt(args[1]);
+        String multicastGroup = "all-systems.mcast.net";
+        if(args != null){
+            if(args.length >= 1){
+                totalProcesses = Integer.parseInt(args[0]);
+            }
+            if(args.length >= 2){
+                rank = Integer.parseInt(args[1]);
+            }
+            if(args.length >= 3){
+                multicastGroup = args[2];
+            }
         }
         int port = 9090 + rank;
 
-        GlobalConfig.getInstance().initTCP(false);
+        GlobalConfig.getInstance().initTCP(false, new MulticastAddress(multicastGroup, 9999));
         Logger.info("TCP INIT (Multi JVM)");
 
         Node node = new Node(new TCPAddress(ip, port));
 
-        Logger.debug("Node created: " + node);
+        Logger.info("Node created: " + node);
 
         if(node.isLeader()){    // the node is pinger.
             /* start tests */
