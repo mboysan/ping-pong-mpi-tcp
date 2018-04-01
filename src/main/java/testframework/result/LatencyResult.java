@@ -2,6 +2,9 @@ package testframework.result;
 
 import testframework.TestPhase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Single latency result. Time taken for a ping to receive a pong.
  */
@@ -76,9 +79,10 @@ public class LatencyResult implements IResult {
     public String CSVLine(boolean writeHeader){
         String lines = "";
         if(writeHeader){
-            lines += String.format("testGroup,phase,iterations,timestamp,pid,latency%n");
+            lines += String.format("testGroup,phase,iterations,pid,timestamp,time,latency%n");
         }
-        return lines + String.format("%s,%s,%d,%d,%s,%d%n",
-                testGroupName, testPhase.getName(), testPhase.getIterations(), currentTimestamp, name, latency);
+        String time = timeStampReadable(currentTimestamp);
+        return lines + String.format("%s,%s,%d,%s,%d,%s,%d%n",
+                testGroupName, testPhase.getName(), testPhase.getIterations(), name, currentTimestamp, time, latency);
     }
 }

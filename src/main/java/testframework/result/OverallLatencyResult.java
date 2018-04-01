@@ -16,6 +16,11 @@ public class OverallLatencyResult implements IResult {
     private final TestPhase testPhase;
 
     /**
+     * generated internally when the object is created.
+     */
+    private final long timestamp;
+
+    /**
      * number of processes in the system
      */
     private final int numberOfProcesses;
@@ -44,6 +49,8 @@ public class OverallLatencyResult implements IResult {
         this.testPhase = testPhase;
         this.numberOfProcesses = numberOfProcesses;
         this.latencies = latencies;
+
+        this.timestamp = System.currentTimeMillis();
 
         this.averageLatency = calcAverage(latencies);
         this.resultsTotal = latencies.length;
@@ -76,9 +83,11 @@ public class OverallLatencyResult implements IResult {
     public String CSVLine(boolean writeHeader) {
         String line = "";
         if(writeHeader){
-            line += String.format("testGroup,phase,iterations,resultsTotal,numProcs,avgLatency%n");
+            line += String.format("testGroup,phase,timestamp,time,iterations,resultsTotal,numProcs,avgLatency%n");
         }
-        return line + String.format("%s,%s,%d,%d,%s,%d%n",
-                testGroupName, testPhase.getName(), testPhase.getIterations(), resultsTotal, numberOfProcesses, averageLatency);
+        String time = timeStampReadable(timestamp);
+        return line + String.format("%s,%s,%d,%s,%d,%d,%s,%d%n",
+                testGroupName, testPhase.getName(), timestamp, time,
+                testPhase.getIterations(), resultsTotal, numberOfProcesses, averageLatency);
     }
 }

@@ -10,6 +10,11 @@ public class SystemInfoResult implements IResult {
     private final String testGroupName;
     private final TestPhase phase;
 
+    /**
+     * generated internally when the object is created.
+     */
+    private final long timestamp;
+
     private final int processorCount;
     private final double usedMemoryMB;
     private final double maxMemoryMB;
@@ -19,6 +24,8 @@ public class SystemInfoResult implements IResult {
     public SystemInfoResult(String testGroupName, TestPhase phase) {
         this.testGroupName = testGroupName;
         this.phase = phase;
+
+        this.timestamp = System.currentTimeMillis();
 
         this.processorCount = Runtime.getRuntime().availableProcessors();
         this.usedMemoryMB = MemoryUtils.usedMemory();
@@ -41,10 +48,11 @@ public class SystemInfoResult implements IResult {
     public String CSVLine(boolean writeHeader) {
         String line = "";
         if(writeHeader){
-            line += String.format("pCount,usedMemMB,maxMemMB,jvmCPU,sysCPU%n");
+            line += String.format("timestamp,time,pCount,usedMemMB,maxMemMB,jvmCPU,sysCPU%n");
         }
-        return line + String.format("%d,%.2f,%.2f,%.2f,%.2f%n",
-                processorCount, usedMemoryMB, maxMemoryMB, jvmCPUPercent, sysCPUPercent);
+        String time = timeStampReadable(timestamp);
+        return line + String.format("%d,%s,%d,%.2f,%.2f,%.2f,%.2f%n",
+                timestamp, time, processorCount, usedMemoryMB, maxMemoryMB, jvmCPUPercent, sysCPUPercent);
     }
 
     public static class CPUUtils {

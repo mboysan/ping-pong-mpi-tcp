@@ -2,6 +2,9 @@ package testframework.result;
 
 import testframework.TestPhase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * A single result.
  */
@@ -19,4 +22,12 @@ public interface IResult {
      * @return get the result as a CSV result preferably ended with <tt>System.getProperty("line.separator")</tt>
      */
     String CSVLine(boolean writeHeader);
+
+    /**
+     * @param timeStamp timestamp to use
+     * @return a readable format of the timestamp provided as argument.
+     */
+    default String timeStampReadable(long timeStamp){
+        return new SimpleDateFormat("HH:mm:ss.SSS").format(new Date(timeStamp));
+    }
 }
