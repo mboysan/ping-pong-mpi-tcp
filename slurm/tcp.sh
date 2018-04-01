@@ -1,32 +1,23 @@
 #!/bin/bash
+ module load openmpi-2.1.0
+ for nNODES in {1..2}; do
+    for nTASKS in {1..3}; do
+    np=$((${nNODES}*${nTASKS}))
+    dir_name="tcp_${nNODES}_${nTASKS}"
+    mkdir "${dir_name}"
+    f_name="${dir_name}/tcp_${nNODES}_${nTASKS}.sh"
+    f_name_wo_dir="tcp_${nNODES}_${nTASKS}.sh"
+        touch ${f_name}
+    echo "#!/bin/bash " >> ${f_name}
+    echo "#SBATCH -p testing" >> ${f_name}
+    echo "#SBATCH -N ${nNODES}" >> ${f_name}
+    echo "#SBATCH --ntasks-per-node=${nTASKS}" >> ${f_name}
+    echo "#SBATCH --cpus-per-task=4" >> ${f_name}
+    echo "#SBATCH -t 00:00:30" >> ${f_name}
+    cat tcp_body.sh >> ${f_name}
 
-# The job should run on the testing partition
-#SBATCH -p testing
-
-# Required compute nodes
-#SBATCH -N 1
-
-# Required tasks per node
-#SBATCH --ntasks-per-node=1
-
-# The maximum walltime of the job
-#SBATCH -t 00:00:10
-
-#module load openmpi-2.1.0
-module load openmpi-1.8.4
-module load jdk-1.8.0_25
-
-echo "-------------- uname -r"
-uname -r
-echo "-------------- hostname"
-hostname
-echo "-------------- hostname -I"
-hostname -I
-echo "-------------- ifconfig"
-ifconfig
-echo "-------------- curl ifconfig.co"
-curl ifconfig.co
-echo "-------------- JOB"
-java -cp *-jar-with-dependencies.jar TCPMainSingleJVM
-
-#mpirun -np 1 java -cp *jar-with-dependencies.jar MPIMain $@
+    cd ${dir_name}
+        sbatch ${f_name_wo_dir}
+    cd ..
+    done
+done
