@@ -3,7 +3,7 @@ import mpi.MPIException;
 import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 import role.Node;
-import testframework.SystemInfo;
+import testframework.SystemMonitor;
 import testframework.TestFramework;
 
 import java.io.IOException;
@@ -16,15 +16,14 @@ import java.util.concurrent.TimeUnit;
 public class TCPMainSingleJVM {
 
     public static void main(String[] args) throws IOException, InterruptedException, MPIException {
-        SystemInfo sysInfo = SystemInfo.collectEvery(500, TimeUnit.MILLISECONDS);
+        SystemMonitor sysInfo = SystemMonitor.collectEvery(500, TimeUnit.MILLISECONDS);
 
         int totalNodes = 3;
-        if(args != null && args.length > 0){
+        if(args != null && args.length == 1){
             totalNodes = Integer.parseInt(args[0]);
         }
 
         GlobalConfig.getInstance().initTCP(true);
-        Logger.info("TCP INIT (Single JVM)");
 
         InetAddress ip = TCPAddress.resolveIpAddress();
 
@@ -42,8 +41,6 @@ public class TCPMainSingleJVM {
         pinger.signalEndToAll();
 
         GlobalConfig.getInstance().end();
-
-        Logger.info("TCP END (Single JVM)");
 
         testFramework.printAllOnConsole();
 

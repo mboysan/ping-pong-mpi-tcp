@@ -4,9 +4,8 @@ import network.address.MulticastAddress;
 import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 import role.Node;
-import testframework.SystemInfo;
+import testframework.SystemMonitor;
 import testframework.TestFramework;
-import testframework.TestPhase;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -19,16 +18,13 @@ import java.util.concurrent.TimeUnit;
 public class TCPMainMultiJVM {
 
     public static void main(String[] args) throws UnknownHostException, InterruptedException, MPIException {
-        SystemInfo sysInfo = SystemInfo.collectEvery(500, TimeUnit.MILLISECONDS);
-
-        TestFramework testFramework = null;
-
-        InetAddress ip = TCPAddress.resolveIpAddress();
+        long timeStart = System.currentTimeMillis();
 
         Logger.info("Args received: " + Arrays.toString(args));
         int totalProcesses = 3;
         int rank = 0;
         String multicastGroup = "all-systems.mcast.net";
+        boolean monitorSystem = true;
         if(args != null){
             if(args.length >= 1){
                 totalProcesses = Integer.parseInt(args[0]);
@@ -37,17 +33,27 @@ public class TCPMainMultiJVM {
                 rank = Integer.parseInt(args[1]);
             }
             if(args.length >= 3){
-                multicastGroup = args[2];
+                monitorSystem = Boolean.valueOf(args[2]);
+            }
+            if(args.length >= 4){
+                multicastGroup = args[3];
             }
         }
-        int port = 9090 + rank;
+        SystemMonitor sysInfo = null;
+        TestFramework testFramework = null;
 
-        GlobalConfig.getInstance().initTCP(false, new MulticastAddress(multicastGroup, 9999));
-        Logger.info("TCP INIT (Multi JVM)");
+        if(monitorSystem){
+            sysInfo = SystemMonitor.collectEvery(500, TimeUnit.MILLISECONDS);
+        }
 
-        Node node = new Node(new TCPAddress(ip, port));
+        InetAddress ip = TCPAddress.resolveIpAddress();
 
-        Logger.info("Node created: " + node);
+        MulticastAddress multicastAddress = new MulticastAddress(multicastGroup, 9999);
+        TCPAddress tcpAddress = new TCPAddress(ip, 9090 + rank);
+
+        GlobalConfig.getInstance().initTCP(false, multicastAddress);
+
+        Node node = new Node(tcpAddress);
 
         if(node.isLeader()){    // the node is pinger.
             /* start tests */
@@ -59,12 +65,16 @@ public class TCPMainMultiJVM {
 
         GlobalConfig.getInstance().end();
 
-        Logger.info("TCP END - rank:" + rank);
+        TimeUnit.MILLISECONDS.sleep(500);
+
         if(testFramework != null){
-//            testFramework.printOnConsole("pingAll", TestPhase.PHASE_FULL_LOAD);
             testFramework.printAllOnConsole();
         }
 
-        sysInfo.printOnConsole();
+        if(sysInfo != null){
+            sysInfo.printOnConsole();
+        }
+
+        Logger.info("Total time (ms): " + (System.currentTimeMillis() - timeStart));
     }
 }

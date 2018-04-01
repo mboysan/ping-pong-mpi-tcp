@@ -30,6 +30,7 @@ public class Node extends Role {
     public Node(Address myAddress){
         super(myAddress);
         pongLatch = new CountDownLatch(GlobalConfig.getInstance().getProcessCount());
+        Logger.info("Node created: " + this.toString());
     }
 
     /**

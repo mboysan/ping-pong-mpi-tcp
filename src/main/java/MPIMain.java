@@ -4,9 +4,10 @@ import mpi.MPIException;
 import network.address.MPIAddress;
 import org.pmw.tinylog.Logger;
 import role.Node;
-import testframework.SystemInfo;
+import testframework.SystemMonitor;
 import testframework.TestFramework;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -15,35 +16,48 @@ import java.util.concurrent.TimeUnit;
 public class MPIMain {
 
     public static void main(String[] args) throws MPIException, InterruptedException {
-        SystemInfo sysInfo = SystemInfo.collectEvery(500, TimeUnit.MILLISECONDS);
+        long timeStart = System.currentTimeMillis();
+
+        Logger.info("Args received: " + Arrays.toString(args));
+        boolean monitorSystem = false;
+        if(args != null){
+            if(args.length >= 1){
+                monitorSystem = Boolean.valueOf(args[0]);
+            }
+        }
+
+        SystemMonitor sysInfo = null;
+        TestFramework testFramework = null;
+
+        if(monitorSystem){
+            sysInfo = SystemMonitor.collectEvery(500, TimeUnit.MILLISECONDS);;
+        }
 
         GlobalConfig.getInstance().initMPI(args);
-        TestFramework testFramework = null;
 
         int rank = MPI.COMM_WORLD.getRank();
 
-        Logger.info("MPI INIT - rank:" + rank);
+        int totalProcesses = GlobalConfig.getInstance().getProcessCount();
 
-        if(rank != 0){ // pinger process will be the one with rank = 0, others will be pongers
-            Node ponger = new Node(new MPIAddress(rank));
-        } else {
-            int totalProcesses = GlobalConfig.getInstance().getProcessCount();
-            Node pinger = new Node(new MPIAddress(rank));
+        Node node = new Node(new MPIAddress(rank));
 
+        if(node.isLeader()){
             /* start tests */
-            testFramework = TestFramework.doPingTests(pinger, totalProcesses);
+            testFramework = TestFramework.doPingTests(node, totalProcesses);
 
             /* send end signal to all nodes */
-            pinger.signalEndToAll();
+            node.signalEndToAll();
         }
 
         GlobalConfig.getInstance().end();
 
-        Logger.info("MPI END - rank:" + rank);
         if(testFramework != null){
             testFramework.printAllOnConsole();
         }
+        if(sysInfo != null){
+            sysInfo.printOnConsole();
+        }
 
-        sysInfo.printOnConsole();
+        Logger.info("Total time (ms): " + (System.currentTimeMillis() - timeStart));
     }
 }

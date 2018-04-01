@@ -92,6 +92,7 @@ public class GlobalConfig {
      * @param connectionProtocol sets {@link #connectionProtocol}
      */
     private void init(ConnectionProtocol connectionProtocol, boolean isSingleJVM) {
+        Logger.info(String.format("Init [%s, isSingleJVM:%s]", connectionProtocol.toString(), isSingleJVM));
         this.connectionProtocol = connectionProtocol;
         this.isSingleJVM = isSingleJVM;
         resetEndLatch(1);   // only 1 receiver per jvm
@@ -126,7 +127,10 @@ public class GlobalConfig {
                 }
             }
         } else if(connectionProtocol == MPI_CONNECTION){
+            /* first register self */
+            registerAddress(role.getAddress(), role);
             for (int i = 0; i < getProcessCount(); i++) {
+                /* register others. If address is same with self, returns anyways. */
                 registerAddress(new MPIAddress(i), role);
             }
         }
@@ -151,7 +155,7 @@ public class GlobalConfig {
     }
 
     /**
-     * Adds address to the set of address
+     * Adds address to the set of address. If address already exist returns without doing anything.
      * @param toRegister address to register
      * @param roleRef    reference to the role. Used to modify its properties based on the addresses change.
      */
@@ -164,7 +168,6 @@ public class GlobalConfig {
             }
         }
         if(isNew){
-            Logger.info("Address registered: " + toRegister);
             addresses.add(toRegister);
             electAsLeader(roleRef);
             if(isSingleJVM){
@@ -172,6 +175,7 @@ public class GlobalConfig {
             } else {
                 resetEndLatch(1);
             }
+            Logger.info(String.format("Address [%s] registered on role [%s]", toRegister, roleRef));
         }
     }
 
@@ -206,6 +210,7 @@ public class GlobalConfig {
      * Signal the end cycle.
      */
     public void readyEnd() {
+        Logger.debug(String.format("Entering end cycle [%s]", connectionProtocol));
         if(multicaster != null) {
             multicaster.shutdown();
         }
@@ -222,10 +227,8 @@ public class GlobalConfig {
         endLatch.await(1, TimeUnit.MINUTES);
         if (connectionProtocol == MPI_CONNECTION) {
             MPI.Finalize();
-            Logger.info("MPI finalized!");
-        } else {
-            Logger.info("TCP finalized!");
         }
+        Logger.info(String.format("Finalized [%s]", connectionProtocol));
     }
 
     /**

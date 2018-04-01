@@ -1,5 +1,6 @@
 package testframework;
 
+import org.pmw.tinylog.Logger;
 import testframework.result.SystemInfoResult;
 
 import java.util.concurrent.Executors;
@@ -11,9 +12,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Class that generates current system utilization values. Results are collected with {@link TestResultCollector}
  * under testGroupName "sysResult".
  */
-public class SystemInfo {
+public class SystemMonitor {
 
-    private static SystemInfo ourinstance;
+    private static SystemMonitor ourinstance;
 
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
@@ -41,7 +42,8 @@ public class SystemInfo {
      * @param timeUnit sets {@link #timeUnit}
      * @return the created sys info collector.
      */
-    public static SystemInfo collectEvery(long time, TimeUnit timeUnit) {
+    public static SystemMonitor collectEvery(long time, TimeUnit timeUnit) {
+        Logger.info(String.format("Collecting system monitoring results every %s %s", time, timeUnit));
         init(time, timeUnit);
         ourinstance.collectTask();
         return ourinstance;
@@ -55,7 +57,8 @@ public class SystemInfo {
      * @param timeUnit sets {@link #timeUnit}
      * @return the created sys info collector.
      */
-    public static SystemInfo printOnConsoleEvery(long time, TimeUnit timeUnit){
+    public static SystemMonitor printOnConsoleEvery(long time, TimeUnit timeUnit){
+        Logger.info(String.format("Printing system monitoring results every %s %s", time, timeUnit));
         init(time, timeUnit);
         ourinstance.printConsoleTask();
         return ourinstance;
@@ -65,10 +68,10 @@ public class SystemInfo {
         if(ourinstance != null){
             ourinstance.end();
         }
-        ourinstance = new SystemInfo(time, timeUnit);
+        ourinstance = new SystemMonitor(time, timeUnit);
     }
 
-    private SystemInfo(long time, TimeUnit timeUnit){
+    private SystemMonitor(long time, TimeUnit timeUnit){
         this.time = time;
         this.timeUnit = timeUnit;
     }
