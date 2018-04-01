@@ -1,7 +1,12 @@
 package network.address;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import org.pmw.tinylog.Logger;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
 
 /**
  * Defines a TCP address
@@ -73,6 +78,48 @@ public class TCPAddress extends Address {
     @Override
     public String resolveAddressId() {
         return getIp() + "_" + getPortNumber();
+    }
+
+    /**
+     * Used for dynamic ip address resolution.
+     * @return resolved ip address of the process.
+     */
+    public static InetAddress resolveIpAddress(){
+        for (int i = 0; i < 5; i++) {
+            try(final DatagramSocket socket = new DatagramSocket()){
+                socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+                String ipStr = socket.getLocalAddress().getHostAddress();
+                if(ipStr != null){
+                    return InetAddress.getByName(ipStr);
+                }
+                Thread.sleep(500);
+            } catch (SocketException | UnknownHostException | InterruptedException e) {
+                Logger.error(e);
+            }
+        }
+        /* if above solution does not work, use ifconfig.co */
+        try {
+            URL url = new URL("http://ifconfig.co");
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"))) {
+                for (String line; (line = reader.readLine()) != null;) {
+                    if(line.contains("class=\"ip\"")){
+                        String ipStr = line.substring(line.indexOf("ip") + 4, line.indexOf("</"));
+                        return InetAddress.getByName(ipStr);
+                    }
+                }
+            } catch (IOException e) {
+                Logger.error(e);
+            }
+        } catch (MalformedURLException e) {
+            Logger.error(e);
+        }
+        try {
+            Logger.warn("Could not resolve ip address, using localhost 127.0.0.1");
+            return InetAddress.getByName("127.0.0.1");
+        } catch (UnknownHostException e) {
+            Logger.debug(e);
+        }
+        return null;
     }
 
     @Override

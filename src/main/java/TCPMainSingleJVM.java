@@ -7,6 +7,7 @@ import testframework.SystemInfo;
 import testframework.TestFramework;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -25,12 +26,14 @@ public class TCPMainSingleJVM {
         GlobalConfig.getInstance().initTCP(true);
         Logger.info("TCP INIT (Single JVM)");
 
+        InetAddress ip = TCPAddress.resolveIpAddress();
+
         /* Start pinger and pongers */
         int port = 8080;
         for (int i = 1; i < totalNodes; i++) {  // first index will be reserved to pinger
-            Node ponger = new Node(new TCPAddress("127.0.0.1", port++));
+            Node ponger = new Node(new TCPAddress(ip, port++));
         }
-        Node pinger = new Node(new TCPAddress("127.0.0.1", port++));
+        Node pinger = new Node(new TCPAddress(ip, port++));
 
         /* start tests */
         TestFramework testFramework = TestFramework.doPingTests(pinger, totalNodes);

@@ -7,6 +7,7 @@ import testframework.SystemInfo;
 import testframework.TestFramework;
 import testframework.TestPhase;
 
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -21,6 +22,8 @@ public class TCPMainMultiJVM {
 
         TestFramework testFramework = null;
 
+        InetAddress ip = TCPAddress.resolveIpAddress();
+
         Logger.info("Args received: " + Arrays.toString(args));
         int totalProcesses = 3;
         int rank = 0;
@@ -34,9 +37,9 @@ public class TCPMainMultiJVM {
         Logger.info("TCP INIT (Multi JVM)");
 
         if(rank != 0){
-            Node ponger = new Node(new TCPAddress("127.0.0.1", port));
+            Node ponger = new Node(new TCPAddress(ip, port));
         } else {
-            Node pinger = new Node(new TCPAddress("127.0.0.1", port));
+            Node pinger = new Node(new TCPAddress(ip, port));
 
             /* start tests */
             testFramework = TestFramework.doPingTests(pinger, totalProcesses);
