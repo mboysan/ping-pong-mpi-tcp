@@ -3,7 +3,7 @@
  for nNODES in {1..2}; do
     for nTASKS in {1..3}; do
     np=$((${nNODES}*${nTASKS}))
-    dir_name="tcp_${nNODES}_${nTASKS}"
+    dir_name="dtcp_${nNODES}_${nTASKS}"
     mkdir "${dir_name}"
     f_name="${dir_name}/tcp_${nNODES}_${nTASKS}.sh"
     f_name_wo_dir="tcp_${nNODES}_${nTASKS}.sh"

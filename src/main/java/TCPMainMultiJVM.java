@@ -49,8 +49,11 @@ public class TCPMainMultiJVM {
 
         InetAddress ip = TCPAddress.resolveIpAddress();
 
-        MulticastAddress multicastAddress = new MulticastAddress(multicastGroup, 9999);
-        TCPAddress tcpAddress = new TCPAddress(ip, 9090 + rank);
+        int multicastPort = 9999 + nTasks;
+        int tcpPort = 9090 + nTasks + rank;
+
+        MulticastAddress multicastAddress = new MulticastAddress(multicastGroup, multicastPort);
+        TCPAddress tcpAddress = new TCPAddress(ip, tcpPort);
 
         GlobalConfig.getInstance().initTCP(false, multicastAddress);
 
