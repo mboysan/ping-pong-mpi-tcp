@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Defines a TCP address
@@ -92,7 +93,7 @@ public class TCPAddress extends Address {
                 if(ipStr != null){
                     return InetAddress.getByName(ipStr);
                 }
-                Thread.sleep(500);
+                TimeUnit.MILLISECONDS.sleep(500);
             } catch (SocketException | UnknownHostException | InterruptedException e) {
                 Logger.error(e);
             }
@@ -114,7 +115,7 @@ public class TCPAddress extends Address {
             Logger.error(e);
         }
         try {
-            Logger.warn("Could not resolve ip address, using localhost 127.0.0.1");
+            Logger.warn("Could not resolve ip address, using localhost: 127.0.0.1");
             return InetAddress.getByName("127.0.0.1");
         } catch (UnknownHostException e) {
             Logger.debug(e);

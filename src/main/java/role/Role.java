@@ -25,11 +25,14 @@ public abstract class Role {
      * The address of the role.
      */
     private final Address myAddress;
-
     /**
      * Message sender service.
      */
     private final MessageSender messageSender;
+    /**
+     * Defines if this role is the leader or not.
+     */
+    private boolean isLeader = false;
 
     /**
      * @param myAddress see {@link #myAddress}
@@ -78,7 +81,7 @@ public abstract class Role {
             sendMessage(connectOK);
         }
         if(message instanceof ConnectOK_NC){
-            GlobalConfig.getInstance().registerAddress(message.resolveSenderAddress());
+            GlobalConfig.getInstance().registerAddress(message.resolveSenderAddress(), this);
         }
     }
 
@@ -90,11 +93,20 @@ public abstract class Role {
         messageSender.send(message);
     }
 
+    public boolean isLeader() {
+        return isLeader;
+    }
+
+    public void setLeader(boolean leader) {
+        isLeader = leader;
+    }
+
     @Override
     public String toString() {
         return "Role{" +
                 "roleId='" + roleId + '\'' +
                 ", myAddress=" + myAddress +
+                ", isLeader=" + isLeader +
                 '}';
     }
 }

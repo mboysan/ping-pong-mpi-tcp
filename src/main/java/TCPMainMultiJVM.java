@@ -36,16 +36,16 @@ public class TCPMainMultiJVM {
         GlobalConfig.getInstance().initTCP(false);
         Logger.info("TCP INIT (Multi JVM)");
 
-        if(rank != 0){
-            Node ponger = new Node(new TCPAddress(ip, port));
-        } else {
-            Node pinger = new Node(new TCPAddress(ip, port));
+        Node node = new Node(new TCPAddress(ip, port));
 
+        Logger.debug("Node created: " + node);
+
+        if(node.isLeader()){    // the node is pinger.
             /* start tests */
-            testFramework = TestFramework.doPingTests(pinger, totalProcesses);
+            testFramework = TestFramework.doPingTests(node, totalProcesses);
 
             /* send end signal to all nodes */
-            pinger.signalEndToAll();
+            node.signalEndToAll();
         }
 
         GlobalConfig.getInstance().end();

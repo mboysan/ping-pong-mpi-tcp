@@ -31,9 +31,7 @@ public class MPIMain {
             Node pinger = new Node(new MPIAddress(rank));
 
             /* start tests */
-//            testFramework = TestFramework.doPingTests(pinger, totalProcesses);
-            pinger.pingAll();
-            pinger.waitPongs();
+            testFramework = TestFramework.doPingTests(pinger, totalProcesses);
 
             /* send end signal to all nodes */
             pinger.signalEndToAll();

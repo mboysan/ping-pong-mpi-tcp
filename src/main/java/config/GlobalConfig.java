@@ -11,13 +11,11 @@ import protocol.commands.ping.Connect_NC;
 import role.Role;
 
 import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static network.ConnectionProtocol.MPI_CONNECTION;
 import static network.ConnectionProtocol.TCP_CONNECTION;
@@ -102,23 +100,28 @@ public class GlobalConfig {
         if (connectionProtocol == TCP_CONNECTION){
             if(isSingleJVM) {
                 /* No multicasting is needed, just add addresses */
-                registerAddress(role.getAddress());
+                registerAddress(role.getAddress(), role);
             } else {
                 NetworkCommand connect = new Connect_NC()
                         .setSenderAddress(role.getAddress());
                 for (int i = 0; i < 5; i++) {
                     try {
-                        Thread.sleep(1000);
+                        TimeUnit.MILLISECONDS.sleep(500);
                     } catch (InterruptedException e) {
                         Logger.error(e);
                     }
                     Logger.debug("Multicasting nodes: " + connect);
                     getMulticaster(role).multicast(connect);
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(500);
+                    } catch (InterruptedException e) {
+                        Logger.error(e);
+                    }
                 }
             }
         } else if(connectionProtocol == MPI_CONNECTION){
             for (int i = 0; i < getProcessCount(); i++) {
-                registerAddress(new MPIAddress(i));
+                registerAddress(new MPIAddress(i), role);
             }
         }
     }
@@ -145,8 +148,9 @@ public class GlobalConfig {
     /**
      * Adds address to the set of address
      * @param toRegister address to register
+     * @param roleRef    reference to the role. Used to modify its properties based on the addresses change.
      */
-    public synchronized void registerAddress(Address toRegister){
+    public synchronized void registerAddress(Address toRegister, Role roleRef){
         boolean isNew = true;
         for (Address address : addresses) {
             if(address.isSame(toRegister)){
@@ -157,11 +161,30 @@ public class GlobalConfig {
         if(isNew){
             Logger.info("Address registered: " + toRegister);
             addresses.add(toRegister);
+            electAsLeader(roleRef);
             if(isSingleJVM){
                 resetEndLatch(getProcessCount());
             } else {
                 resetEndLatch(1);
             }
+        }
+    }
+
+    /**
+     * Assigns the role as the leader if its address is in index 0 of the sorted addresses.
+     * @param role role to assign as leader if applicable.
+     */
+    private void electAsLeader(Role role) {
+        List<String> addressesAsStrings = addresses.stream()
+                .map(Address::toString).sorted(new Comparator<String>() {
+                    public int compare(String o1, String o2) {
+                        return o1.compareTo(o2);
+                    }
+                }).collect(Collectors.toList());
+        if(addressesAsStrings.get(0).equals(role.getAddress().toString())){
+            role.setLeader(true);
+        } else {
+            role.setLeader(false);
         }
     }
 
