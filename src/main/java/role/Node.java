@@ -27,7 +27,7 @@ public class Node extends Role {
      * Currently only used to initializes the Pinger node.
      * @param myAddress  address of the node.
      */
-    public Node(Address myAddress){
+    public Node(Address myAddress) throws InterruptedException {
         super(myAddress);
         pongLatch = new CountDownLatch(GlobalConfig.getInstance().getProcessCount());
         Logger.info("Node created: " + this.toString());

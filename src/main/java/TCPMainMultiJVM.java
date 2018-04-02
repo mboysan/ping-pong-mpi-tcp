@@ -10,6 +10,7 @@ import testframework.TestFramework;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -23,6 +24,7 @@ public class TCPMainMultiJVM {
         Logger.info("Args received: " + Arrays.toString(args));
         int nTasks = 3;     //Number of tasks to complete. Usually equals to (numNodes * numTasksPerNode)
         int rank = 0;
+        int multicastPort = 9090;
         String multicastGroup = "all-systems.mcast.net";
         boolean monitorSystem = true;
         if(args != null){
@@ -36,7 +38,10 @@ public class TCPMainMultiJVM {
                 monitorSystem = Boolean.valueOf(args[2]);
             }
             if(args.length >= 4){
-                multicastGroup = args[3];
+                multicastPort = Integer.parseInt(args[3]);
+            }
+            if(args.length >= 5){
+                multicastGroup = args[4];
             }
         }
 
@@ -49,11 +54,8 @@ public class TCPMainMultiJVM {
 
         InetAddress ip = TCPAddress.resolveIpAddress();
 
-        int multicastPort = 9999 + nTasks;
-        int tcpPort = 9090 + nTasks + rank;
-
         MulticastAddress multicastAddress = new MulticastAddress(multicastGroup, multicastPort);
-        TCPAddress tcpAddress = new TCPAddress(ip, tcpPort);
+        TCPAddress tcpAddress = new TCPAddress(ip, 0);
 
         GlobalConfig.getInstance().initTCP(false, multicastAddress);
 

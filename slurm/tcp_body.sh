@@ -24,6 +24,6 @@ tEnd=$(($nTasks-1))
 echo "nNodes: $SLURM_NNODES"
 echo "nTasks: $SLURM_NTASKS"
 
-echo "0-$tEnd java -cp ping-pong-mpi-tcp-1.0-SNAPSHOT-jar-with-dependencies.jar TCPMainMultiJVM $nTasks %t false" > tcp_config.sh
+echo "0-$tEnd java -cp ../ping-pong-mpi-tcp-1.0-SNAPSHOT-jar-with-dependencies.jar TCPMainMultiJVM $nTasks %t false $multicastPort" > tcp_config.sh
 
 srun --multi-prog tcp_config.sh

@@ -28,11 +28,10 @@ public class TCPMainSingleJVM {
         InetAddress ip = TCPAddress.resolveIpAddress();
 
         /* Start pinger and pongers */
-        int port = 8080;
         for (int i = 1; i < totalNodes; i++) {  // first index will be reserved to pinger
-            Node ponger = new Node(new TCPAddress(ip, port++));
+            Node ponger = new Node(new TCPAddress(ip, 0));
         }
-        Node pinger = new Node(new TCPAddress(ip, port++));
+        Node pinger = new Node(new TCPAddress(ip, 0));
 
         /* start tests */
         TestFramework testFramework = TestFramework.doPingTests(pinger, totalNodes);

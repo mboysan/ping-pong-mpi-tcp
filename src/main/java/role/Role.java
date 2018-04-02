@@ -10,6 +10,7 @@ import protocol.commands.ping.ConnectOK_NC;
 import protocol.commands.ping.Connect_NC;
 import protocol.commands.ping.Ping_NC;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -24,7 +25,7 @@ public abstract class Role {
     /**
      * The address of the role.
      */
-    private final Address myAddress;
+    private Address myAddress;
     /**
      * Message sender service.
      */
@@ -35,14 +36,22 @@ public abstract class Role {
     private boolean isLeader = false;
 
     /**
-     * @param myAddress see {@link #myAddress}
+     * Indicates if the node is ready for registration by calling {@link GlobalConfig#registerRole(Role)}.
      */
-    Role(Address myAddress) {
-        this.myAddress = myAddress;
-        roleId = myAddress.resolveAddressId();
+    private final CountDownLatch readyLatch = new CountDownLatch(1);
+
+    /**
+     * @param baseAddress see {@link #myAddress}. The address may be modified by the {@link MessageReceiver} after
+     *                    role has been started.
+     */
+    Role(Address baseAddress) throws InterruptedException {
+        this.myAddress = baseAddress;
+        roleId = baseAddress.resolveAddressId();
 
         this.messageSender = new MessageSender();
         start();
+
+        readyLatch.await();
 
         GlobalConfig.getInstance().registerRole(this);
     }
@@ -99,6 +108,20 @@ public abstract class Role {
 
     public void setLeader(boolean leader) {
         isLeader = leader;
+    }
+
+    /**
+     * @param modifiedAddr address modified by the {@link MessageReceiver} if applicable.
+     */
+    public void setAddress(Address modifiedAddr){
+        this.myAddress = modifiedAddr;
+    }
+
+    /**
+     * Indicates the role is ready for further state changes.
+     */
+    public void setReady(){
+        readyLatch.countDown();
     }
 
     @Override

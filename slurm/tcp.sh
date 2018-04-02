@@ -1,7 +1,9 @@
 #!/bin/bash
  module load openmpi-2.1.0
+ multicastPort=9090
  for nNODES in {1..2}; do
     for nTASKS in {1..3}; do
+    multicastPort=$((multicastPort+1))
     np=$((${nNODES}*${nTASKS}))
     dir_name="dtcp_${nNODES}_${nTASKS}"
     mkdir "${dir_name}"
@@ -14,6 +16,7 @@
     echo "#SBATCH --ntasks-per-node=${nTASKS}" >> ${f_name}
     echo "#SBATCH --cpus-per-task=4" >> ${f_name}
     echo "#SBATCH -t 00:00:30" >> ${f_name}
+    echo "multicastPort=$multicastPort" >> ${f_name}
     cat tcp_body.sh >> ${f_name}
 
     cd ${dir_name}

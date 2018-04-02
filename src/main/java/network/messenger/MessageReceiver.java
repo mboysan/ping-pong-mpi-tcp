@@ -67,8 +67,13 @@ public class MessageReceiver {
             ServerSocket serverSocket;
             Socket socket = null;
             try {
-                TCPAddress addr = (TCPAddress) roleInstance.getAddress();
-                serverSocket = new ServerSocket(addr.getPortNumber());
+                TCPAddress prevAddr = (TCPAddress) roleInstance.getAddress();
+                serverSocket = new ServerSocket(prevAddr.getPortNumber());
+
+                TCPAddress modifiedAddr = new TCPAddress(prevAddr.getIp(), serverSocket.getLocalPort());
+                roleInstance.setAddress(modifiedAddr);
+                roleInstance.setReady();
+
                 while (true) {
                     socket = serverSocket.accept();
                     DataInputStream dIn = new DataInputStream(socket.getInputStream());
@@ -125,6 +130,7 @@ public class MessageReceiver {
          */
         private void runOnMPI(){
             try {
+                roleInstance.setReady();
                 while (true){
                     int[] msgInfo = new int[1];
 //                  MPI.COMM_WORLD.recv(msgInfo, msgInfo.length, MPI.INT, MPI.ANY_SOURCE, MPI.ANY_TAG);   // receive msg length first.
