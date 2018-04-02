@@ -68,17 +68,28 @@ public class TestFramework {
 
         int totalPingCount = totalProcesses * loopCount;
         resultCollector.setTaskCountForTest("pingSingle", totalPingCount);
+        resultCollector.setTaskCountForTest("pingAllIntermediate", loopCount);
 
         long[] results = new long[loopCount];
         for (int i = 0; i < loopCount; i++) {
             long start = System.currentTimeMillis();
             pinger.pingAll();
             pinger.waitPongs();
-            long end = System.currentTimeMillis() - start;
-            results[i] = end;
+            long currTime = System.currentTimeMillis();
+            resultCollector.addResultAsync(
+                    new LatencyResult(
+                            "pingAllIntermediate",
+                            testPhase,
+                            pinger.getRoleId(),
+                            currTime,
+                            start,
+                            currTime)
+            );
+            results[i] = (currTime - start);
         }
 
         resultCollector.waitAllTasksFor("pingSingle");
+        resultCollector.waitAllTasksFor("pingAllIntermediate");
 
         return new OverallLatencyResult(testGroupName, testPhase, totalProcesses, results);
     }
