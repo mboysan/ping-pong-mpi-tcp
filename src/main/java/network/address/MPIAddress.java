@@ -11,10 +11,16 @@ public class MPIAddress extends Address {
     private int rank;
 
     /**
+     * MPI groupId to work with. Used for message tags.
+     */
+    private int groupId;
+
+    /**
      * @param rank rank of the process
      */
-    public MPIAddress(int rank) {
+    public MPIAddress(int rank, int groupId) {
         this.rank = rank;
+        this.groupId = groupId;
     }
 
     public MPIAddress(){
@@ -37,20 +43,31 @@ public class MPIAddress extends Address {
         return rank;
     }
 
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public MPIAddress setGroupId(int groupId) {
+        this.groupId = groupId;
+        return this;
+    }
+
     @Override
     public String resolveAddressId() {
-        return "p" + rank;
+        return "p" + rank + "g" + groupId;
     }
 
     @Override
     public boolean isSame(Address other) {
-        return ((MPIAddress) other).getRank() == this.getRank();
+        MPIAddress addr = (MPIAddress) other;
+        return addr.getRank() == this.getRank() && addr.getGroupId() == this.groupId;
     }
 
     @Override
     public String toString() {
         return "MPIAddress{" +
                 "rank=" + rank +
+                "groupId=" + groupId +
                 '}';
     }
 }

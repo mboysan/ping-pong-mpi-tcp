@@ -2,6 +2,7 @@ package network.messenger;
 
 import config.GlobalConfig;
 import mpi.MPI;
+import network.address.MPIAddress;
 import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
 import protocol.CommandMarshaller;
@@ -131,12 +132,13 @@ public class MessageReceiver {
         private void runOnMPI(){
             try {
                 roleInstance.setReady();
+                MPIAddress roleAddress = (MPIAddress) roleInstance.getAddress();
                 while (true){
                     int[] msgInfo = new int[1];
 //                  MPI.COMM_WORLD.recv(msgInfo, msgInfo.length, MPI.INT, MPI.ANY_SOURCE, MPI.ANY_TAG);   // receive msg length first.
                     msgInfo[0] = 512;
                     byte[] msg = new byte[msgInfo[0]];
-                    MPI.COMM_WORLD.recv(msg, msg.length, MPI.BYTE, MPI.ANY_SOURCE, MPI.ANY_TAG);
+                    MPI.COMM_WORLD.recv(msg, msg.length, MPI.BYTE, MPI.ANY_SOURCE, roleAddress.getGroupId());
 
                     NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
                     if(message instanceof SignalEnd_NC){

@@ -19,10 +19,14 @@ public class MPIMain {
         long timeStart = System.currentTimeMillis();
 
         Logger.info("Args received: " + Arrays.toString(args));
+        int groupId = MPI.ANY_TAG;
         boolean monitorSystem = false;
         if(args != null){
             if(args.length >= 1){
-                monitorSystem = Boolean.valueOf(args[0]);
+                groupId = Integer.parseInt(args[0]);
+            }
+            if(args.length >= 2){
+                monitorSystem = Boolean.valueOf(args[1]);
             }
         }
 
@@ -39,7 +43,7 @@ public class MPIMain {
 
         int totalProcesses = GlobalConfig.getInstance().getProcessCount();
 
-        Node node = new Node(new MPIAddress(rank));
+        Node node = new Node(new MPIAddress(rank, groupId));
 
         if(node.isLeader()){
             /* start tests */

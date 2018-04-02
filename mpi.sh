@@ -10,5 +10,5 @@ for i in {1..$loopCount}
 do
 #    count=$((i * 10))
     count=3
-    mpirun --oversubscribe -np $count java -cp *jar-with-dependencies.jar MPIMain true
+    mpirun --oversubscribe -np $count java -cp *jar-with-dependencies.jar MPIMain 0 true
 done

@@ -136,14 +136,13 @@ public class MessageSender {
         private void runOnMPIAsync() {
             try {
                 MPIAddress receiverAddress = (MPIAddress) messageToSend.resolveReceiverAddress();
-                int tag = messageToSend.getTag();
                 byte[] msg = commandMarshaller.marshall(messageToSend, byte[].class);
 
                 IntBuffer intBuffer = MPI.newIntBuffer(1).put(0, msg.length);
                 ByteBuffer byteBuffer = MPI.newByteBuffer(msg.length).put(msg);
                 synchronized (MPI.COMM_WORLD) {
 //                    MPI.COMM_WORLD.iSend(intBuffer, intBuffer.capacity(), MPI.INT, receiverAddress.getRank(), tag);  //send msg length first
-                    MPI.COMM_WORLD.iSend(byteBuffer, byteBuffer.capacity(), MPI.BYTE, receiverAddress.getRank(), tag);
+                    MPI.COMM_WORLD.iSend(byteBuffer, byteBuffer.capacity(), MPI.BYTE, receiverAddress.getRank(), receiverAddress.getGroupId());
                 }
             } catch (MPIException | IOException e) {
                 Logger.error(e, "Send err, msg: " + messageToSend);
@@ -156,7 +155,6 @@ public class MessageSender {
         private void runOnMPISync(){
             try {
                 MPIAddress receiverAddress = (MPIAddress) messageToSend.resolveReceiverAddress();
-                int tag = messageToSend.getTag();
                 byte[] msg = commandMarshaller.marshall(messageToSend, byte[].class);
 
                 /*
@@ -166,7 +164,7 @@ public class MessageSender {
                 }
                 */
                 synchronized (MPI.COMM_WORLD) {
-                    MPI.COMM_WORLD.send(msg, msg.length, MPI.BYTE, receiverAddress.getRank(), tag);
+                    MPI.COMM_WORLD.send(msg, msg.length, MPI.BYTE, receiverAddress.getRank(), receiverAddress.getGroupId());
                 }
             } catch (MPIException | IOException e) {
                 Logger.error(e, "Send err, msg: " + messageToSend);

@@ -131,7 +131,7 @@ public class GlobalConfig {
             registerAddress(role.getAddress(), role);
             for (int i = 0; i < getProcessCount(); i++) {
                 /* register others. If address is same with self, returns anyways. */
-                registerAddress(new MPIAddress(i), role);
+                registerAddress(new MPIAddress(i, ((MPIAddress)role.getAddress()).getGroupId()), role);
             }
         }
     }
