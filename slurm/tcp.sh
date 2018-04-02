@@ -11,7 +11,7 @@
     f_name_wo_dir="tcp_${nNODES}_${nTASKS}.sh"
         touch ${f_name}
     echo "#!/bin/bash " >> ${f_name}
-    echo "#SBATCH -p testing" >> ${f_name}
+#    echo "#SBATCH -p testing" >> ${f_name}
     echo "#SBATCH -N ${nNODES}" >> ${f_name}
     echo "#SBATCH --ntasks-per-node=${nTASKS}" >> ${f_name}
     echo "#SBATCH --cpus-per-task=4" >> ${f_name}

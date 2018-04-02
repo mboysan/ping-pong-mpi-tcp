@@ -67,7 +67,7 @@ public class MPIAddress extends Address {
     public String toString() {
         return "MPIAddress{" +
                 "rank=" + rank +
-                "groupId=" + groupId +
+                ", groupId=" + groupId +
                 '}';
     }
 }
