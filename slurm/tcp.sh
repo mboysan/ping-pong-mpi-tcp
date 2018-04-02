@@ -16,7 +16,7 @@
     echo "#SBATCH --ntasks-per-node=${nTASKS}" >> ${f_name}
     echo "#SBATCH --cpus-per-task=4" >> ${f_name}
     echo "#SBATCH -t 00:01:00" >> ${f_name}
-    echo "#SBATCH --mem=50000" >> ${f_name}
+    echo "#SBATCH --mem=25000" >> ${f_name}
     echo "multicastPort=$multicastPort" >> ${f_name}
     cat tcp_body.sh >> ${f_name}
 

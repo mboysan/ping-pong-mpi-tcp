@@ -16,7 +16,7 @@
     echo "#SBATCH --ntasks-per-node=${nTASKS}" >> ${f_name}
     echo "#SBATCH --cpus-per-task=4" >> ${f_name}
     echo "#SBATCH -t 00:01:00" >> ${f_name}
-    echo "#SBATCH --mem=50000" >> ${f_name}
+    echo "#SBATCH --mem=25000" >> ${f_name}
     echo "module load jdk-1.8.0_25" >> ${f_name}
     echo "module load openmpi-1.8.4" >> ${f_name}
     echo "mpirun -np ${np} java -cp ../ping-pong-mpi-tcp-1.0-SNAPSHOT-jar-with-dependencies.jar MPIMain ${gId} false" >> ${f_name}
