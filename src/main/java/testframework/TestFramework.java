@@ -18,7 +18,7 @@ public class TestFramework {
     /**
      * test result collector
      */
-    private final TestResultCollector resultCollector = new TestResultCollector();
+    private final ResultCollector resultCollector = new ResultCollector();
 
     public static boolean isTesting = false;
 

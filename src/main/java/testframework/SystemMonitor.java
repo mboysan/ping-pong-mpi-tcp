@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Class that generates current system utilization values. Results are collected with {@link TestResultCollector}
+ * Class that generates current system utilization values. Results are collected with {@link ResultCollector}
  * under testGroupName "sysResult".
  */
 public class SystemMonitor {
@@ -18,7 +18,7 @@ public class SystemMonitor {
 
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
-    private final TestResultCollector resultCollector = new TestResultCollector();
+    private final ResultCollector resultCollector = new ResultCollector();
 
     /**
      * Indicates if the generation ended or not.
@@ -77,7 +77,7 @@ public class SystemMonitor {
     }
 
     /**
-     * generates a {@link SystemInfoResult} at fixed rate and collects it with {@link TestResultCollector}.
+     * generates a {@link SystemInfoResult} at fixed rate and collects it with {@link ResultCollector}.
      */
     private void collectTask() {
         Runnable task = () -> {

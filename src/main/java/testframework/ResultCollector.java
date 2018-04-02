@@ -3,13 +3,18 @@ package testframework;
 import org.pmw.tinylog.Logger;
 import testframework.result.IResult;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Used for collecting the test results.
  */
-class TestResultCollector {
+class ResultCollector {
     /**
      * Results collector executor service.
      */
@@ -24,7 +29,12 @@ class TestResultCollector {
      */
     private final Map<String, List<IResult>> resultsMap = new ConcurrentHashMap<>();
 
-    public TestResultCollector() {
+    /**
+     * Read-write lock for the collected results list.
+     */
+    private final ReadWriteLock resultsLock = new ReentrantReadWriteLock();
+
+    public ResultCollector() {
     }
 
     /**
@@ -37,12 +47,17 @@ class TestResultCollector {
             throw new IllegalArgumentException("testGroupName or testPhase should not be null");
         }
 
-        List<IResult> results = resultsMap.get(testGroupName);
-        if(results == null){
-            results = new ArrayList<>();
+        resultsLock.writeLock().lock();
+        try {
+            List<IResult> results = resultsMap.get(testGroupName);
+            if(results == null){
+                results = new ArrayList<>();
+            }
+            results.add(result);
+            resultsMap.put(testGroupName, results);
+        } finally {
+            resultsLock.writeLock().unlock();
         }
-        results.add(result);
-        resultsMap.put(testGroupName, results);
     }
 
     /**
@@ -90,12 +105,20 @@ class TestResultCollector {
             }
         } else {
             boolean printHeader = true;
-            List<IResult> results = resultsMap.get(testGroupName);
-            for (IResult result : results) {
-                if(result.getTestPhase() == phase){
-                    System.out.print(result.CSVLine(printHeader));
-                    printHeader = false;
+            resultsLock.readLock().lock();
+            try {
+                List<IResult> results = resultsMap.get(testGroupName);
+                for (IResult result : results) {
+                    if(result.getTestPhase() == phase){
+                        if(printHeader){
+                            System.out.println("------------------------------ TEST GROUP: " + testGroupName);
+                        }
+                        System.out.print(result.CSVLine(printHeader));
+                        printHeader = false;
+                    }
                 }
+            } finally {
+                resultsLock.readLock().unlock();
             }
         }
     }
