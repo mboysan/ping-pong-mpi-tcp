@@ -7,8 +7,8 @@
     np=$((${nNODES}*${nTASKS}))
     dir_name="t0mpi_${nNODES}_${nTASKS}"
     mkdir "${dir_name}"
-    f_name="${dir_name}/tcp_${nNODES}_${nTASKS}.sh"
-    f_name_wo_dir="tcp_${nNODES}_${nTASKS}.sh"
+    f_name="${dir_name}/mpi_${nNODES}_${nTASKS}.sh"
+    f_name_wo_dir="mpi_${nNODES}_${nTASKS}.sh"
         touch ${f_name}
     echo "#!/bin/bash " >> ${f_name}
     echo "#SBATCH -p testing" >> ${f_name}
