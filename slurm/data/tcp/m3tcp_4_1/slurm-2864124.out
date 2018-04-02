@@ -1,0 +1,870 @@
+-------------- uname -r
+3.10.0-514.10.2.el7.x86_64
+-------------- hostname
+stage35
+-------------- hostname -I
+172.17.63.35 192.168.163.35 
+-------------- ifconfig
+Infiniband hardware address can be incorrect! Please read BUGS section in ifconfig(8).
+eno1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 172.17.63.35  netmask 255.255.254.0  broadcast 172.17.63.255
+        inet6 fe80::9eb6:54ff:fe06:cb20  prefixlen 64  scopeid 0x20<link>
+        ether 9c:b6:54:06:cb:20  txqueuelen 4096  (Ethernet)
+        RX packets 101432695866  bytes 101952675527870 (92.7 TiB)
+        RX errors 0  dropped 0  overruns 3467  frame 0
+        TX packets 96380741858  bytes 94631217812134 (86.0 TiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+        device memory 0xf7d00000-f7dfffff  
+
+eno2: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        ether 9c:b6:54:06:cb:21  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+        device memory 0xf7b00000-f7bfffff  
+
+eno3d1: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        ether 24:be:05:9a:aa:d2  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+ib0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 2044
+        inet 192.168.163.35  netmask 255.255.255.0  broadcast 192.168.163.255
+        inet6 fe80::26be:5ff:ff9a:aad1  prefixlen 64  scopeid 0x20<link>
+        infiniband A0:00:06:20:FE:80:00:00:00:00:00:00:00:00:00:00:00:00:00:00  txqueuelen 4096  (InfiniBand)
+        RX packets 255273  bytes 82996232 (79.1 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 12  bytes 896 (896.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1  (Local Loopback)
+        RX packets 1542593  bytes 7804772503 (7.2 GiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 1542593  bytes 7804772503 (7.2 GiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+-------------- curl ifconfig.co
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    13  100    13    0     0    160      0 --:--:-- --:--:-- --:--:--   160
+193.40.12.10
+-------------- JOB
+------ LD_LIB_PATH
+/storage/software/openmpi-1.8.4/lib:/storage/software/gcc/4.8.1/lib64:/storage/software/openmpi-2.1.0/lib/openmpi:/storage/software/openmpi-2.1.0/lib:/storage/software/libxc-3.0.0-mpi/lib:/storage/software/gcc-5.2.0/lib64:/usr/local/cuda/lib64:
+------ Java program
+nNodes: 4
+nTasks: 4
+2018-04-02 23:29:32 [main] TCPMainMultiJVM.main()
+INFO: Args received: [4, 0, false, 8004]
+[INFO] 23:29:32:563 config.GlobalConfig.init(): Init [TCP_CONNECTION, isSingleJVM:false]
+2018-04-02 23:29:32 [main] TCPMainMultiJVM.main()
+INFO: Args received: [4, 2, false, 8004]
+2018-04-02 23:29:32 [main] TCPMainMultiJVM.main()
+INFO: Args received: [4, 1, false, 8004]
+[INFO] 23:29:32:638 config.GlobalConfig.init(): Init [TCP_CONNECTION, isSingleJVM:false]
+2018-04-02 23:29:32 [main] TCPMainMultiJVM.main()
+INFO: Args received: [4, 3, false, 8004]
+[INFO] 23:29:32:630 config.GlobalConfig.init(): Init [TCP_CONNECTION, isSingleJVM:false]
+[INFO] 23:29:32:669 config.GlobalConfig.init(): Init [TCP_CONNECTION, isSingleJVM:false]
+[INFO] 23:29:32:790 config.GlobalConfig.registerRole(): Registering role: Role{roleId='/172.17.63.35_0', myAddress=TCPAddress{ip=/172.17.63.35, portNumber=35970}, isLeader=false}
+[INFO] 23:29:32:840 config.GlobalConfig.registerRole(): Registering role: Role{roleId='/172.17.63.36_0', myAddress=TCPAddress{ip=/172.17.63.36, portNumber=40852}, isLeader=false}
+[INFO] 23:29:32:849 config.GlobalConfig.registerRole(): Registering role: Role{roleId='/172.17.63.39_0', myAddress=TCPAddress{ip=/172.17.63.39, portNumber=38966}, isLeader=false}
+[INFO] 23:29:32:875 config.GlobalConfig.registerRole(): Registering role: Role{roleId='/172.17.63.40_0', myAddress=TCPAddress{ip=/172.17.63.40, portNumber=42556}, isLeader=false}
+[INFO] 23:29:33:523 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.35, portNumber=35970}] registered on role [Role{roleId='/172.17.63.35_0', myAddress=TCPAddress{ip=/172.17.63.35, portNumber=35970}, isLeader=true}]
+[INFO] 23:29:33:551 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.35, portNumber=35970}] registered on role [Role{roleId='/172.17.63.36_0', myAddress=TCPAddress{ip=/172.17.63.36, portNumber=40852}, isLeader=false}]
+[INFO] 23:29:33:552 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.36, portNumber=40852}] registered on role [Role{roleId='/172.17.63.36_0', myAddress=TCPAddress{ip=/172.17.63.36, portNumber=40852}, isLeader=false}]
+[INFO] 23:29:33:552 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.36, portNumber=40852}] registered on role [Role{roleId='/172.17.63.35_0', myAddress=TCPAddress{ip=/172.17.63.35, portNumber=35970}, isLeader=true}]
+[INFO] 23:29:33:569 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.35, portNumber=35970}] registered on role [Role{roleId='/172.17.63.39_0', myAddress=TCPAddress{ip=/172.17.63.39, portNumber=38966}, isLeader=false}]
+[INFO] 23:29:33:572 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.39, portNumber=38966}] registered on role [Role{roleId='/172.17.63.36_0', myAddress=TCPAddress{ip=/172.17.63.36, portNumber=40852}, isLeader=false}]
+[INFO] 23:29:33:572 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.36, portNumber=40852}] registered on role [Role{roleId='/172.17.63.39_0', myAddress=TCPAddress{ip=/172.17.63.39, portNumber=38966}, isLeader=false}]
+[INFO] 23:29:33:575 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.39, portNumber=38966}] registered on role [Role{roleId='/172.17.63.39_0', myAddress=TCPAddress{ip=/172.17.63.39, portNumber=38966}, isLeader=false}]
+[INFO] 23:29:33:577 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.39, portNumber=38966}] registered on role [Role{roleId='/172.17.63.35_0', myAddress=TCPAddress{ip=/172.17.63.35, portNumber=35970}, isLeader=true}]
+[INFO] 23:29:33:602 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.40, portNumber=42556}] registered on role [Role{roleId='/172.17.63.39_0', myAddress=TCPAddress{ip=/172.17.63.39, portNumber=38966}, isLeader=false}]
+[INFO] 23:29:33:607 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.35, portNumber=35970}] registered on role [Role{roleId='/172.17.63.40_0', myAddress=TCPAddress{ip=/172.17.63.40, portNumber=42556}, isLeader=false}]
+[INFO] 23:29:33:607 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.39, portNumber=38966}] registered on role [Role{roleId='/172.17.63.40_0', myAddress=TCPAddress{ip=/172.17.63.40, portNumber=42556}, isLeader=false}]
+[INFO] 23:29:33:607 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.36, portNumber=40852}] registered on role [Role{roleId='/172.17.63.40_0', myAddress=TCPAddress{ip=/172.17.63.40, portNumber=42556}, isLeader=false}]
+[INFO] 23:29:33:608 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.40, portNumber=42556}] registered on role [Role{roleId='/172.17.63.40_0', myAddress=TCPAddress{ip=/172.17.63.40, portNumber=42556}, isLeader=false}]
+[INFO] 23:29:33:612 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.40, portNumber=42556}] registered on role [Role{roleId='/172.17.63.36_0', myAddress=TCPAddress{ip=/172.17.63.36, portNumber=40852}, isLeader=false}]
+[INFO] 23:29:34:383 config.GlobalConfig.registerAddress(): Address [TCPAddress{ip=/172.17.63.40, portNumber=42556}] registered on role [Role{roleId='/172.17.63.35_0', myAddress=TCPAddress{ip=/172.17.63.35, portNumber=35970}, isLeader=true}]
+[INFO] 23:29:37:869 role.Node.<init>(): Node created: Role{roleId='/172.17.63.35_0', myAddress=TCPAddress{ip=/172.17.63.35, portNumber=35970}, isLeader=true}
+[INFO] 23:29:37:871 testframework.TestFramework._doPingTests(): Starting ping-pong tests...
+[INFO] 23:29:37:945 role.Node.<init>(): Node created: Role{roleId='/172.17.63.36_0', myAddress=TCPAddress{ip=/172.17.63.36, portNumber=40852}, isLeader=false}
+[INFO] 23:29:37:945 role.Node.<init>(): Node created: Role{roleId='/172.17.63.39_0', myAddress=TCPAddress{ip=/172.17.63.39, portNumber=38966}, isLeader=false}
+[INFO] 23:29:37:965 role.Node.<init>(): Node created: Role{roleId='/172.17.63.40_0', myAddress=TCPAddress{ip=/172.17.63.40, portNumber=42556}, isLeader=false}
+[INFO] 23:29:38:785 testframework.TestFramework._doPingTests(): Ping tests are done!
+[INFO] 23:29:38:799 config.GlobalConfig.end(): Finalized [TCP_CONNECTION]
+[INFO] 23:29:38:800 config.GlobalConfig.end(): Finalized [TCP_CONNECTION]
+[INFO] 23:29:38:799 config.GlobalConfig.end(): Finalized [TCP_CONNECTION]
+[INFO] 23:29:38:804 config.GlobalConfig.end(): Finalized [TCP_CONNECTION]
+[INFO] 23:29:39:299 TCPMainMultiJVM.main(): Total time (ms): 6733
+[INFO] 23:29:39:300 TCPMainMultiJVM.main(): Total time (ms): 6738
+------------------------------ TEST GROUP: pingAllIntermediate
+testGroup,phase,iterations,pid,timestamp,time,latency
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700977897,23:29:37.897,25
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700977902,23:29:37.902,5
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700977906,23:29:37.906,4
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700977913,23:29:37.913,7
+[INFO] 23:29:39:304 TCPMainMultiJVM.main(): Total time (ms): 6708
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700977918,23:29:37.918,5
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700977925,23:29:37.925,7
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700977935,23:29:37.935,9
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700977967,23:29:37.967,31
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700977971,23:29:37.971,4
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700977980,23:29:37.980,9
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700977983,23:29:37.983,3
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700977988,23:29:37.988,5
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700977995,23:29:37.995,7
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978001,23:29:38.001,6
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978005,23:29:38.005,4
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978010,23:29:38.010,5
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978013,23:29:38.013,3
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978016,23:29:38.016,3
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978023,23:29:38.023,7
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978030,23:29:38.030,6
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978036,23:29:38.036,6
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978045,23:29:38.045,9
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978063,23:29:38.063,18
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978068,23:29:38.068,5
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978076,23:29:38.076,8
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978091,23:29:38.091,15
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978096,23:29:38.096,5
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978112,23:29:38.112,16
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978115,23:29:38.115,3
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978137,23:29:38.137,22
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978146,23:29:38.146,9
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978156,23:29:38.156,10
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978165,23:29:38.165,9
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978171,23:29:38.171,6
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978176,23:29:38.176,5
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978182,23:29:38.182,6
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978186,23:29:38.186,4
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978197,23:29:38.197,11
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978202,23:29:38.202,5
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978206,23:29:38.206,4
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978219,23:29:38.219,13
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978230,23:29:38.230,11
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978234,23:29:38.234,4
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978243,23:29:38.243,9
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978251,23:29:38.251,8
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978261,23:29:38.261,10
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978276,23:29:38.276,15
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978304,23:29:38.304,28
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978318,23:29:38.318,14
+pingAllIntermediate,warmup,50,/172.17.63.35_0,1522700978323,23:29:38.323,5
+------------------------------ TEST GROUP: pingAll
+testGroup,phase,timestamp,time,iterations,resultsTotal,numProcs,avgLatency
+pingAll,warmup,1522700978325,23:29:38.325,50,50,4,8
+------------------------------ TEST GROUP: pingAllIntermediate
+testGroup,phase,iterations,pid,timestamp,time,latency
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978328,23:29:38.328,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978337,23:29:38.337,9
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978340,23:29:38.340,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978343,23:29:38.343,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978345,23:29:38.345,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978349,23:29:38.349,4
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978362,23:29:38.362,13
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978376,23:29:38.376,14
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978379,23:29:38.379,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978381,23:29:38.381,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978384,23:29:38.384,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978387,23:29:38.387,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978390,23:29:38.390,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978393,23:29:38.393,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978405,23:29:38.405,12
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978413,23:29:38.413,8
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978416,23:29:38.416,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978419,23:29:38.419,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978423,23:29:38.423,4
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978428,23:29:38.428,5
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978434,23:29:38.434,6
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978437,23:29:38.437,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978444,23:29:38.444,7
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978447,23:29:38.447,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978451,23:29:38.451,4
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978459,23:29:38.459,8
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978461,23:29:38.461,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978463,23:29:38.463,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978465,23:29:38.465,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978467,23:29:38.467,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978469,23:29:38.469,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978471,23:29:38.471,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978473,23:29:38.473,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978476,23:29:38.476,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978478,23:29:38.478,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978481,23:29:38.481,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978483,23:29:38.483,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978486,23:29:38.486,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978488,23:29:38.488,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978490,23:29:38.490,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978492,23:29:38.492,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978499,23:29:38.499,7
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978519,23:29:38.519,20
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978539,23:29:38.539,20
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978542,23:29:38.542,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978569,23:29:38.569,27
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978576,23:29:38.576,7
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978579,23:29:38.579,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978583,23:29:38.583,4
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978590,23:29:38.590,7
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978593,23:29:38.593,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978596,23:29:38.596,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978601,23:29:38.601,5
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978604,23:29:38.604,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978610,23:29:38.610,6
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978619,23:29:38.619,9
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978621,23:29:38.621,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978641,23:29:38.641,20
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978643,23:29:38.643,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978646,23:29:38.646,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978666,23:29:38.666,20
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978670,23:29:38.670,4
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978671,23:29:38.671,1
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978674,23:29:38.674,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978677,23:29:38.677,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978681,23:29:38.681,4
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978683,23:29:38.683,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978685,23:29:38.685,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978687,23:29:38.687,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978700,23:29:38.700,13
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978702,23:29:38.702,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978708,23:29:38.708,6
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978710,23:29:38.710,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978712,23:29:38.712,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978715,23:29:38.715,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978718,23:29:38.718,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978719,23:29:38.719,1
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978721,23:29:38.721,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978723,23:29:38.723,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978726,23:29:38.726,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978728,23:29:38.728,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978730,23:29:38.730,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978731,23:29:38.731,1
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978738,23:29:38.738,7
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978740,23:29:38.740,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978742,23:29:38.742,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978744,23:29:38.744,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978747,23:29:38.747,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978750,23:29:38.750,3
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978752,23:29:38.752,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978754,23:29:38.754,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978756,23:29:38.756,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978758,23:29:38.758,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978760,23:29:38.760,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978762,23:29:38.762,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978764,23:29:38.764,2
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978769,23:29:38.769,5
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978773,23:29:38.773,4
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978778,23:29:38.778,5
+pingAllIntermediate,full-load,100,/172.17.63.35_0,1522700978781,23:29:38.781,3
+------------------------------ TEST GROUP: pingAll
+testGroup,phase,timestamp,time,iterations,resultsTotal,numProcs,avgLatency
+pingAll,full-load,1522700978781,23:29:38.781,100,100,4,4
+------------------------------ TEST GROUP: pingSingle
+testGroup,phase,iterations,pid,timestamp,time,latency
+pingSingle,N/A,-1,/172.17.63.36_0,1522700977884,23:29:37.884,5
+pingSingle,N/A,-1,/172.17.63.35_0,1522700977890,23:29:37.890,8
+pingSingle,N/A,-1,/172.17.63.39_0,1522700977887,23:29:37.887,7
+pingSingle,N/A,-1,/172.17.63.40_0,1522700977897,23:29:37.897,15
+pingSingle,N/A,-1,/172.17.63.35_0,1522700977900,23:29:37.900,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700977900,23:29:37.900,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700977901,23:29:37.901,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700977902,23:29:37.902,3
+pingSingle,N/A,-1,/172.17.63.35_0,1522700977904,23:29:37.904,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700977905,23:29:37.905,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700977905,23:29:37.905,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700977906,23:29:37.906,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700977911,23:29:37.911,3
+pingSingle,N/A,-1,/172.17.63.39_0,1522700977911,23:29:37.911,3
+pingSingle,N/A,-1,/172.17.63.36_0,1522700977911,23:29:37.911,3
+pingSingle,N/A,-1,/172.17.63.35_0,1522700977913,23:29:37.913,3
+pingSingle,N/A,-1,/172.17.63.35_0,1522700977917,23:29:37.917,3
+pingSingle,N/A,-1,/172.17.63.36_0,1522700977918,23:29:37.918,3
+pingSingle,N/A,-1,/172.17.63.40_0,1522700977918,23:29:37.918,4
+pingSingle,N/A,-1,/172.17.63.39_0,1522700977918,23:29:37.918,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700977922,23:29:37.922,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700977923,23:29:37.923,3
+pingSingle,N/A,-1,/172.17.63.36_0,1522700977924,23:29:37.924,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700977925,23:29:37.925,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700977931,23:29:37.931,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700977934,23:29:37.934,4
+pingSingle,N/A,-1,/172.17.63.40_0,1522700977933,23:29:37.933,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700977933,23:29:37.933,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700977963,23:29:37.963,13
+pingSingle,N/A,-1,/172.17.63.35_0,1522700977964,23:29:37.964,12
+pingSingle,N/A,-1,/172.17.63.40_0,1522700977966,23:29:37.966,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700977967,23:29:37.967,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700977969,23:29:37.969,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700977970,23:29:37.970,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700977971,23:29:37.971,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700977970,23:29:37.970,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700977980,23:29:37.980,7
+pingSingle,N/A,-1,/172.17.63.40_0,1522700977980,23:29:37.980,7
+pingSingle,N/A,-1,/172.17.63.36_0,1522700977980,23:29:37.980,3
+pingSingle,N/A,-1,/172.17.63.35_0,1522700977980,23:29:37.980,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700977982,23:29:37.982,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700977983,23:29:37.983,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700977983,23:29:37.983,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700977983,23:29:37.983,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700977985,23:29:37.985,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700977987,23:29:37.987,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700977987,23:29:37.987,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700977988,23:29:37.988,4
+pingSingle,N/A,-1,/172.17.63.39_0,1522700977991,23:29:37.991,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700977991,23:29:37.991,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700977993,23:29:37.993,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700977995,23:29:37.995,3
+pingSingle,N/A,-1,/172.17.63.39_0,1522700977997,23:29:37.997,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700977997,23:29:37.997,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700977998,23:29:37.998,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978001,23:29:38.001,4
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978003,23:29:38.003,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978004,23:29:38.004,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978005,23:29:38.005,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978005,23:29:38.005,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978008,23:29:38.008,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978008,23:29:38.008,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978009,23:29:38.009,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978010,23:29:38.010,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978012,23:29:38.012,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978012,23:29:38.012,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978013,23:29:38.013,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978013,23:29:38.013,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978015,23:29:38.015,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978015,23:29:38.015,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978016,23:29:38.016,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978016,23:29:38.016,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978020,23:29:38.020,3
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978020,23:29:38.020,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978023,23:29:38.023,6
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978023,23:29:38.023,0
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978026,23:29:38.026,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978027,23:29:38.027,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978027,23:29:38.027,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978030,23:29:38.030,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978033,23:29:38.033,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978036,23:29:38.036,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978036,23:29:38.036,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978036,23:29:38.036,5
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978038,23:29:38.038,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978038,23:29:38.038,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978045,23:29:38.045,7
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978045,23:29:38.045,7
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978051,23:29:38.051,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978051,23:29:38.051,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978052,23:29:38.052,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978063,23:29:38.063,13
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978067,23:29:38.067,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978067,23:29:38.067,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978067,23:29:38.067,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978068,23:29:38.068,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978071,23:29:38.071,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978073,23:29:38.073,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978076,23:29:38.076,7
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978076,23:29:38.076,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978081,23:29:38.081,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978082,23:29:38.082,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978084,23:29:38.084,4
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978091,23:29:38.091,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978094,23:29:38.094,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978094,23:29:38.094,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978095,23:29:38.095,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978096,23:29:38.096,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978100,23:29:38.100,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978105,23:29:38.105,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978107,23:29:38.107,10
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978111,23:29:38.111,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978113,23:29:38.113,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978114,23:29:38.114,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978114,23:29:38.114,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978115,23:29:38.115,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978117,23:29:38.117,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978121,23:29:38.121,3
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978121,23:29:38.121,5
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978137,23:29:38.137,20
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978144,23:29:38.144,4
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978144,23:29:38.144,3
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978144,23:29:38.144,5
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978144,23:29:38.144,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978149,23:29:38.149,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978155,23:29:38.155,8
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978156,23:29:38.156,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978156,23:29:38.156,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978165,23:29:38.165,7
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978165,23:29:38.165,7
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978165,23:29:38.165,5
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978165,23:29:38.165,5
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978168,23:29:38.168,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978169,23:29:38.169,3
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978170,23:29:38.170,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978171,23:29:38.171,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978173,23:29:38.173,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978175,23:29:38.175,4
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978175,23:29:38.175,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978176,23:29:38.176,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978180,23:29:38.180,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978180,23:29:38.180,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978181,23:29:38.181,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978182,23:29:38.182,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978185,23:29:38.185,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978186,23:29:38.186,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978186,23:29:38.186,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978186,23:29:38.186,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978195,23:29:38.195,8
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978195,23:29:38.195,7
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978196,23:29:38.196,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978197,23:29:38.197,0
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978199,23:29:38.199,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978200,23:29:38.200,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978200,23:29:38.200,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978202,23:29:38.202,3
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978204,23:29:38.204,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978206,23:29:38.206,4
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978206,23:29:38.206,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978206,23:29:38.206,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978208,23:29:38.208,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978211,23:29:38.211,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978213,23:29:38.213,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978218,23:29:38.218,12
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978222,23:29:38.222,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978227,23:29:38.227,8
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978228,23:29:38.228,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978230,23:29:38.230,4
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978232,23:29:38.232,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978233,23:29:38.233,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978234,23:29:38.234,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978234,23:29:38.234,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978238,23:29:38.238,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978240,23:29:38.240,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978243,23:29:38.243,6
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978243,23:29:38.243,3
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978246,23:29:38.246,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978246,23:29:38.246,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978248,23:29:38.248,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978250,23:29:38.250,6
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978255,23:29:38.255,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978256,23:29:38.256,4
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978257,23:29:38.257,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978261,23:29:38.261,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978263,23:29:38.263,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978263,23:29:38.263,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978264,23:29:38.264,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978276,23:29:38.276,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978280,23:29:38.280,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978280,23:29:38.280,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978300,23:29:38.300,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978304,23:29:38.304,27
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978307,23:29:38.307,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978308,23:29:38.308,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978309,23:29:38.309,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978318,23:29:38.318,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978322,23:29:38.322,3
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978322,23:29:38.322,3
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978322,23:29:38.322,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978323,23:29:38.323,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978326,23:29:38.326,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978327,23:29:38.327,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978327,23:29:38.327,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978327,23:29:38.327,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978333,23:29:38.333,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978335,23:29:38.335,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978335,23:29:38.335,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978337,23:29:38.337,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978338,23:29:38.338,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978339,23:29:38.339,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978339,23:29:38.339,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978340,23:29:38.340,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978341,23:29:38.341,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978342,23:29:38.342,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978342,23:29:38.342,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978343,23:29:38.343,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978344,23:29:38.344,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978344,23:29:38.344,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978344,23:29:38.344,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978345,23:29:38.345,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978349,23:29:38.349,3
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978349,23:29:38.349,3
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978349,23:29:38.349,3
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978349,23:29:38.349,0
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978351,23:29:38.351,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978352,23:29:38.352,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978362,23:29:38.362,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978362,23:29:38.362,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978364,23:29:38.364,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978364,23:29:38.364,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978364,23:29:38.364,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978376,23:29:38.376,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978377,23:29:38.377,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978378,23:29:38.378,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978378,23:29:38.378,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978379,23:29:38.379,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978380,23:29:38.380,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978381,23:29:38.381,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978381,23:29:38.381,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978381,23:29:38.381,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978382,23:29:38.382,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978383,23:29:38.383,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978383,23:29:38.383,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978384,23:29:38.384,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978385,23:29:38.385,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978386,23:29:38.386,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978387,23:29:38.387,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978387,23:29:38.387,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978389,23:29:38.389,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978389,23:29:38.389,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978389,23:29:38.389,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978390,23:29:38.390,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978391,23:29:38.391,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978391,23:29:38.391,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978392,23:29:38.392,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978393,23:29:38.393,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978394,23:29:38.394,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978394,23:29:38.394,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978395,23:29:38.395,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978395,23:29:38.395,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978407,23:29:38.407,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978408,23:29:38.408,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978413,23:29:38.413,5
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978413,23:29:38.413,7
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978414,23:29:38.414,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978415,23:29:38.415,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978416,23:29:38.416,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978416,23:29:38.416,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978418,23:29:38.418,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978418,23:29:38.418,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978418,23:29:38.418,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978419,23:29:38.419,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978421,23:29:38.421,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978421,23:29:38.421,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978422,23:29:38.422,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978423,23:29:38.423,3
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978425,23:29:38.425,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978427,23:29:38.427,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978427,23:29:38.427,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978428,23:29:38.428,5
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978430,23:29:38.430,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978430,23:29:38.430,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978434,23:29:38.434,4
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978434,23:29:38.434,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978436,23:29:38.436,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978437,23:29:38.437,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978437,23:29:38.437,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978437,23:29:38.437,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978442,23:29:38.442,3
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978442,23:29:38.442,3
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978442,23:29:38.442,4
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978444,23:29:38.444,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978446,23:29:38.446,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978447,23:29:38.447,3
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978447,23:29:38.447,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978447,23:29:38.447,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978449,23:29:38.449,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978450,23:29:38.450,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978450,23:29:38.450,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978451,23:29:38.451,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978453,23:29:38.453,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978456,23:29:38.456,3
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978458,23:29:38.458,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978458,23:29:38.458,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978460,23:29:38.460,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978460,23:29:38.460,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978460,23:29:38.460,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978461,23:29:38.461,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978463,23:29:38.463,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978463,23:29:38.463,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978463,23:29:38.463,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978463,23:29:38.463,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978464,23:29:38.464,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978465,23:29:38.465,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978465,23:29:38.465,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978465,23:29:38.465,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978466,23:29:38.466,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978467,23:29:38.467,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978467,23:29:38.467,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978467,23:29:38.467,0
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978469,23:29:38.469,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978469,23:29:38.469,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978469,23:29:38.469,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978469,23:29:38.469,0
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978470,23:29:38.470,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978471,23:29:38.471,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978471,23:29:38.471,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978471,23:29:38.471,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978472,23:29:38.472,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978473,23:29:38.473,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978473,23:29:38.473,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978473,23:29:38.473,0
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978475,23:29:38.475,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978475,23:29:38.475,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978475,23:29:38.475,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978476,23:29:38.476,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978477,23:29:38.477,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978478,23:29:38.478,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978478,23:29:38.478,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978478,23:29:38.478,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978480,23:29:38.480,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978480,23:29:38.480,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978481,23:29:38.481,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978481,23:29:38.481,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978482,23:29:38.482,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978482,23:29:38.482,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978483,23:29:38.483,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978483,23:29:38.483,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978485,23:29:38.485,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978485,23:29:38.485,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978485,23:29:38.485,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978486,23:29:38.486,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978487,23:29:38.487,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978487,23:29:38.487,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978488,23:29:38.488,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978488,23:29:38.488,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978489,23:29:38.489,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978489,23:29:38.489,0
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978489,23:29:38.489,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978490,23:29:38.490,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978491,23:29:38.491,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978491,23:29:38.491,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978491,23:29:38.491,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978492,23:29:38.492,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978498,23:29:38.498,5
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978498,23:29:38.498,5
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978498,23:29:38.498,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978499,23:29:38.499,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978501,23:29:38.501,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978501,23:29:38.501,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978516,23:29:38.516,10
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978519,23:29:38.519,20
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978529,23:29:38.529,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978529,23:29:38.529,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978530,23:29:38.530,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978536,23:29:38.536,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978540,23:29:38.540,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978542,23:29:38.542,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978542,23:29:38.542,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978542,23:29:38.542,3
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978566,23:29:38.566,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978568,23:29:38.568,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978569,23:29:38.569,3
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978569,23:29:38.569,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978571,23:29:38.571,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978571,23:29:38.571,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978575,23:29:38.575,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978576,23:29:38.576,6
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978579,23:29:38.579,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978579,23:29:38.579,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978579,23:29:38.579,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978579,23:29:38.579,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978582,23:29:38.582,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978582,23:29:38.582,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978582,23:29:38.582,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978583,23:29:38.583,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978584,23:29:38.584,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978585,23:29:38.585,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978585,23:29:38.585,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978590,23:29:38.590,6
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978591,23:29:38.591,0
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978592,23:29:38.592,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978593,23:29:38.593,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978593,23:29:38.593,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978596,23:29:38.596,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978596,23:29:38.596,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978596,23:29:38.596,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978596,23:29:38.596,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978599,23:29:38.599,0
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978600,23:29:38.600,3
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978600,23:29:38.600,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978601,23:29:38.601,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978603,23:29:38.603,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978603,23:29:38.603,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978603,23:29:38.603,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978604,23:29:38.604,0
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978605,23:29:38.605,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978606,23:29:38.606,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978606,23:29:38.606,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978610,23:29:38.610,5
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978611,23:29:38.611,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978612,23:29:38.612,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978613,23:29:38.613,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978619,23:29:38.619,8
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978620,23:29:38.620,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978620,23:29:38.620,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978621,23:29:38.621,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978621,23:29:38.621,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978622,23:29:38.622,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978623,23:29:38.623,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978624,23:29:38.624,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978641,23:29:38.641,19
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978642,23:29:38.642,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978643,23:29:38.643,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978643,23:29:38.643,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978643,23:29:38.643,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978644,23:29:38.644,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978646,23:29:38.646,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978646,23:29:38.646,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978646,23:29:38.646,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978647,23:29:38.647,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978647,23:29:38.647,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978648,23:29:38.648,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978666,23:29:38.666,19
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978668,23:29:38.668,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978669,23:29:38.669,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978669,23:29:38.669,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978670,23:29:38.670,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978671,23:29:38.671,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978671,23:29:38.671,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978671,23:29:38.671,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978671,23:29:38.671,0
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978672,23:29:38.672,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978673,23:29:38.673,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978674,23:29:38.674,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978674,23:29:38.674,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978677,23:29:38.677,3
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978677,23:29:38.677,3
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978677,23:29:38.677,2
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978677,23:29:38.677,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978678,23:29:38.678,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978678,23:29:38.678,0
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978679,23:29:38.679,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978681,23:29:38.681,2
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978682,23:29:38.682,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978682,23:29:38.682,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978683,23:29:38.683,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978683,23:29:38.683,0
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978684,23:29:38.684,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978685,23:29:38.685,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978685,23:29:38.685,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978685,23:29:38.685,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978686,23:29:38.686,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978686,23:29:38.686,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978686,23:29:38.686,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978687,23:29:38.687,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978688,23:29:38.688,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978688,23:29:38.688,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978689,23:29:38.689,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978700,23:29:38.700,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978701,23:29:38.701,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978701,23:29:38.701,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978702,23:29:38.702,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978702,23:29:38.702,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978703,23:29:38.703,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978703,23:29:38.703,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978704,23:29:38.704,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978708,23:29:38.708,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978709,23:29:38.709,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978709,23:29:38.709,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978709,23:29:38.709,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978710,23:29:38.710,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978711,23:29:38.711,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978711,23:29:38.711,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978711,23:29:38.711,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978712,23:29:38.712,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978713,23:29:38.713,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978713,23:29:38.713,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978713,23:29:38.713,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978715,23:29:38.715,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978716,23:29:38.716,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978716,23:29:38.716,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978716,23:29:38.716,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978718,23:29:38.718,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978719,23:29:38.719,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978719,23:29:38.719,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978719,23:29:38.719,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978719,23:29:38.719,0
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978720,23:29:38.720,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978721,23:29:38.721,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978721,23:29:38.721,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978721,23:29:38.721,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978722,23:29:38.722,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978723,23:29:38.723,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978723,23:29:38.723,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978723,23:29:38.723,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978724,23:29:38.724,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978725,23:29:38.725,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978725,23:29:38.725,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978726,23:29:38.726,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978727,23:29:38.727,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978727,23:29:38.727,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978728,23:29:38.728,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978728,23:29:38.728,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978729,23:29:38.729,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978729,23:29:38.729,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978730,23:29:38.730,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978730,23:29:38.730,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978731,23:29:38.731,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978731,23:29:38.731,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978731,23:29:38.731,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978731,23:29:38.731,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978733,23:29:38.733,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978733,23:29:38.733,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978733,23:29:38.733,0
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978738,23:29:38.738,6
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978739,23:29:38.739,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978739,23:29:38.739,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978739,23:29:38.739,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978740,23:29:38.740,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978741,23:29:38.741,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978741,23:29:38.741,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978741,23:29:38.741,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978742,23:29:38.742,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978743,23:29:38.743,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978743,23:29:38.743,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978743,23:29:38.743,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978744,23:29:38.744,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978745,23:29:38.745,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978746,23:29:38.746,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978746,23:29:38.746,2
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978747,23:29:38.747,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978749,23:29:38.749,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978749,23:29:38.749,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978749,23:29:38.749,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978750,23:29:38.750,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978751,23:29:38.751,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978751,23:29:38.751,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978751,23:29:38.751,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978752,23:29:38.752,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978753,23:29:38.753,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978753,23:29:38.753,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978753,23:29:38.753,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978754,23:29:38.754,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978755,23:29:38.755,0
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978755,23:29:38.755,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978756,23:29:38.756,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978756,23:29:38.756,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978757,23:29:38.757,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978757,23:29:38.757,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978757,23:29:38.757,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978758,23:29:38.758,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978759,23:29:38.759,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978759,23:29:38.759,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978759,23:29:38.759,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978760,23:29:38.760,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978761,23:29:38.761,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978761,23:29:38.761,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978761,23:29:38.761,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978762,23:29:38.762,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978763,23:29:38.763,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978763,23:29:38.763,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978763,23:29:38.763,0
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978764,23:29:38.764,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978767,23:29:38.767,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978768,23:29:38.768,3
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978769,23:29:38.769,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978769,23:29:38.769,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978771,23:29:38.771,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978771,23:29:38.771,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978772,23:29:38.772,0
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978773,23:29:38.773,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978774,23:29:38.774,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978775,23:29:38.775,1
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978777,23:29:38.777,4
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978778,23:29:38.778,1
+pingSingle,N/A,-1,/172.17.63.40_0,1522700978780,23:29:38.780,1
+pingSingle,N/A,-1,/172.17.63.39_0,1522700978780,23:29:38.780,1
+pingSingle,N/A,-1,/172.17.63.36_0,1522700978781,23:29:38.781,2
+pingSingle,N/A,-1,/172.17.63.35_0,1522700978781,23:29:38.781,2
+[INFO] 23:29:39:521 TCPMainMultiJVM.main(): Total time (ms): 7035
