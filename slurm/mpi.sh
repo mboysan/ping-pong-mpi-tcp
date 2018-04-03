@@ -5,7 +5,7 @@
     for nTASKS in {1..1}; do
     gId=$((gId+1))
     np=$((${nNODES}*${nTASKS}))
-    dir_name="t0mpi_${nNODES}_${nTASKS}"
+    dir_name="m0mpi_${nNODES}_${nTASKS}"
     mkdir "${dir_name}"
     f_name="${dir_name}/mpi_${nNODES}_${nTASKS}.sh"
     f_name_wo_dir="mpi_${nNODES}_${nTASKS}.sh"

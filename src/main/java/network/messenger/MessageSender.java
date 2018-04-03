@@ -130,8 +130,8 @@ public class MessageSender {
 
         @Override
         public void run(){
-            runOnMPIAsync();
-//            runOnMPISync();
+//            runOnMPIAsync();
+            runOnMPISync();
         }
 
         /**
