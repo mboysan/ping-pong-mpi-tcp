@@ -1,6 +1,6 @@
 #!/bin/bash
  module load openmpi-1.8.4
- gId=1
+ gId=0
  for nNODES in {1..5}; do
     for nTASKS in {1..1}; do
     gId=$((gId+1))
