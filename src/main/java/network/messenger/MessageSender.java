@@ -9,6 +9,7 @@ import org.pmw.tinylog.Logger;
 import protocol.CommandMarshaller;
 import protocol.commands.NetworkCommand;
 import protocol.commands.ping.SignalEnd_NC;
+import testframework.TestFramework;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -39,6 +40,10 @@ public class MessageSender {
      * @param message the command to send
      */
     public void send(NetworkCommand message) {
+
+        //FIXME: remove following call, used only for latency testing.
+        message = TestFramework.addAdditionalPayload(message);
+
         Runnable sender = null;
         switch (GlobalConfig.getInstance().getConnectionProtocol()) {
             case TCP_CONNECTION:

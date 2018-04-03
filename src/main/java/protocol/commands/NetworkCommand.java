@@ -39,6 +39,10 @@ public class NetworkCommand implements Serializable {
      * Message timestamp. Auto-generated.
      */
     private long timeStamp = System.currentTimeMillis();
+    /**
+     * Any additional payload to send.
+     */
+    private String payload;
 
     public NetworkCommand() {
 
@@ -205,6 +209,15 @@ public class NetworkCommand implements Serializable {
         return timeStamp;
     }
 
+    public String getPayload() {
+        return payload;
+    }
+
+    public NetworkCommand setPayload(String payload) {
+        this.payload = payload;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "NetworkCommand{" +
@@ -213,6 +226,7 @@ public class NetworkCommand implements Serializable {
                 ", receiverAddrMPI=" + receiverAddrMPI +
                 ", senderAddrMPI=" + senderAddrMPI +
                 ", tag=" + tag +
+                ", payload=" + payload +
                 ", timeStamp=" + timeStamp +
                 '}';
     }
