@@ -1,0 +1,28 @@
+[stage23:50986] mca: base: component_find: unable to open /storage/software/openmpi-1.8.4/lib/openmpi/mca_plm_tm: libtorque.so.2: cannot open shared object file: No such file or directory (ignored)
+[stage23:50986] mca: base: component_find: unable to open /storage/software/openmpi-1.8.4/lib/openmpi/mca_ras_tm: libtorque.so.2: cannot open shared object file: No such file or directory (ignored)
+2018-04-03 21:23:25 [main] MPIMain.main()
+INFO: Args received: [3, false]
+2018-04-03 21:23:25 [main] MPIMain.main()
+INFO: Args received: [3, false]
+2018-04-03 21:23:25 [main] MPIMain.main()
+INFO: Args received: [3, false]
+[INFO] 21:23:25:776 config.GlobalConfig.init(): Init [MPI_CONNECTION, isSingleJVM:false]
+[INFO] 21:23:25:815 config.GlobalConfig.init(): Init [MPI_CONNECTION, isSingleJVM:false]
+[INFO] 21:23:25:816 config.GlobalConfig.init(): Init [MPI_CONNECTION, isSingleJVM:false]
+[INFO] 21:23:26:030 config.GlobalConfig.registerRole(): Registering role: Role{roleId='p0g3', myAddress=MPIAddress{rank=0, groupId=3}, isLeader=false}
+[INFO] 21:23:26:054 config.GlobalConfig.registerRole(): Registering role: Role{roleId='p2g3', myAddress=MPIAddress{rank=2, groupId=3}, isLeader=false}
+[INFO] 21:23:26:056 config.GlobalConfig.registerRole(): Registering role: Role{roleId='p1g3', myAddress=MPIAddress{rank=1, groupId=3}, isLeader=false}
+[INFO] 21:23:26:118 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=0, groupId=3}] registered on role [Role{roleId='p0g3', myAddress=MPIAddress{rank=0, groupId=3}, isLeader=true}]
+[INFO] 21:23:26:119 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=1, groupId=3}] registered on role [Role{roleId='p0g3', myAddress=MPIAddress{rank=0, groupId=3}, isLeader=true}]
+[INFO] 21:23:26:119 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=2, groupId=3}] registered on role [Role{roleId='p0g3', myAddress=MPIAddress{rank=0, groupId=3}, isLeader=true}]
+[INFO] 21:23:26:119 role.Node.<init>(): Node created: Role{roleId='p0g3', myAddress=MPIAddress{rank=0, groupId=3}, isLeader=true}
+[INFO] 21:23:26:122 testframework.TestFramework._doPingTests(): Starting ping-pong tests...
+[INFO] 21:23:26:142 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=1, groupId=3}] registered on role [Role{roleId='p1g3', myAddress=MPIAddress{rank=1, groupId=3}, isLeader=true}]
+[INFO] 21:23:26:142 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=0, groupId=3}] registered on role [Role{roleId='p1g3', myAddress=MPIAddress{rank=1, groupId=3}, isLeader=false}]
+[INFO] 21:23:26:142 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=2, groupId=3}] registered on role [Role{roleId='p1g3', myAddress=MPIAddress{rank=1, groupId=3}, isLeader=false}]
+[INFO] 21:23:26:142 role.Node.<init>(): Node created: Role{roleId='p1g3', myAddress=MPIAddress{rank=1, groupId=3}, isLeader=false}
+[INFO] 21:23:26:159 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=2, groupId=3}] registered on role [Role{roleId='p2g3', myAddress=MPIAddress{rank=2, groupId=3}, isLeader=true}]
+[INFO] 21:23:26:159 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=0, groupId=3}] registered on role [Role{roleId='p2g3', myAddress=MPIAddress{rank=2, groupId=3}, isLeader=false}]
+[INFO] 21:23:26:160 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=1, groupId=3}] registered on role [Role{roleId='p2g3', myAddress=MPIAddress{rank=2, groupId=3}, isLeader=false}]
+[INFO] 21:23:26:160 role.Node.<init>(): Node created: Role{roleId='p2g3', myAddress=MPIAddress{rank=2, groupId=3}, isLeader=false}
+slurmstepd: error: *** JOB 2864661 ON stage23 CANCELLED AT 2018-04-03T21:24:22 DUE TO TIME LIMIT ***

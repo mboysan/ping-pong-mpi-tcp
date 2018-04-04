@@ -1,0 +1,11 @@
+iterations,protocol,nodeCount,avgLatency(ms)
+100,tcp,1,1.9
+100,tcp,2,2.63
+100,tcp,3,2.81
+100,tcp,4,3.23
+100,tcp,5,3.46
+100,mpi,1,8.1
+100,mpi,2,9.43
+100,mpi,3,2.87
+100,mpi,4,3.12
+100,mpi,5,2.86
