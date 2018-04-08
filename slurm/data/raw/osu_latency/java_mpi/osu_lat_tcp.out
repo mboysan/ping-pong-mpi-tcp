@@ -1,0 +1,90 @@
+osu_latency test with java TCP
+[stage10:21159] mca: base: component_find: unable to open /storage/software/openmpi-1.8.4/lib/openmpi/mca_plm_tm: libtorque.so.2: cannot open shared object file: No such file or directory (ignored)
+[stage10:21159] mca: base: component_find: unable to open /storage/software/openmpi-1.8.4/lib/openmpi/mca_ras_tm: libtorque.so.2: cannot open shared object file: No such file or directory (ignored)
+args: [200]
+args: [200]
+multicasting...
+multicasting...
+Ponger addr: 172.17.63.10,42365
+leader found: /172.17.63.11,37092
+size(bytes),latency(us)
+Ponger addr: 172.17.63.11,37092
+2,397.263
+4,265.179
+8,234.774
+16,250.942
+32,284.139
+64,235.313
+128,231.527
+256,232.024
+512,270.505
+1024,245.232
+2048,265.112
+4096,268.467
+8192,285.343
+16384,301.229
+32768,333.108
+65536,337.816
+Exception in thread "main" java.net.SocketException: Broken pipe
+	at java.net.SocketOutputStream.socketWrite0(Native Method)
+	at java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:109)
+	at java.net.SocketOutputStream.write(SocketOutputStream.java:153)
+	at java.io.DataOutputStream.write(DataOutputStream.java:107)
+	at testframework.osu.pt2pt.OSULatencySocket.send(OSULatencyTCP.java:132)
+	at testframework.osu.pt2pt.OSULatencySocket.main(OSULatencyTCP.java:95)
+-------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code.. Per user-direction, the job has been aborted.
+-------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[35049,1],1]
+  Exit code:    1
+--------------------------------------------------------------------------
+osu_latency test with java TCP ON TCP
+[stage10:21222] mca: base: component_find: unable to open /storage/software/openmpi-1.8.4/lib/openmpi/mca_plm_tm: libtorque.so.2: cannot open shared object file: No such file or directory (ignored)
+[stage10:21222] mca: base: component_find: unable to open /storage/software/openmpi-1.8.4/lib/openmpi/mca_ras_tm: libtorque.so.2: cannot open shared object file: No such file or directory (ignored)
+args: [200]
+args: [200]
+multicasting...
+multicasting...
+Ponger addr: 172.17.63.10,34389
+Ponger addr: 172.17.63.11,39793
+leader found: /172.17.63.10,34389
+size(bytes),latency(us)
+2,370.651
+4,299.355
+8,238.492
+16,241.234
+32,244.724
+64,255.759
+128,230.099
+256,236.657
+512,251.532
+1024,229.884
+2048,245.748
+4096,265.576
+8192,285.228
+16384,296.532
+32768,333.952
+65536,327.176
+Exception in thread "main" java.net.SocketException: Broken pipe
+	at java.net.SocketOutputStream.socketWrite0(Native Method)
+	at java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:109)
+	at java.net.SocketOutputStream.write(SocketOutputStream.java:153)
+	at java.io.DataOutputStream.write(DataOutputStream.java:107)
+	at testframework.osu.pt2pt.OSULatencySocket.send(OSULatencyTCP.java:132)
+	at testframework.osu.pt2pt.OSULatencySocket.main(OSULatencyTCP.java:95)
+-------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code.. Per user-direction, the job has been aborted.
+-------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[34984,1],0]
+  Exit code:    1
+--------------------------------------------------------------------------

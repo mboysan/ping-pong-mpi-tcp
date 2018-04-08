@@ -1,5 +1,8 @@
 #!/bin/bash
- module load openmpi-1.8.4
+
+# Used to run the mpi related tests on InfiniBand interconnect. Modify this script to run the mpi application
+# on TCP/IP stack. Also modify the location of the *.jar file for your needs.
+
  gId=0
  for nNODES in {1..5}; do
     for nTASKS in {1..1}; do

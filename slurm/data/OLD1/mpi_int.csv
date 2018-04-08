@@ -1,6 +1,0 @@
-protocol,dataCount,nodeCount,avgLatency
-mpi,100,1,31.37
-mpi,100,2,36.5
-mpi,100,3,41.98
-mpi,100,4,24.13
-mpi,100,5,50.4

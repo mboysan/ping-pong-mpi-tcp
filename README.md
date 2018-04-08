@@ -38,7 +38,7 @@ To run the single JVM version of the TCP tests, use script:
 ```bash
 $ ./tcp_single_jvm.sh
 ```
-You can also use the class `TCPMainSingleJVM.java` to execute
+You can also use the class `SocketMainSingleJVM.java` to execute
 the tests with an IDE of your choice.
 
 To run multi JVM version of the TCP tests, use script:
