@@ -1,7 +1,8 @@
-# Ping-Pong Latency Test With MPI and TCP
+# Ping-Pong Latency Test With Java Open-MPI Bindings and Java TCP/IP Sockets
 
-This repo is used for measuring the TCP vs MPI latencies for 
-a network of distributed processes. Basically, it performs some 
+This repository is used for measuring the Java Open-MPI bindings vs
+ Java TCP socket latencies for a network of distributed 
+ processes. Basically, it performs some 
 ping-pong tests between a number of processes.
 
 A basic test consists of the following flow:
@@ -12,36 +13,44 @@ A basic test consists of the following flow:
 5. Steps (3) and (4) is repeated inside a loop.
 6. Results from step 5 are recorded and their average is calculated.
 
-## Running the Tests
+## Software Dependencies
 
 It is important the followings are available in your system:
-* MPI set-up
-* Java 8 or above
-* Maven
+* Open-MPI with Java bindings are set-up,
+* Java 8 or above,
+* Maven.
 
-## Running MPI Tests
+## Running Java Open-MPI Latency Tests
 
 Edit the `mpi.sh` script for your needs and run it like:
 ```bash
 $ ./mpi.sh
 ```
 
-## Running TCP Tests
+## Running Java TCP Socket Tests
 
-TCP has 2 versions. One uses a single JVM for all the nodes. This
-version is intended to test the overall behavior, so will not be
-used for performance evaluations. The second version runs all the
-nodes in separate JVMs. The performance evaluations will be done
-with that.
-
-To run the single JVM version of the TCP tests, use script:
+The Java TCP sockets use the mpirun for running the Java
+sockets in parallel. This is the main method used for testing/
+debugging the application. To use this approach use the 
+`socket.sh` script:
 ```bash
-$ ./tcp_single_jvm.sh
+$ ./socket.sh
 ```
 You can also use the class `SocketMainSingleJVM.java` to execute
-the tests with an IDE of your choice.
+the tests with an IDE of your choice which makes it easier
+to debug the entire application.
 
-To run multi JVM version of the TCP tests, use script:
+# OSU Point-to-Point Latency Tests
+
+The repository also includes the Java converted 
+[point-to-point `osu_latency`](http://mvapich.cse.ohio-state.edu/benchmarks/)
+tests both for Open-MPI and Java TCP sockets. Use the
+following scripts to run these tests:
 ```bash
-$ ./tcp.sh
+$ ./osu_latency_mpi.sh
+$ ./osu_latency_socket.sh
 ```
+
+# Results
+
+To-be-added.
