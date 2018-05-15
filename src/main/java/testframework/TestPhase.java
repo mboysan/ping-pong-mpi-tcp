@@ -7,11 +7,11 @@ public enum TestPhase {
     /**
      * Warmup phase to ready JVM and JIT
      */
-    PHASE_WARMUP("warmup", 50),
+    PHASE_WARMUP("warmup", 100),
     /**
      * Full load phase
      */
-    PHASE_FULL_LOAD("full-load", 100),
+    PHASE_FULL_LOAD("full-load", 500),
     /**
      * Custom phase
      */

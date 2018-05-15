@@ -1,0 +1,128 @@
+[stage4:07695] mca: base: component_find: unable to open /storage/software/openmpi-1.8.4/lib/openmpi/mca_plm_tm: libtorque.so.2: cannot open shared object file: No such file or directory (ignored)
+[stage4:07695] mca: base: component_find: unable to open /storage/software/openmpi-1.8.4/lib/openmpi/mca_ras_tm: libtorque.so.2: cannot open shared object file: No such file or directory (ignored)
+2018-05-13 19:39:06 [main] MPIMain.main()
+INFO: Args received: [1, false]
+2018-05-13 19:39:06 [main] MPIMain.main()
+INFO: Args received: [1, false]
+2018-05-13 19:39:06 [main] MPIMain.main()
+INFO: Args received: [1, false]
+2018-05-13 19:39:06 [main] MPIMain.main()
+INFO: Args received: [1, false]
+2018-05-13 19:39:06 [main] MPIMain.main()
+INFO: Args received: [1, false]
+2018-05-13 19:39:06 [main] MPIMain.main()
+INFO: Args received: [1, false]
+2018-05-13 19:39:06 [main] MPIMain.main()
+INFO: Args received: [1, false]
+[INFO] 19:39:07:092 config.GlobalConfig.init(): Init [MPI_CONNECTION, isSingleJVM:false]
+[INFO] 19:39:07:092 config.GlobalConfig.init(): Init [MPI_CONNECTION, isSingleJVM:false]
+[INFO] 19:39:07:092 config.GlobalConfig.init(): Init [MPI_CONNECTION, isSingleJVM:false]
+[INFO] 19:39:07:132 config.GlobalConfig.init(): Init [MPI_CONNECTION, isSingleJVM:false]
+[INFO] 19:39:07:092 config.GlobalConfig.init(): Init [MPI_CONNECTION, isSingleJVM:false]
+[INFO] 19:39:07:132 config.GlobalConfig.init(): Init [MPI_CONNECTION, isSingleJVM:false]
+[INFO] 19:39:07:132 config.GlobalConfig.init(): Init [MPI_CONNECTION, isSingleJVM:false]
+[INFO] 19:39:07:297 config.GlobalConfig.registerRole(): Registering role: Role{roleId='p2g1', myAddress=MPIAddress{rank=2, groupId=1}, isLeader=false}
+[INFO] 19:39:07:297 config.GlobalConfig.registerRole(): Registering role: Role{roleId='p1g1', myAddress=MPIAddress{rank=1, groupId=1}, isLeader=false}
+[INFO] 19:39:07:298 config.GlobalConfig.registerRole(): Registering role: Role{roleId='p0g1', myAddress=MPIAddress{rank=0, groupId=1}, isLeader=false}
+[INFO] 19:39:07:307 config.GlobalConfig.registerRole(): Registering role: Role{roleId='p6g1', myAddress=MPIAddress{rank=6, groupId=1}, isLeader=false}
+[INFO] 19:39:07:334 config.GlobalConfig.registerRole(): Registering role: Role{roleId='p3g1', myAddress=MPIAddress{rank=3, groupId=1}, isLeader=false}
+[INFO] 19:39:07:335 config.GlobalConfig.registerRole(): Registering role: Role{roleId='p4g1', myAddress=MPIAddress{rank=4, groupId=1}, isLeader=false}
+[INFO] 19:39:07:337 config.GlobalConfig.registerRole(): Registering role: Role{roleId='p5g1', myAddress=MPIAddress{rank=5, groupId=1}, isLeader=false}
+[INFO] 19:39:07:373 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=0, groupId=1}] registered on role [Role{roleId='p0g1', myAddress=MPIAddress{rank=0, groupId=1}, isLeader=true}]
+[INFO] 19:39:07:373 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=1, groupId=1}] registered on role [Role{roleId='p0g1', myAddress=MPIAddress{rank=0, groupId=1}, isLeader=true}]
+[INFO] 19:39:07:374 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=2, groupId=1}] registered on role [Role{roleId='p0g1', myAddress=MPIAddress{rank=0, groupId=1}, isLeader=true}]
+[INFO] 19:39:07:373 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=1, groupId=1}] registered on role [Role{roleId='p1g1', myAddress=MPIAddress{rank=1, groupId=1}, isLeader=true}]
+[INFO] 19:39:07:374 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=0, groupId=1}] registered on role [Role{roleId='p1g1', myAddress=MPIAddress{rank=1, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:374 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=3, groupId=1}] registered on role [Role{roleId='p0g1', myAddress=MPIAddress{rank=0, groupId=1}, isLeader=true}]
+[INFO] 19:39:07:374 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=4, groupId=1}] registered on role [Role{roleId='p0g1', myAddress=MPIAddress{rank=0, groupId=1}, isLeader=true}]
+[INFO] 19:39:07:374 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=2, groupId=1}] registered on role [Role{roleId='p1g1', myAddress=MPIAddress{rank=1, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:374 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=3, groupId=1}] registered on role [Role{roleId='p1g1', myAddress=MPIAddress{rank=1, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:375 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=5, groupId=1}] registered on role [Role{roleId='p0g1', myAddress=MPIAddress{rank=0, groupId=1}, isLeader=true}]
+[INFO] 19:39:07:375 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=6, groupId=1}] registered on role [Role{roleId='p0g1', myAddress=MPIAddress{rank=0, groupId=1}, isLeader=true}]
+[INFO] 19:39:07:375 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=4, groupId=1}] registered on role [Role{roleId='p1g1', myAddress=MPIAddress{rank=1, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:375 role.Node.<init>(): Node created: Role{roleId='p0g1', myAddress=MPIAddress{rank=0, groupId=1}, isLeader=true}
+[INFO] 19:39:07:374 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=2, groupId=1}] registered on role [Role{roleId='p2g1', myAddress=MPIAddress{rank=2, groupId=1}, isLeader=true}]
+[INFO] 19:39:07:375 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=5, groupId=1}] registered on role [Role{roleId='p1g1', myAddress=MPIAddress{rank=1, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:375 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=0, groupId=1}] registered on role [Role{roleId='p2g1', myAddress=MPIAddress{rank=2, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:375 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=6, groupId=1}] registered on role [Role{roleId='p1g1', myAddress=MPIAddress{rank=1, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:375 role.Node.<init>(): Node created: Role{roleId='p1g1', myAddress=MPIAddress{rank=1, groupId=1}, isLeader=false}
+[INFO] 19:39:07:376 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=1, groupId=1}] registered on role [Role{roleId='p2g1', myAddress=MPIAddress{rank=2, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:376 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=3, groupId=1}] registered on role [Role{roleId='p2g1', myAddress=MPIAddress{rank=2, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:376 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=4, groupId=1}] registered on role [Role{roleId='p2g1', myAddress=MPIAddress{rank=2, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:376 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=5, groupId=1}] registered on role [Role{roleId='p2g1', myAddress=MPIAddress{rank=2, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:377 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=6, groupId=1}] registered on role [Role{roleId='p2g1', myAddress=MPIAddress{rank=2, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:377 role.Node.<init>(): Node created: Role{roleId='p2g1', myAddress=MPIAddress{rank=2, groupId=1}, isLeader=false}
+[INFO] 19:39:07:378 testframework.TestFramework._doPingTests(): Starting ping-pong tests...
+[INFO] 19:39:07:403 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=6, groupId=1}] registered on role [Role{roleId='p6g1', myAddress=MPIAddress{rank=6, groupId=1}, isLeader=true}]
+[INFO] 19:39:07:404 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=0, groupId=1}] registered on role [Role{roleId='p6g1', myAddress=MPIAddress{rank=6, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:404 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=1, groupId=1}] registered on role [Role{roleId='p6g1', myAddress=MPIAddress{rank=6, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:404 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=2, groupId=1}] registered on role [Role{roleId='p6g1', myAddress=MPIAddress{rank=6, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:405 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=3, groupId=1}] registered on role [Role{roleId='p6g1', myAddress=MPIAddress{rank=6, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:406 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=4, groupId=1}] registered on role [Role{roleId='p6g1', myAddress=MPIAddress{rank=6, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:406 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=5, groupId=1}] registered on role [Role{roleId='p6g1', myAddress=MPIAddress{rank=6, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:406 role.Node.<init>(): Node created: Role{roleId='p6g1', myAddress=MPIAddress{rank=6, groupId=1}, isLeader=false}
+[INFO] 19:39:07:407 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=4, groupId=1}] registered on role [Role{roleId='p4g1', myAddress=MPIAddress{rank=4, groupId=1}, isLeader=true}]
+[INFO] 19:39:07:408 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=0, groupId=1}] registered on role [Role{roleId='p4g1', myAddress=MPIAddress{rank=4, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:408 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=1, groupId=1}] registered on role [Role{roleId='p4g1', myAddress=MPIAddress{rank=4, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:408 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=3, groupId=1}] registered on role [Role{roleId='p3g1', myAddress=MPIAddress{rank=3, groupId=1}, isLeader=true}]
+[INFO] 19:39:07:408 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=0, groupId=1}] registered on role [Role{roleId='p3g1', myAddress=MPIAddress{rank=3, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:408 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=2, groupId=1}] registered on role [Role{roleId='p4g1', myAddress=MPIAddress{rank=4, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:408 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=1, groupId=1}] registered on role [Role{roleId='p3g1', myAddress=MPIAddress{rank=3, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:409 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=3, groupId=1}] registered on role [Role{roleId='p4g1', myAddress=MPIAddress{rank=4, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:409 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=2, groupId=1}] registered on role [Role{roleId='p3g1', myAddress=MPIAddress{rank=3, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:409 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=5, groupId=1}] registered on role [Role{roleId='p4g1', myAddress=MPIAddress{rank=4, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:409 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=6, groupId=1}] registered on role [Role{roleId='p4g1', myAddress=MPIAddress{rank=4, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:409 role.Node.<init>(): Node created: Role{roleId='p4g1', myAddress=MPIAddress{rank=4, groupId=1}, isLeader=false}
+[INFO] 19:39:07:409 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=4, groupId=1}] registered on role [Role{roleId='p3g1', myAddress=MPIAddress{rank=3, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:410 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=5, groupId=1}] registered on role [Role{roleId='p3g1', myAddress=MPIAddress{rank=3, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:410 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=6, groupId=1}] registered on role [Role{roleId='p3g1', myAddress=MPIAddress{rank=3, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:410 role.Node.<init>(): Node created: Role{roleId='p3g1', myAddress=MPIAddress{rank=3, groupId=1}, isLeader=false}
+[INFO] 19:39:07:412 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=5, groupId=1}] registered on role [Role{roleId='p5g1', myAddress=MPIAddress{rank=5, groupId=1}, isLeader=true}]
+[INFO] 19:39:07:412 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=0, groupId=1}] registered on role [Role{roleId='p5g1', myAddress=MPIAddress{rank=5, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:412 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=1, groupId=1}] registered on role [Role{roleId='p5g1', myAddress=MPIAddress{rank=5, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:412 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=2, groupId=1}] registered on role [Role{roleId='p5g1', myAddress=MPIAddress{rank=5, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:413 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=3, groupId=1}] registered on role [Role{roleId='p5g1', myAddress=MPIAddress{rank=5, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:413 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=4, groupId=1}] registered on role [Role{roleId='p5g1', myAddress=MPIAddress{rank=5, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:413 config.GlobalConfig.registerAddress(): Address [MPIAddress{rank=6, groupId=1}] registered on role [Role{roleId='p5g1', myAddress=MPIAddress{rank=5, groupId=1}, isLeader=false}]
+[INFO] 19:39:07:413 role.Node.<init>(): Node created: Role{roleId='p5g1', myAddress=MPIAddress{rank=5, groupId=1}, isLeader=false}
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00002b70c122497d, pid=7714, tid=47766456936192
+#
+# JRE version: Java(TM) SE Runtime Environment (8.0_40-b26) (build 1.8.0_40-b26)
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (25.40-b25 mixed mode linux-amd64 compressed oops)
+# Problematic frame:
+# C  [mca_btl_openib.so+0xa97d]  mca_btl_openib_sendi+0x12d
+#
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# An error report file with more information is saved as:
+# /gpfs/hpchome/mehmet91/ping-pong/pp3/mpi500_7_1/hs_err_pid7714.log
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.java.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+[stage4:07714] *** Process received signal ***
+[stage4:07714] Signal: Aborted (6)
+[stage4:07714] Signal code:  (-6)
+[stage4:07714] [ 0] /usr/lib64/libpthread.so.0(+0xf370)[0x2b6faf09c370]
+[stage4:07714] [ 1] /usr/lib64/libc.so.6(gsignal+0x37)[0x2b6faf6f81d7]
+[stage4:07714] [ 2] /usr/lib64/libc.so.6(abort+0x148)[0x2b6faf6f98c8]
+[stage4:07714] [ 3] /storage/software/jre-1.8.0_40/lib/amd64/server/libjvm.so(+0x90f7b5)[0x2b6fb03937b5]
+[stage4:07714] [ 4] /storage/software/jre-1.8.0_40/lib/amd64/server/libjvm.so(+0xaacea3)[0x2b6fb0530ea3]
+[stage4:07714] [ 5] /storage/software/jre-1.8.0_40/lib/amd64/server/libjvm.so(JVM_handle_linux_signal+0x14f)[0x2b6fb0398cdf]
+[stage4:07714] [ 6] /storage/software/jre-1.8.0_40/lib/amd64/server/libjvm.so(+0x90b593)[0x2b6fb038f593]
+[stage4:07714] [ 7] /usr/lib64/libpthread.so.0(+0xf370)[0x2b6faf09c370]
+[stage4:07714] [ 8] /storage/software/openmpi-1.8.4/lib/openmpi/mca_btl_openib.so(mca_btl_openib_sendi+0x12d)[0x2b70c122497d]
+[stage4:07714] [ 9] /storage/software/openmpi-1.8.4/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send_request_start_copy+0xb6)[0x2b70c29ae236]
+[stage4:07714] [10] /storage/software/openmpi-1.8.4/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_isend+0x281)[0x2b70c29a59a1]
+[stage4:07714] [11] /storage/software/openmpi-1.8.4/lib/libmpi.so.1(MPI_Isend+0x137)[0x2b7063a5a807]
+[stage4:07714] [12] /storage/software/openmpi-1.8.4/lib/libmpi_java.so.1.2.0(Java_mpi_Comm_iSend+0x40)[0x2b70637df8f0]
+[stage4:07714] [13] [0x2b6fb8675e9e]
+[stage4:07714] *** End of error message ***
+--------------------------------------------------------------------------
+mpirun noticed that process rank 0 with PID 7714 on node stage4 exited on signal 6 (Aborted).
+--------------------------------------------------------------------------

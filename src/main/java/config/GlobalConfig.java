@@ -85,6 +85,8 @@ public class GlobalConfig {
      */
     public void initMPI(String[] args) throws MPIException {
         MPI.Init(args);
+//        MPI.InitThread(args, MPI.THREAD_MULTIPLE);
+//        MPI.InitThread(args, MPI.THREAD_SERIALIZED);
         init(MPI_CONNECTION, false);
     }
 

@@ -1,0 +1,66 @@
+-------------- uname -r
+3.10.0-514.10.2.el7.x86_64
+-------------- hostname
+stage11
+-------------- hostname -I
+172.17.63.11 192.168.163.11 
+-------------- ifconfig
+Infiniband hardware address can be incorrect! Please read BUGS section in ifconfig(8).
+eno1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 172.17.63.11  netmask 255.255.254.0  broadcast 172.17.63.255
+        inet6 fe80::9eb6:54ff:fe01:e2a6  prefixlen 64  scopeid 0x20<link>
+        ether 9c:b6:54:01:e2:a6  txqueuelen 4096  (Ethernet)
+        RX packets 105583485995  bytes 98014088686869 (89.1 TiB)
+        RX errors 0  dropped 0  overruns 18953  frame 0
+        TX packets 94385153468  bytes 82115261071727 (74.6 TiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+        device memory 0xf7d00000-f7dfffff  
+
+eno2: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        ether 9c:b6:54:01:e2:a7  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+        device memory 0xf7b00000-f7bfffff  
+
+eno3d1: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        ether 24:be:05:98:3d:32  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+ib0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 2044
+        inet 192.168.163.11  netmask 255.255.255.0  broadcast 192.168.163.255
+        inet6 fe80::26be:5ff:ff98:3d31  prefixlen 64  scopeid 0x20<link>
+        infiniband A0:00:06:20:FE:80:00:00:00:00:00:00:00:00:00:00:00:00:00:00  txqueuelen 4096  (InfiniBand)
+        RX packets 256026  bytes 83090127 (79.2 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 170  bytes 62030 (60.5 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1  (Local Loopback)
+        RX packets 2146614  bytes 11779082558 (10.9 GiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 2146614  bytes 11779082558 (10.9 GiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+-------------- curl ifconfig.co
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    22  100    22    0     0    339      0 --:--:-- --:--:-- --:--:--   338
+429 Too Many Requests
+-------------- JOB
+------ LD_LIB_PATH
+/storage/software/openmpi-1.8.4/lib:/storage/software/gcc/4.8.1/lib64:/storage/software/openmpi-2.1.0/lib/openmpi:/storage/software/openmpi-2.1.0/lib:/storage/software/libxc-3.0.0-mpi/lib:/storage/software/gcc-5.2.0/lib64:/usr/local/cuda/lib64:
+------ Java program
+nNodes: 2
+nTasks: 2
+Error: Could not find or load main class SocketMainMultiJVM
+srun: error: stage11: task 0: Exited with exit code 1
+Error: Could not find or load main class SocketMainMultiJVMsrun: error: stage12: task 1: Exited with exit code 1
+

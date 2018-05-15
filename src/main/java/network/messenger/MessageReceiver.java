@@ -2,6 +2,7 @@ package network.messenger;
 
 import config.GlobalConfig;
 import mpi.MPI;
+import mpi.Request;
 import network.address.MPIAddress;
 import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
@@ -13,6 +14,7 @@ import role.Role;
 import java.io.DataInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -138,8 +140,18 @@ public class MessageReceiver {
 //                  MPI.COMM_WORLD.recv(msgInfo, msgInfo.length, MPI.INT, MPI.ANY_SOURCE, MPI.ANY_TAG);   // receive msg length first.
                     msgInfo[0] = 512;
                     byte[] msg = new byte[msgInfo[0]];
-                    MPI.COMM_WORLD.recv(msg, msg.length, MPI.BYTE, MPI.ANY_SOURCE, roleAddress.getGroupId());
+//                    MPI.COMM_WORLD.recv(msg, msg.length, MPI.BYTE, MPI.ANY_SOURCE, roleAddress.getGroupId());
 
+                    ByteBuffer byteBuffer;
+                    Request r;
+                    synchronized (MPI.COMM_WORLD) {
+//                    synchronized (MPI_LOCK) {
+                        byteBuffer = MPI.newByteBuffer(msg.length);
+                        r = MPI.COMM_WORLD.iRecv(byteBuffer, byteBuffer.capacity(), MPI.BYTE, MPI.ANY_SOURCE, roleAddress.getGroupId());
+                    }
+                    r.waitFor();
+                    r.free();
+                    byteBuffer.get(msg);
                     NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
                     if(message instanceof SignalEnd_NC){
                         Logger.debug("End signal recv: " + message);

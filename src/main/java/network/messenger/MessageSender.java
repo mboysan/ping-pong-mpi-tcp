@@ -3,6 +3,7 @@ package network.messenger;
 import config.GlobalConfig;
 import mpi.MPI;
 import mpi.MPIException;
+import mpi.Request;
 import network.address.MPIAddress;
 import network.address.TCPAddress;
 import org.pmw.tinylog.Logger;
@@ -15,7 +16,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,6 +25,8 @@ import java.util.concurrent.Executors;
 public class MessageSender {
 
     private final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+    private static final Object mpiLock = new Object();
 
     /**
      * The marshaller to marshall the command to send.
@@ -142,13 +144,17 @@ public class MessageSender {
             try {
                 MPIAddress receiverAddress = (MPIAddress) messageToSend.resolveReceiverAddress();
                 byte[] msg = commandMarshaller.marshall(messageToSend, byte[].class);
-
-                IntBuffer intBuffer = MPI.newIntBuffer(1).put(0, msg.length);
-                ByteBuffer byteBuffer = MPI.newByteBuffer(msg.length).put(msg);
+                ByteBuffer byteBuffer;
+                Request r;
                 synchronized (MPI.COMM_WORLD) {
+//                synchronized (MPI_LOCK) {
+                    byteBuffer = MPI.newByteBuffer(msg.length).put(msg);
 //                    MPI.COMM_WORLD.iSend(intBuffer, intBuffer.capacity(), MPI.INT, receiverAddress.getRank(), tag);  //send msg length first
-                    MPI.COMM_WORLD.iSend(byteBuffer, byteBuffer.capacity(), MPI.BYTE, receiverAddress.getRank(), receiverAddress.getGroupId());
+//                    Request r = MPI.COMM_WORLD.iSend(byteBuffer, byteBuffer.capacity(), MPI.BYTE, receiverAddress.getRank(), receiverAddress.getGroupId());
+                    r = MPI.COMM_WORLD.iSend(byteBuffer, byteBuffer.capacity(), MPI.BYTE, receiverAddress.getRank(), receiverAddress.getGroupId());
                 }
+                r.waitFor();
+                r.free();
             } catch (MPIException | IOException e) {
                 Logger.error(e, "Send err, msg: " + messageToSend);
             }
