@@ -1,16 +1,20 @@
 package testframework.osu.pt2pt;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.concurrent.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class OSULatencySocket {
+public class OSULatencySocket2 {
 
-    private static final int MAX_MSG_SIZE = 6400000*2;
+    private static final int MAX_MSG_SIZE = 131072;
     private static final int MIN_MSG_SIZE = 1*2;
 
     private static String MULTICAST_GROUP = "all-systems.mcast.net";
@@ -31,7 +35,7 @@ public class OSULatencySocket {
     public static void main(String[] args) throws Exception {
         System.out.println("args: " + Arrays.toString(args));
 
-        OSULatencySocket pinger = new OSULatencySocket();
+        OSULatencySocket2 pinger = new OSULatencySocket2();
         int localPort = pinger.initServer();
 
         pinger.myAddr = ipAddr + "," + localPort;
@@ -75,6 +79,23 @@ public class OSULatencySocket {
         }
         skip = (skip == -1) ? iterations/2 : skip;
 
+        executor = Executors.newFixedThreadPool(1);
+        AtomicReference<InputStream> dInAtomic = new AtomicReference<>(null);
+        executor.execute(() -> {
+            try {
+                dInAtomic.set(pinger.accept());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        TimeUnit.SECONDS.sleep(1);
+        OutputStream dOut = pinger.connect(pinger.pongerIp, pinger.pongerPort);
+        TimeUnit.SECONDS.sleep(1);
+        InputStream dIn = dInAtomic.get();
+
+        executor.shutdown();
+
         /* Latency test start */
         if(pinger.isLeader){
             System.out.println("size(bytes),latency(us)");
@@ -92,15 +113,15 @@ public class OSULatencySocket {
                     if(i == skip){
                         t_start = System.nanoTime();
                     }
-                    pinger.send(s_buf, pinger.pongerIp, pinger.pongerPort);
-                    pinger.recv(r_buf);
+                    pinger.send(s_buf, dOut);
+                    pinger.recv(r_buf, dIn);
                 }
                 t_end = System.nanoTime();
             }
             else {
                 for (int i = 0; i < iterations + skip; i++) {
-                    pinger.recv(r_buf);
-                    pinger.send(s_buf, pinger.pongerIp, pinger.pongerPort);
+                    pinger.recv(r_buf, dIn);
+                    pinger.send(s_buf, dOut);
                 }
             }
 
@@ -111,7 +132,7 @@ public class OSULatencySocket {
             }
         }
         /* Latency test end */
-
+        pinger.close(dOut, dIn);
         pinger.endAll(0);
     }
 
@@ -126,23 +147,30 @@ public class OSULatencySocket {
         System.exit(exitStatus);
     }
 
-    public void send(byte[] msg, String destIp, int destPort) throws IOException {
+    private OutputStream connect(String destIp, int destPort) throws IOException {
         Socket socket = new Socket(InetAddress.getByName(destIp), destPort);
         socket.setTcpNoDelay(true);
-        DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
-        dOut.write(msg,0,msg.length);    // write the message
-        dOut.flush();
-        dOut.close();
-        socket.close();
+        return socket.getOutputStream();
     }
 
-    public void recv(byte[] r_buf) throws IOException {
+    private InputStream accept() throws IOException {
         Socket socket = serverSocket.accept();
         socket.setTcpNoDelay(true);
-        DataInputStream dIn = new DataInputStream(socket.getInputStream());
-        dIn.read(r_buf,0,r_buf.length);
+        return socket.getInputStream();
+    }
+
+    private void close(OutputStream dOut, InputStream dIn) throws IOException {
+        dOut.close();
         dIn.close();
-        socket.close();
+    }
+
+    public void send(byte[] msg, OutputStream dOut) throws IOException {
+        dOut.write(msg,0,msg.length);    // write the message
+        dOut.flush();
+    }
+
+    public void recv(byte[] r_buf, InputStream dIn) throws IOException {
+        dIn.read(r_buf, 0, r_buf.length);
     }
 
     public void multicast(String message) {
