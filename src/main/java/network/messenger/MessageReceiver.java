@@ -145,12 +145,11 @@ public class MessageReceiver {
                     ByteBuffer byteBuffer;
                     Request r;
                     synchronized (MPI.COMM_WORLD) {
-//                    synchronized (MPI_LOCK) {
                         byteBuffer = MPI.newByteBuffer(msg.length);
                         r = MPI.COMM_WORLD.iRecv(byteBuffer, byteBuffer.capacity(), MPI.BYTE, MPI.ANY_SOURCE, roleAddress.getGroupId());
                     }
                     r.waitFor();
-                    r.free();
+                    r.test();
                     byteBuffer.get(msg);
                     NetworkCommand message = commandMarshaller.unmarshall(new String(msg, StandardCharsets.UTF_8));
                     if(message instanceof SignalEnd_NC){

@@ -7,7 +7,7 @@ mvn clean install
 
 # go to target and run MPIMain class
 cd ./target
-count=5
+count=10
 mpirun --oversubscribe -np $count java -cp *jar-with-dependencies.jar MPIMain 2 false
 
 # arguments:

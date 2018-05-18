@@ -46,6 +46,8 @@ public class MPIMain {
         Node node = new Node(new MPIAddress(rank, groupId));
 
         if(node.isLeader()){
+            TimeUnit.SECONDS.sleep(1);
+
             /* start tests */
             testFramework = TestFramework.doPingTests(node, totalProcesses);
 

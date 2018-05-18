@@ -132,7 +132,7 @@ public class MessageSender {
 
         @Override
         public void run(){
-            runOnMPIAsync();
+            runOnMPIAsync(false);
 //            runOnMPISync();
         }
 
@@ -140,21 +140,20 @@ public class MessageSender {
          * Send message with MPI. Uses <tt>MPI.COMM_WORLD.iSend()</tt> to send the message in an async manner.
          * Basically, sends the message and forgets.
          */
-        private void runOnMPIAsync() {
+        private void runOnMPIAsync(boolean waitForRequest) {
             try {
                 MPIAddress receiverAddress = (MPIAddress) messageToSend.resolveReceiverAddress();
                 byte[] msg = commandMarshaller.marshall(messageToSend, byte[].class);
                 ByteBuffer byteBuffer;
                 Request r;
                 synchronized (MPI.COMM_WORLD) {
-//                synchronized (MPI_LOCK) {
                     byteBuffer = MPI.newByteBuffer(msg.length).put(msg);
-//                    MPI.COMM_WORLD.iSend(intBuffer, intBuffer.capacity(), MPI.INT, receiverAddress.getRank(), tag);  //send msg length first
-//                    Request r = MPI.COMM_WORLD.iSend(byteBuffer, byteBuffer.capacity(), MPI.BYTE, receiverAddress.getRank(), receiverAddress.getGroupId());
                     r = MPI.COMM_WORLD.iSend(byteBuffer, byteBuffer.capacity(), MPI.BYTE, receiverAddress.getRank(), receiverAddress.getGroupId());
                 }
-                r.waitFor();
-                r.free();
+                if(waitForRequest){
+                    r.waitFor();
+                    r.free();
+                }
             } catch (MPIException | IOException e) {
                 Logger.error(e, "Send err, msg: " + messageToSend);
             }
@@ -167,15 +166,10 @@ public class MessageSender {
             try {
                 MPIAddress receiverAddress = (MPIAddress) messageToSend.resolveReceiverAddress();
                 byte[] msg = commandMarshaller.marshall(messageToSend, byte[].class);
-
-                /*
-                int[] msgInfo = new int[]{msg.length};
+                ByteBuffer byteBuffer;
                 synchronized (MPI.COMM_WORLD) {
-                    MPI.COMM_WORLD.send(msgInfo, msgInfo.length, MPI.INT, receiverAddress.getRank(), tag);  //send msg length first
-                }
-                */
-                synchronized (MPI.COMM_WORLD) {
-                    MPI.COMM_WORLD.send(msg, msg.length, MPI.BYTE, receiverAddress.getRank(), receiverAddress.getGroupId());
+                    byteBuffer = MPI.newByteBuffer(msg.length).put(msg);
+                    MPI.COMM_WORLD.send(byteBuffer, byteBuffer.capacity(), MPI.BYTE, receiverAddress.getRank(), receiverAddress.getGroupId());
                 }
             } catch (MPIException | IOException e) {
                 Logger.error(e, "Send err, msg: " + messageToSend);
