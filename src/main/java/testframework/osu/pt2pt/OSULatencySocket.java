@@ -1,5 +1,6 @@
 package testframework.osu.pt2pt;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class OSULatencySocket {
 
-    private static final int MAX_MSG_SIZE = 6400000*2;
+    private static final int MAX_MSG_SIZE = 131072;
     private static final int MIN_MSG_SIZE = 1*2;
 
     private static String MULTICAST_GROUP = "all-systems.mcast.net";
@@ -23,6 +24,7 @@ public class OSULatencySocket {
 
     private boolean isLeader = false;
     private String pongerIp;
+    private InetAddress pongerIpInetAddr;
     private int pongerPort;
 
     private String myAddr;
@@ -60,6 +62,8 @@ public class OSULatencySocket {
 
         int iterations = 100;
         int skip = -1;
+        int minMsgSize = MIN_MSG_SIZE;
+        int maxMsgSize = MAX_MSG_SIZE;
         if(args != null){
             if(args.length >= 1){
                 iterations = Integer.parseInt(args[0]);
@@ -75,47 +79,59 @@ public class OSULatencySocket {
                     pinger.endAll(-1);
                 }
             }
+            if(args.length >= 3){
+                minMsgSize = Integer.parseInt(args[2]);
+            }
+            if(args.length >= 4){
+                maxMsgSize = Integer.parseInt(args[3]);
+            }
         }
         skip = (skip == -1) ? iterations/2 : skip;
 
-        /* Latency test start */
-        if(pinger.isLeader){
-            System.out.println("size(bytes),latency(us)");
-        }
-        byte[] s_buf;
-        byte[] r_buf;
-        long t_start = 0, t_end = 0;
-        for (int size = MIN_MSG_SIZE; size < MAX_MSG_SIZE; size*=2) {
-            s_buf = new byte[size];
-            r_buf = new byte[size];
-            Arrays.fill(s_buf, (byte) 1);
-
+        try{
+            /* Latency test start */
             if(pinger.isLeader){
-                for (int i = 0; i < iterations + skip; i++) {
-                    if(i == skip){
-                        t_start = System.nanoTime();
+                System.out.println("size(bytes),latency(us)");
+            }
+            byte[] s_buf;
+            byte[] r_buf;
+            long t_start = 0, t_end = 0;
+            for (int size = minMsgSize; size <= maxMsgSize; size*=2) {
+                s_buf = new byte[size];
+                r_buf = new byte[size];
+                Arrays.fill(s_buf, (byte) 1);
+
+                if(pinger.isLeader){
+                    for (int i = 0; i < iterations + skip; i++) {
+                        if(i == skip){
+                            t_start = System.nanoTime();
+                        }
+                        pinger.send(s_buf);
+                        pinger.recv(r_buf);
                     }
-                    pinger.send(s_buf, pinger.pongerIp, pinger.pongerPort);
-                    pinger.recv(r_buf);
+                    t_end = System.nanoTime();
                 }
-                t_end = System.nanoTime();
-            }
-            else {
-                for (int i = 0; i < iterations + skip; i++) {
-                    pinger.recv(r_buf);
-                    pinger.send(s_buf, pinger.pongerIp, pinger.pongerPort);
+                else {
+                    for (int i = 0; i < iterations + skip; i++) {
+                        pinger.recv(r_buf);
+                        pinger.send(s_buf);
+                    }
                 }
-            }
 
-            if(pinger.isLeader) {
-                double latency = ((t_end - t_start) / 1e3) / (2.0 * iterations);
-                int sizeActual = size;
-                System.out.println(String.format("%d,%.3f",sizeActual,latency));
+                if(pinger.isLeader) {
+                    double latency = ((t_end - t_start) / 1e3) / (2.0 * iterations);
+                    int sizeActual = size;
+                    System.out.println(String.format("%d,%.3f",sizeActual,latency));
+                }
             }
+            /* Latency test end */
+
+            pinger.endAll(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            pinger.endAll(-1);
+            throw  e;
         }
-        /* Latency test end */
-
-        pinger.endAll(0);
     }
 
     public int initServer() throws IOException {
@@ -124,17 +140,16 @@ public class OSULatencySocket {
     }
 
     public void endAll(int exitStatus) throws IOException {
-        System.out.println("end all on " + myAddr);
+        System.out.println("end all on " + myAddr + ", status=" + exitStatus);
         serverSocket.close();
-        System.exit(exitStatus);
     }
 
-    public void send(byte[] msg, String destIp, int destPort) throws IOException {
-        Socket socket = new Socket(InetAddress.getByName(destIp), destPort);
+    public void send(byte[] msg) throws IOException {
+        Socket socket = new Socket(pongerIpInetAddr, pongerPort);
         socket.setTcpNoDelay(true);
         OutputStream dOut = socket.getOutputStream();
         dOut.write(msg,0,msg.length);    // write the message
-        dOut.flush();
+//        dOut.flush();
         dOut.close();
     }
 
@@ -143,6 +158,8 @@ public class OSULatencySocket {
         socket.setTcpNoDelay(true);
         InputStream dIn = socket.getInputStream();
         dIn.read(r_buf,0,r_buf.length);
+//        DataInputStream dIn = new DataInputStream(socket.getInputStream());
+//        dIn.readFully(r_buf);
         dIn.close();
         socket.close();
     }
@@ -161,11 +178,12 @@ public class OSULatencySocket {
         }
     }
 
-    public boolean resolveAddress(String msg){
+    public boolean resolveAddress(String msg) throws UnknownHostException {
         String[] prot = msg.trim().split(",");
         String _msg = prot[0] + "," + prot[1];
         if(!_msg.equals(myAddr)){
             pongerIp = prot[0].substring(1);
+            pongerIpInetAddr = InetAddress.getByName(pongerIp);
             pongerPort = Integer.parseInt(prot[1]);
             readyLatch.countDown();
             return true;

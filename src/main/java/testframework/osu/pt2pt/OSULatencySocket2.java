@@ -96,7 +96,7 @@ public class OSULatencySocket2 {
             byte[] s_buf;
             byte[] r_buf;
             long t_start = 0, t_end = 0;
-            for (int size = minMsgSize; size < maxMsgSize; size*=2) {
+            for (int size = minMsgSize; size <= maxMsgSize; size*=2) {
                 s_buf = new byte[size];
                 r_buf = new byte[size];
                 Arrays.fill(s_buf, (byte) 1);
@@ -127,6 +127,7 @@ public class OSULatencySocket2 {
             /* Latency test end */
             pinger.endAll(0);
         } catch (Exception e) {
+            e.printStackTrace();
             pinger.endAll(-1);
             throw e;
         }
@@ -141,7 +142,6 @@ public class OSULatencySocket2 {
         System.out.println("end all on " + myAddr + ", status=" + exitStatus);
         close();
         serverSocket.close();
-        System.exit(exitStatus);
     }
 
     private void close() throws IOException {
