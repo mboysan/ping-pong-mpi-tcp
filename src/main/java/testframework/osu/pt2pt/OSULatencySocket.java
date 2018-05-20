@@ -106,15 +106,16 @@ public class OSULatencySocket {
                         if(i == skip){
                             t_start = System.nanoTime();
                         }
-                        pinger.send(s_buf);
-                        pinger.recv(r_buf);
+                        Socket s = pinger.sendByClient(s_buf);
+                        pinger.recvByClient(r_buf, s.getInputStream());
+                        pinger.closeSocket(s);
                     }
                     t_end = System.nanoTime();
                 }
                 else {
                     for (int i = 0; i < iterations + skip; i++) {
-                        pinger.recv(r_buf);
-                        pinger.send(s_buf);
+                        Socket s = pinger.recvByServer(r_buf);
+                        pinger.sendByServer(s_buf, s.getOutputStream());
                     }
                 }
 
@@ -144,24 +145,39 @@ public class OSULatencySocket {
         serverSocket.close();
     }
 
-    public void send(byte[] msg) throws IOException {
+    public Socket sendByClient(byte[] msg) throws IOException {
         Socket socket = new Socket(pongerIpInetAddr, pongerPort);
         socket.setTcpNoDelay(true);
         OutputStream dOut = socket.getOutputStream();
         dOut.write(msg,0,msg.length);    // write the message
-//        dOut.flush();
-        dOut.close();
+        return socket;
     }
 
-    public void recv(byte[] r_buf) throws IOException {
+    public void recvByClient(byte[] r_buf, InputStream inputStream) throws IOException {
+        DataInputStream dIn = new DataInputStream(inputStream);
+        dIn.readFully(r_buf);
+    }
+
+    public Socket recvByServer(byte[] r_buf) throws IOException {
         Socket socket = serverSocket.accept();
         socket.setTcpNoDelay(true);
         InputStream dIn = socket.getInputStream();
         dIn.read(r_buf,0,r_buf.length);
-//        DataInputStream dIn = new DataInputStream(socket.getInputStream());
-//        dIn.readFully(r_buf);
-        dIn.close();
-        socket.close();
+        return socket;
+    }
+
+    public void sendByServer(byte[] msg, OutputStream outputStream) throws IOException {
+        OutputStream dOut = outputStream;
+        dOut.write(msg,0,msg.length);    // write the message
+    }
+
+    public void closeSocket(Socket socket) throws IOException {
+        if(socket != null){
+            if(socket.getOutputStream() != null){
+                socket.getOutputStream().close();
+            }
+            socket.close();
+        }
     }
 
     public void multicast(String message) {
