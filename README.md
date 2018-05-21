@@ -77,15 +77,15 @@ The format and a sample of the csv files for the
 *Ping-Pong Roundtrip latency test* is as follows:
 
 | Test Name           | Test Phase | # of Iterations | Leader Node Name | Timestamp        | Time         | Latency (ms) |
-| ------------------- |:----------:|:--------------: | : --------------:| : -------------: |:------------:| ------------:|
+|:-------------------:|:----------:|:--------------: |: ---------------:|:----------------:|:------------:|:-------------:|
 | pingAllIntermediate | full-load  | 500             | p0g31            | 1526646657332    | 15:30:57.332 | 5            |
 
 The format and a sample of the csv files for the 
 *Ping-Pong Point-to-Point latency test* is as follows:
 
-| Test Name           | Test Phase | # of Iterations | Leader Node Name | Timestamp        | Time         | Latency (ms) |
-| ------------------- |:----------:|:--------------: | : --------------:| : -------------: |:------------:| ------------:|
-| pingSingle          | N/A        | -1              | p0g31            | 1526646655664    | 15:30:55.664 | 3            |
+| Test Name         | Test Phase | # of Iterations |Leader Node Name |Timestamp      | Time         | Latency (ms)|
+|:-----------------:|:----------:|:--------------: |: --------------:|:-------------:|:------------:|:-----------:|
+| pingSingle        | N/A        | -1              | p0g31           | 1526646655664 | 15:30:55.664 | 3           |
 
 **OSU Latency Tests**
 
@@ -93,7 +93,7 @@ A single OSU Latency test result csv file is of the
 following form (1 line provided for a sample):
 
 | Size(bytes) | latency (us) |
-| ----------- |:------------:|
+|:-----------:|:------------:|
 | 2           | 240          |
 
 ## Data Processing
