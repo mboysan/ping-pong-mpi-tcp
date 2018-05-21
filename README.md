@@ -53,4 +53,68 @@ $ ./osu_latency_socket.sh
 
 # Results
 
-To-be-added.
+Detailed description of the work and the testing procedure
+can be read in the following paper: [paper.pdf](url). I
+encourage you to read the paper first before diving in
+the following sections.
+
+The final data collected can be found in 
+`./slurm/data/all_combined.ods` file. Using an office
+program of your choice to open it.
+
+## Data Collection
+
+A script located in `./slurm/scripts/work.sh` is used
+to run the tests on the University of Tartu's 
+HPC Rocket cluster.
+
+The test results produced in csv files are in the 
+following format.
+
+**Ping-Pong Tests**
+
+The format and a sample of the csv files for the 
+*Ping-Pong Roundtrip latency test* is as follows:
+
+| Test Name           | Test Phase | # of Iterations | Leader Node Name | Timestamp        | Time         | Latency (ms) |
+| ------------------- |:----------:|:--------------: | : --------------:| : -------------: |:------------:| ------------:|
+| pingAllIntermediate | full-load  | 500             | p0g31            | 1526646657332    | 15:30:57.332 | 5            |
+
+The format and a sample of the csv files for the 
+*Ping-Pong Point-to-Point latency test* is as follows:
+
+| Test Name           | Test Phase | # of Iterations | Leader Node Name | Timestamp        | Time         | Latency (ms) |
+| ------------------- |:----------:|:--------------: | : --------------:| : -------------: |:------------:| ------------:|
+| pingSingle          | N/A        | -1              | p0g31            | 1526646655664    | 15:30:55.664 | 3            |
+
+**OSU Latency Tests**
+
+A single OSU Latency test result csv file is of the
+following form (1 line provided for a sample):
+
+| Size(bytes) | latency (us) |
+| ----------- |:------------:|
+| 2           | 240          |
+
+## Data Processing
+
+**Ping-Pong Tests**
+
+The data is processed using `R`. Scripts located in 
+`./slurm/data/ping-pong-tests/process/` folder are
+used to process the data. Basically, the 
+`./slurm/data/ping-pong-tests/process/run.sh` script
+was submitted to the job scheduler of the cluster.
+Following is the procedure:
+
+1. After collecting the data, all the relevant latency 
+results are grouped together based on the number of nodes.
+2. Outliers are removed.
+3. The mean of the latency values are calculated and
+recorded.
+
+**OSU Latency Tests**
+
+No special arrangement is done for the OSU latency
+tests since these are standard. The collected data
+was just printed in their corresponding csv file.
