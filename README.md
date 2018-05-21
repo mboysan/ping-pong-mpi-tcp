@@ -54,8 +54,9 @@ $ ./osu_latency_socket.sh
 # Results
 
 Detailed description of the work and the testing procedure
-can be read in the following paper: [paper.pdf](url). I
-encourage you to read the paper first before diving in
+can be read in the following paper: 
+[paper.pdf](https://github.com/mboysan/ping-pong-mpi-tcp/blob/master/paper.pdf). 
+I encourage you to read the paper first before diving in
 the following sections.
 
 The final data collected can be found in 
