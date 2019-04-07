@@ -55,7 +55,7 @@ $ ./osu_latency_socket.sh
 
 Detailed description of the work and the testing procedure
 can be read in the following paper: 
-[paper.pdf](https://github.com/mboysan/ping-pong-mpi-tcp/blob/master/paper.pdf). 
+[paper.pdf](https://link.springer.com/chapter/10.1007%2F978-3-319-97571-9_12). 
 I encourage you to read the paper first before diving in
 the following sections.
 
